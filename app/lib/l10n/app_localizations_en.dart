@@ -61,4 +61,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsAbout => 'About BinPal';
+
+  @override
+  String get aboutTagline =>
+      'Garbage sorting and collection days in Japan, in plain English.';
+
+  @override
+  String get aboutLicenses => 'Open-source licences';
+
+  @override
+  String get logoLabel => 'BinPal logo';
 }

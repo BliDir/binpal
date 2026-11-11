@@ -42,6 +42,23 @@ flutter drive --driver=test_driver/integration_test.dart \
 
 Strings are in `lib/l10n/app_en.arb` and `app_ja.arb`. `flutter pub get` or any build regenerates `app_localizations*.dart`.
 
+## App icon and logo
+
+Masters live in `../brand/`: `binpal-icon-1024.png` (square, opaque) and `binpal-logo.png` (transparent wordmark, for light backgrounds). After changing either, regenerate everything from the repo root:
+
+```sh
+uv run app/tool/generate_icons.py
+```
+
+This writes:
+
+* iOS: a single 1024 px `AppIcon`; Xcode derives the other sizes.
+* Android: an adaptive icon (background colour taken from the artwork, transparent mascot foreground, monochrome layer for Android 13+ themed icons) plus square icons for Android 7.
+* `assets/brand/logo.png` at 1x, 2x and 3x (56 logical px tall), used on the About screen.
+* `../brand/previews/icon-masks.png`: the icon under the iOS mask and common Android launcher masks, plus the themed version. Check it after regenerating.
+
+The mascot sits at the same size on both platforms and inside Android's 66 dp safe circle; the script fails if it doesn't.
+
 ## Release builds
 
 ```sh
