@@ -12,33 +12,41 @@
   "attribution": [
     {
       "text": {
-        "ja": "横浜市のオープンデータを加工して作成",
-        "en": "Adapted from Yokohama City open data"
+        "ja": "横浜市ウェブサイトの情報をもとに作成",
+        "en": "Based on information published by Yokohama City"
       },
-      "license": "CC-BY-4.0",
-      "url": "https://creativecommons.org/licenses/by/4.0/"
+      "license": "LicenseRef-Yokohama-City-Website",
+      "url": "https://www.city.yokohama.lg.jp/"
     }
   ],
   "wards": [
-    { "id": "14103", "names": { "ja": "西区", "kana": "にしく", "en": "Nishi Ward" } },
+    { "id": "14117", "names": { "ja": "青葉区", "kana": "あおばく", "en": "Aoba Ward" } },
     { "id": "14104", "names": { "ja": "中区", "kana": "なかく", "en": "Naka Ward" } }
   ],
   "areas": [
     {
-      "id": "14103-001001",
-      "ward_id": "14103",
-      "names": { "ja": "高島一丁目", "kana": "たかしまいっちょうめ", "en": "Takashima 1-chome" },
-      "town": { "ja": "高島", "kana": "たかしま", "en": "Takashima" },
+      "id": "14117-001001",
+      "ward_id": "14117",
+      "names": { "ja": "青葉台一丁目", "kana": "あおばだいいっちょうめ", "en": "Aobadai 1-chome" },
+      "town": { "ja": "青葉台", "kana": "あおばだい", "en": "Aobadai" },
       "chome": 1,
-      "postal_codes": ["2200011"]
+      "postal_codes": ["2270062"]
     },
     {
-      "id": "14103-001002",
-      "ward_id": "14103",
-      "names": { "ja": "高島二丁目", "kana": "たかしまにちょうめ", "en": "Takashima 2-chome" },
-      "town": { "ja": "高島", "kana": "たかしま", "en": "Takashima" },
+      "id": "14117-001002",
+      "ward_id": "14117",
+      "names": { "ja": "青葉台二丁目", "kana": "あおばだいにちょうめ", "en": "Aobadai 2-chome" },
+      "town": { "ja": "青葉台", "kana": "あおばだい", "en": "Aobadai" },
       "chome": 2,
-      "postal_codes": ["2200011"]
+      "postal_codes": ["2270062"]
+    },
+    {
+      "id": "14117-002003",
+      "ward_id": "14117",
+      "names": { "ja": "あざみ野三丁目", "kana": "あざみのさんちょうめ", "en": "Azamino 3-chome" },
+      "town": { "ja": "あざみ野", "kana": "あざみの", "en": "Azamino" },
+      "chome": 3,
+      "postal_codes": ["2250011"]
     },
     {
       "id": "14104-002000",
@@ -60,6 +68,16 @@
       "common": "non_burnable"
     },
     {
+      "id": "spray",
+      "names": { "ja": "スプレー缶", "kana": "すぷれーかん", "en": "Spray cans" },
+      "common": "hazardous"
+    },
+    {
+      "id": "denchi",
+      "names": { "ja": "電池類", "kana": "でんちるい", "en": "Batteries" },
+      "common": "hazardous"
+    },
+    {
       "id": "plastic",
       "names": { "ja": "プラスチック資源", "kana": "ぷらすちっくしげん", "en": "Plastic resources" },
       "common": "plastic",
@@ -76,21 +94,16 @@
     {
       "id": "kinzoku",
       "names": { "ja": "小さな金属類", "kana": "ちいさなきんぞくるい", "en": "Small metal items" },
-      "common": "resources",
+      "common": "resources"
+    },
+    {
+      "id": "shudan-kaishu",
+      "names": { "ja": "古紙・古布", "kana": "こし・こふ", "en": "Paper and clothes" },
+      "common": "paper",
       "description": {
-        "ja": "金属が主な材料で、30cm未満のもの",
-        "en": "Mostly metal and under 30 cm"
+        "ja": "資源集団回収で回収します。日程は集積場所の青いステッカーを確認してください。",
+        "en": "Collected by neighbourhood groups (資源集団回収). Check the blue sticker at your collection point for dates."
       }
-    },
-    {
-      "id": "kanden",
-      "names": { "ja": "乾電池", "kana": "かんでんち", "en": "Dry-cell batteries" },
-      "common": "hazardous"
-    },
-    {
-      "id": "koshi",
-      "names": { "ja": "古紙", "kana": "こし", "en": "Paper" },
-      "common": "paper"
     },
     {
       "id": "sodai",
@@ -133,10 +146,36 @@
       "item_id": "battery-dry-cell",
       "names": { "ja": "電池", "kana": "でんち", "en": "Battery" },
       "aliases": ["乾電池", "AA battery", "AAA battery"],
-      "category": "kanden",
+      "category": "denchi",
       "instructions": {
         "ja": "透明か半透明の袋に入れて出してください。",
         "en": "Put out in a clear or see-through bag."
+      },
+      "valid_from": "2025-04-01",
+      "source_url": "https://www.city.yokohama.lg.jp/",
+      "verified_at": "2026-11-01"
+    },
+    {
+      "item_id": "spray-can",
+      "names": { "ja": "スプレー缶", "kana": "すぷれーかん", "en": "Spray can" },
+      "aliases": ["カセットボンベ", "aerosol", "gas canister"],
+      "category": "spray",
+      "instructions": {
+        "ja": "中身を使い切り、穴を開けずに出してください。",
+        "en": "Use it up completely. Do not puncture it."
+      },
+      "valid_from": "2025-04-01",
+      "source_url": "https://www.city.yokohama.lg.jp/",
+      "verified_at": "2026-11-01"
+    },
+    {
+      "item_id": "newspaper",
+      "names": { "ja": "新聞", "kana": "しんぶん", "en": "Newspaper" },
+      "aliases": ["新聞紙", "chirashi", "flyer"],
+      "category": "shudan-kaishu",
+      "instructions": {
+        "ja": "ひもで縛って資源集団回収に出してください。",
+        "en": "Tie with string and put out for the neighbourhood collection."
       },
       "valid_from": "2025-04-01",
       "source_url": "https://www.city.yokohama.lg.jp/",
@@ -185,64 +224,62 @@
   ],
   "calendars": [
     {
-      "id": "takashima-moyasu",
-      "category": "moyasu",
-      "area_ids": ["14103-001001", "14103-001002"],
-      "pattern": { "type": "weekly", "weekdays": ["mon", "thu"] },
+      "id": "aobadai-1-2-moyasu",
+      "categories": ["moyasu", "moenai", "spray", "denchi"],
+      "area_ids": ["14117-001001", "14117-001002"],
+      "pattern": { "type": "weekly", "weekdays": ["tue", "sat"] },
       "put_out_by": "08:00",
-      "valid_from": "2025-04-01"
+      "valid_from": "2025-04-01",
+      "source_url": "https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/a-u.html"
     },
     {
-      "id": "takashima-plastic",
-      "category": "plastic",
-      "area_ids": ["14103-001001", "14103-001002"],
+      "id": "aobadai-1-2-plastic",
+      "categories": ["plastic"],
+      "area_ids": ["14117-001001", "14117-001002"],
+      "pattern": { "type": "weekly", "weekdays": ["wed"] },
+      "put_out_by": "08:00",
+      "valid_from": "2025-04-01",
+      "source_url": "https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/a-u.html"
+    },
+    {
+      "id": "aobadai-1-2-kan-bin-pet",
+      "categories": ["kan-bin-pet", "kinzoku"],
+      "area_ids": ["14117-001001", "14117-001002"],
+      "pattern": { "type": "weekly", "weekdays": ["fri"] },
+      "put_out_by": "08:00",
+      "valid_from": "2025-04-01",
+      "source_url": "https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/a-u.html"
+    },
+    {
+      "id": "azamino-3-moyasu",
+      "categories": ["moyasu", "moenai", "spray", "denchi"],
+      "area_ids": ["14117-002003"],
+      "pattern": { "type": "weekly", "weekdays": ["mon", "fri"] },
+      "put_out_by": "08:00",
+      "valid_from": "2025-04-01",
+      "source_url": "https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/a-u.html"
+    },
+    {
+      "id": "azamino-3-plastic",
+      "categories": ["plastic"],
+      "area_ids": ["14117-002003"],
       "pattern": { "type": "weekly", "weekdays": ["tue"] },
       "put_out_by": "08:00",
-      "valid_from": "2025-04-01"
+      "valid_from": "2025-04-01",
+      "source_url": "https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/a-u.html"
     },
     {
-      "id": "takashima-kan-bin-pet",
-      "category": "kan-bin-pet",
-      "area_ids": ["14103-001001", "14103-001002"],
-      "pattern": { "type": "weekly", "weekdays": ["wed"] },
+      "id": "azamino-3-kan-bin-pet",
+      "categories": ["kan-bin-pet", "kinzoku"],
+      "area_ids": ["14117-002003"],
+      "pattern": { "type": "weekly", "weekdays": ["thu"] },
       "put_out_by": "08:00",
-      "valid_from": "2025-04-01"
-    },
-    {
-      "id": "takashima-moenai",
-      "category": "moenai",
-      "area_ids": ["14103-001001", "14103-001002"],
-      "pattern": { "type": "weekly", "weekdays": ["wed"] },
-      "put_out_by": "08:00",
-      "valid_from": "2025-04-01"
-    },
-    {
-      "id": "takashima-kinzoku",
-      "category": "kinzoku",
-      "area_ids": ["14103-001001", "14103-001002"],
-      "pattern": { "type": "weekly", "weekdays": ["wed"] },
-      "put_out_by": "08:00",
-      "valid_from": "2025-04-01"
-    },
-    {
-      "id": "takashima-kanden",
-      "category": "kanden",
-      "area_ids": ["14103-001001", "14103-001002"],
-      "pattern": { "type": "weekly", "weekdays": ["wed"] },
-      "put_out_by": "08:00",
-      "valid_from": "2025-04-01"
-    },
-    {
-      "id": "takashima-koshi",
-      "category": "koshi",
-      "area_ids": ["14103-001001", "14103-001002"],
-      "pattern": { "type": "monthly_nth_weekday", "weekday": "fri", "nth": [2, 4] },
-      "put_out_by": "08:00",
-      "valid_from": "2025-04-01"
+      "valid_from": "2025-04-01",
+      "source_url": "https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/a-u.html"
     },
     {
       "id": "yamashita-moyasu",
-      "category": "moyasu",
+      "categories": ["moyasu", "moenai", "spray", "denchi"],
       "area_ids": ["14104-002000"],
       "pattern": { "type": "weekly", "weekdays": ["tue", "fri"] },
       "put_out_by": "08:00",
@@ -250,7 +287,7 @@
     },
     {
       "id": "yamashita-plastic",
-      "category": "plastic",
+      "categories": ["plastic"],
       "area_ids": ["14104-002000"],
       "pattern": { "type": "weekly", "weekdays": ["thu"] },
       "put_out_by": "08:00",
@@ -258,41 +295,9 @@
     },
     {
       "id": "yamashita-kan-bin-pet",
-      "category": "kan-bin-pet",
+      "categories": ["kan-bin-pet", "kinzoku"],
       "area_ids": ["14104-002000"],
       "pattern": { "type": "weekly", "weekdays": ["mon"] },
-      "put_out_by": "08:00",
-      "valid_from": "2025-04-01"
-    },
-    {
-      "id": "yamashita-moenai",
-      "category": "moenai",
-      "area_ids": ["14104-002000"],
-      "pattern": { "type": "weekly", "weekdays": ["mon"] },
-      "put_out_by": "08:00",
-      "valid_from": "2025-04-01"
-    },
-    {
-      "id": "yamashita-kinzoku",
-      "category": "kinzoku",
-      "area_ids": ["14104-002000"],
-      "pattern": { "type": "weekly", "weekdays": ["mon"] },
-      "put_out_by": "08:00",
-      "valid_from": "2025-04-01"
-    },
-    {
-      "id": "yamashita-kanden",
-      "category": "kanden",
-      "area_ids": ["14104-002000"],
-      "pattern": { "type": "weekly", "weekdays": ["mon"] },
-      "put_out_by": "08:00",
-      "valid_from": "2025-04-01"
-    },
-    {
-      "id": "yamashita-koshi",
-      "category": "koshi",
-      "area_ids": ["14104-002000"],
-      "pattern": { "type": "monthly_nth_weekday", "weekday": "sat", "nth": [1, 3] },
       "put_out_by": "08:00",
       "valid_from": "2025-04-01"
     }
@@ -321,10 +326,10 @@
     {
       "date": "2027-01-04",
       "type": "extra_collection",
-      "categories": ["moyasu"],
+      "categories": ["moyasu", "moenai", "spray", "denchi"],
       "area_ids": ["14104-002000"],
       "note": {
-        "ja": "1月1日（金）分の燃やすごみを収集します",
+        "ja": "1月1日（金）分の燃やすごみ等を収集します",
         "en": "Burnable collection moved here from Friday 1 January"
       }
     }

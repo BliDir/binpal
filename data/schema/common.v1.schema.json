@@ -8,7 +8,7 @@
       "const": 1
     },
     "municipalityId": {
-      "description": "5-digit local government code (全国地方公共団体コード without the check digit). Used for municipalities (Yokohama City is 14100, Setagaya is 13112) and for the wards of designated cities (Nishi-ku, Yokohama is 14103). MLIT N03 boundary data (N03_007) and e-Stat use the ward code where there is one.",
+      "description": "5-digit local government code (全国地方公共団体コード without the check digit). Used for municipalities (Yokohama City is 14100, Setagaya is 13112) and for the wards of designated cities (Aoba-ku, Yokohama is 14117). MLIT N03 boundary data (N03_007) and e-Stat use the ward code where there is one.",
       "type": "string",
       "pattern": "^[0-9]{5}$"
     },

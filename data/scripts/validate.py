@@ -124,8 +124,9 @@ def bundle_errors(doc: dict) -> list[str]:
 
     for i, cal in enumerate(doc["calendars"]):
         where = f"calendars/{i} ({cal['id']})"
-        if cal["category"] not in categories:
-            errors.append(f"{where}: unknown category {cal['category']!r}")
+        for c in cal["categories"]:
+            if c not in categories:
+                errors.append(f"{where}: unknown category {c!r}")
         for a in cal["area_ids"]:
             if a not in areas:
                 errors.append(f"{where}: unknown area {a!r}")

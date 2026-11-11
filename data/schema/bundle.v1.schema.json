@@ -68,7 +68,7 @@
       "items": { "$ref": "#/$defs/area" }
     },
     "categories": {
-      "description": "This municipality's own sorting categories.",
+      "description": "This municipality's own sorting categories. A category may have no calendar, for example items collected by neighbourhood groups or only by booking.",
       "type": "array",
       "minItems": 1,
       "items": { "$ref": "#/$defs/category" }
@@ -182,13 +182,16 @@
     },
     "calendar": {
       "type": "object",
-      "required": ["id", "category", "area_ids", "pattern", "valid_from"],
+      "required": ["id", "categories", "area_ids", "pattern", "valid_from"],
       "additionalProperties": false,
       "properties": {
         "id": { "$ref": "common.v1.schema.json#/$defs/slug" },
-        "category": {
-          "description": "id of a category in this bundle.",
-          "$ref": "common.v1.schema.json#/$defs/slug"
+        "categories": {
+          "description": "ids of categories in this bundle collected on this pattern. Several categories often share a day (Yokohama collects 燃えないごみ with 燃やすごみ).",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "common.v1.schema.json#/$defs/slug" }
         },
         "area_ids": {
           "type": "array",

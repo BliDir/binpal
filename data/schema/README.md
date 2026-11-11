@@ -11,7 +11,7 @@ The data contract between the back office and the app. The publisher writes thes
 
 All schemas use JSON Schema draft 2020-12.
 
-> **The example data is illustrative.** Area codes, collection days and rules in `examples/` were written to exercise the schema, not taken from Yokohama's official sources. Do not ship them.
+> **The example data is mostly illustrative. Do not ship it.** The Aoba-ku collection days (青葉台1・2丁目, あざみ野3丁目) match the [city's collection-day page](https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/a-u.html) as last updated on 23 January 2026, including that 燃えないごみ, スプレー缶 and 電池類 go out with 燃やすごみ and 小さな金属類 with 缶・びん・ペットボトル. Everything else, including area codes, Naka-ku days, item rules and the New Year exceptions, was written to exercise the schema.
 
 ## Validate
 
@@ -31,8 +31,8 @@ Pass a manifest to validate it and every bundle it points to (paths resolve agai
 | ID | Format | Example |
 | -- | -- | -- |
 | Municipality | 5-digit local government code | `14100` (Yokohama City), `13112` (Setagaya) |
-| Ward | 5-digit code of a designated city's ward | `14103` (Nishi-ku, Yokohama) |
-| Area | Ward code (designated cities) or municipality code (elsewhere) + `-` + 6-digit e-Stat small-area code; together the 11-digit e-Stat `KEY_CODE` | `14103-001001` |
+| Ward | 5-digit code of a designated city's ward | `14117` (Aoba-ku, Yokohama) |
+| Area | Ward code (designated cities) or municipality code (elsewhere) + `-` + 6-digit e-Stat small-area code; together the 11-digit e-Stat `KEY_CODE` | `14117-001001` |
 | Category, calendar, item | Lowercase slug, stable across bundle versions | `moyasu`, `pet-bottle` |
 
 Area IDs come straight from the boundary data (MLIT N03 `N03_007` and e-Stat both use the ward code where there is one), so the on-device point-in-polygon lookup returns an ID the bundle already uses.
@@ -47,7 +47,7 @@ Tokyo's special wards (Setagaya and so on) are municipalities in their own right
 
 * **Dates** are `YYYY-MM-DD` in Japan time. `valid_from` and `valid_to` are both **inclusive**; no `valid_to` means open-ended.
 * **Text** shown to users is an object keyed by language. `ja` and `en` are required; other BCP 47 tags may be added. `names` also requires `kana` (hiragana or katakana reading) for search.
-* **Categories** are the municipality's own (Yokohama's 燃やすごみ, プラスチック資源, …). Each maps to one value of the common set, which drives icons and colours: `burnable`, `non_burnable`, `plastic`, `paper`, `cans_bottles`, `pet_bottles`, `resources`, `hazardous`, `bulky`, `not_collected`, `other`.
+* **Categories** are the municipality's own (Yokohama's 燃やすごみ, プラスチック資源, …). A category can have no calendar, for example Yokohama's 古紙・古布, which neighbourhood groups collect. Each maps to one value of the common set, which drives icons and colours: `burnable`, `non_burnable`, `plastic`, `paper`, `cans_bottles`, `pet_bottles`, `resources`, `hazardous`, `bulky`, `not_collected`, `other`.
 * **Rule versions:** an announced change is published early as a second rule with the same `item_id` and a later `valid_from`. The app shows the version whose range contains today.
 * **Attribution** lists licence credits (for example CC BY 4.0) the app must display for this bundle.
 
@@ -55,10 +55,12 @@ Tokyo's special wards (Setagaya and so on) are municipalities in their own right
 
 For an area, category and date, there is a collection when:
 
-1. a calendar for that category lists the area, the date is inside its validity range, and its pattern matches the date, **and** no `no_collection` exception matches; **or**
+1. a calendar lists both the category and the area, the date is inside its validity range, and its pattern matches the date, **and** no `no_collection` exception matches; **or**
 2. an `extra_collection` exception matches.
 
 An exception matches when its date is equal, and its `categories` and `area_ids` either include the category and area or are omitted (omitted means all). `extra_collection` must list its categories. A moved collection is a `no_collection` on the old date plus an `extra_collection` on the new one.
+
+A calendar lists every category that shares its pattern, so "燃えないごみ goes out with 燃やすごみ" is one calendar, not two.
 
 Patterns:
 
