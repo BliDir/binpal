@@ -1,0 +1,23 @@
+# Pages and files the rule monitor watches (data/scripts/monitor.py).
+#
+#   id            lowercase slug, unique; also the snapshot's file name
+#   municipality  5-digit local government code of the bundle this feeds
+#   title         shown in the issue the monitor opens
+#   type          html | pdf | ckan
+#   url           the page or PDF; for ckan, the dataset's package_show API URL
+#   selector      html only: CSS selector of the main content
+#   strip         html only: CSS selectors removed from the content first
+#   ignore        regexes; matching lines are dropped before comparing
+#   formats       ckan only: file formats to watch (default: all)
+sources:
+  - id: yokohama-aoba-days-a-u
+    municipality: "14100"
+    title: 青葉区の収集曜日 あ～う
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/a-u.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
