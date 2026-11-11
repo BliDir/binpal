@@ -1,0 +1,20 @@
+{
+  "@@locale": "ja",
+  "appTitle": "BinPal",
+  "tabToday": "今日",
+  "tabSearch": "検索",
+  "settingsTitle": "設定",
+  "settingsTooltip": "設定",
+  "areaNotSet": "地域を設定",
+  "todayTitle": "今日",
+  "todayNoAreaTitle": "地域が未設定です",
+  "todayNoAreaBody": "地域を選ぶと、今日と明日に出せるごみが表示されます。",
+  "searchHint": "この品目の分け方は？",
+  "searchExamples": "例：傘、電池、umbrella",
+  "searchNoAreaBody": "地域のデータをダウンロードすると、オフラインで品目を検索できます。",
+  "settingsArea": "地域",
+  "settingsAreaNotSet": "未設定",
+  "settingsReminders": "リマインダー",
+  "settingsRemindersOff": "オフ",
+  "settingsAbout": "BinPalについて"
+}

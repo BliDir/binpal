@@ -1,0 +1,20 @@
+{
+  "@@locale": "en",
+  "appTitle": "BinPal",
+  "tabToday": "Today",
+  "tabSearch": "Search",
+  "settingsTitle": "Settings",
+  "settingsTooltip": "Settings",
+  "areaNotSet": "Set your area",
+  "todayTitle": "Today",
+  "todayNoAreaTitle": "No area yet",
+  "todayNoAreaBody": "Choose your area to see which garbage goes out today and tomorrow.",
+  "searchHint": "How do I sort this item?",
+  "searchExamples": "Try umbrella, batteries or 傘",
+  "searchNoAreaBody": "Item search works offline once your area's data is downloaded.",
+  "settingsArea": "Area",
+  "settingsAreaNotSet": "Not set",
+  "settingsReminders": "Reminders",
+  "settingsRemindersOff": "Off",
+  "settingsAbout": "About BinPal"
+}

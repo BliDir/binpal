@@ -1,0 +1,80 @@
+# BinPal app
+
+Flutter app for iOS and Android. Works offline from a cached area bundle (see `../data/schema/`).
+
+## Structure
+
+```
+lib/
+  main.dart
+  app/            app widget, theme (design tokens), tab shell, shared top bar
+  features/
+    today/        today's and tomorrow's collections
+    search/       offline item search
+    settings/     area, reminders, about
+  l10n/           English and Japanese strings (ARB); Dart files are generated
+```
+
+Each feature owns its screens and, later, its state and data access. Shared code lives in `app/` until a second feature needs it.
+
+Core packages only: `drift` (SQLite with FTS5), `geolocator`, `flutter_local_notifications` and `intl`. Camera arrives in v2. Text uses the platform's system font, so no Japanese font is bundled.
+
+## Run
+
+```sh
+flutter pub get
+flutter run                       # debug on a connected device
+flutter test
+```
+
+## Integration tests
+
+`integration_test/` drives the real app on a simulator or device, in English and Japanese, and saves screenshots to `build/screenshots/` (named `<platform>_<locale>_<screen>.png`):
+
+```sh
+flutter emulators --launch Pixel_9_API_36          # or open the iOS Simulator
+flutter devices                                     # find the device id
+flutter drive --driver=test_driver/integration_test.dart \
+  --target=integration_test/app_test.dart -d <device-id>
+```
+
+`flutter test integration_test -d <device-id> --dart-define=SCREENSHOTS=false` runs the same flows without screenshots. They don't run in CI yet (that needs an emulator on the runner).
+
+Strings are in `lib/l10n/app_en.arb` and `app_ja.arb`. `flutter pub get` or any build regenerates `app_localizations*.dart`.
+
+## Release builds
+
+```sh
+flutter build apk --release --split-per-abi --obfuscate --split-debug-info=build/symbols/android
+flutter build appbundle --release --obfuscate --split-debug-info=build/symbols/android
+flutter build ios --release --obfuscate --split-debug-info=build/symbols/ios
+```
+
+Keep `build/symbols/` from every build you ship: it is needed to read obfuscated crash stack traces (`flutter symbolize`).
+
+Android release builds use R8 shrinking and are signed with debug keys until a Play upload key exists. `compileSdk` is 37 because `flutter_local_notifications` 23 requires it; `targetSdk` stays on Flutter's default.
+
+CI (`.github/workflows/app.yml`) checks formatting, analyzes and runs the tests on every PR touching `app/`. It does not build releases or upload artifacts, to stay within the free GitHub Actions quota; build releases locally with the commands above.
+
+## Baseline (skeleton, 11 Nov 2026)
+
+Flutter 3.47.1. Sizes in MB of 1,048,576 bytes; "compressed" is gzip/zip of the build output, an approximation of download size.
+
+| Build | Size | Compressed |
+| -- | --: | --: |
+| Android APK arm64-v8a | 18.0 MB | 8.3 MB |
+| Android APK armeabi-v7a | 15.3 MB | 7.8 MB |
+| Android APK x86_64 | 19.4 MB | 8.5 MB |
+| iOS Runner.app | 27.6 MB | 10.4 MB |
+
+Most of it is the Flutter engine (Android `libflutter.so` 11.2 MB, iOS `Flutter.framework` 15.5 MB), the compiled app (4.1 MB / 10 MB) and SQLite for drift (1.7 MB / 1.6 MB). Android keeps native libraries uncompressed in the APK so they load without extraction, which is why the APK is much larger than the download.
+
+Cold start, iPhone 16 (iOS 26.6.1), profile build, `flutter run --profile --trace-startup`, median of 3 launches after the first install:
+
+| Metric | Time |
+| -- | --: |
+| Engine start → framework ready | 31 ms |
+| Engine start → first frame built | 51 ms |
+| Engine start → first frame on screen | 226 ms |
+
+These start at engine launch, so they leave out the OS's process start. Android cold start still needs a physical device: the arm64 emulator measured 2.8–5.2 s (`am start -W`), which reflects emulator rendering rather than the app.
