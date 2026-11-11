@@ -1,0 +1,33 @@
+name: Data
+
+on:
+  pull_request:
+    paths:
+      - "data/**"
+      - ".github/workflows/data.yml"
+  push:
+    branches: [main]
+    paths:
+      - "data/**"
+      - ".github/workflows/data.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: data-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  RUFF_VERSION: "0.17.4"
+
+jobs:
+  check:
+    name: Lint and validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v6
+      - run: uvx ruff@${{ env.RUFF_VERSION }} check data
+      - run: uvx ruff@${{ env.RUFF_VERSION }} format --check data
+      - run: shellcheck data/scripts/*.sh
+      - run: uv run data/scripts/validate.py data/schema/examples/manifest.json
