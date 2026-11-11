@@ -1,0 +1,46 @@
+name: Rule monitor
+
+# Once a day, compares every source in data/sources.yaml with its snapshot
+# in data/snapshots/, commits changed snapshots and opens an issue per
+# changed source. See data/README.md.
+on:
+  schedule:
+    - cron: "17 21 * * *" # 06:17 in Japan
+  workflow_dispatch:
+
+concurrency:
+  group: rule-monitor
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  monitor:
+    name: Check sources
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Check sources
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: uv run data/scripts/monitor.py --open-issues
+
+      # Also commits the monthly heartbeat in state.json, which keeps this
+      # schedule from being disabled after 60 days without repo activity.
+      - name: Commit snapshots
+        run: |
+          git add data/snapshots
+          if git diff --cached --quiet; then
+            echo "no snapshot changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Rule monitor: update snapshots"
+          git pull --rebase
+          git push

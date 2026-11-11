@@ -16,7 +16,8 @@ Each folder has its own workflow, run on pull requests that touch it:
 | Workflow | Runs on | Checks |
 | -- | -- | -- |
 | `app.yml` | `app/**` | format, analyze, tests |
-| `data.yml` | `data/**` | ruff, shellcheck, schema and example validation |
+| `data.yml` | `data/**` | ruff, shellcheck, schema and example validation, script tests |
+| `rule-monitor.yml` | daily schedule | watches the sources for rule changes ([details](data/README.md#rule-monitor)) |
 
 ## License
 

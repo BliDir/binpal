@@ -31,3 +31,4 @@ jobs:
       - run: uvx ruff@${{ env.RUFF_VERSION }} format --check data
       - run: shellcheck data/scripts/*.sh
       - run: uv run data/scripts/validate.py data/schema/examples/manifest.json
+      - run: uv run data/tests/test_monitor.py
