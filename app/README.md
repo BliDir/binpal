@@ -27,6 +27,19 @@ flutter run                       # debug on a connected device
 flutter test
 ```
 
+## Integration tests
+
+`integration_test/` drives the real app on a simulator or device, in English and Japanese, and saves screenshots to `build/screenshots/` (named `<platform>_<locale>_<screen>.png`):
+
+```sh
+flutter emulators --launch Pixel_9_API_36          # or open the iOS Simulator
+flutter devices                                     # find the device id
+flutter drive --driver=test_driver/integration_test.dart \
+  --target=integration_test/app_test.dart -d <device-id>
+```
+
+`flutter test integration_test -d <device-id> --dart-define=SCREENSHOTS=false` runs the same flows without screenshots. They don't run in CI yet (that needs an emulator on the runner).
+
 Strings are in `lib/l10n/app_en.arb` and `app_ja.arb`. `flutter pub get` or any build regenerates `app_localizations*.dart`.
 
 ## Release builds
