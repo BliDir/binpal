@@ -1,0 +1,83 @@
+name: CDN smoke test
+
+# Manual only. Checks that CI can upload to R2, that files are served over
+# HTTPS through the CDN with the right cache headers, and that a manifest
+# update shows up within a few minutes. Uploads go under _smoke/.
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: cdn-smoke
+  cancel-in-progress: false
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+      R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      R2_BUCKET: ${{ vars.R2_BUCKET }}
+      CDN_BASE_URL: ${{ vars.CDN_BASE_URL }}
+      RUN: ${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Check configuration
+        run: |
+          missing=0
+          for v in R2_ACCOUNT_ID R2_ACCESS_KEY_ID R2_SECRET_ACCESS_KEY R2_BUCKET CDN_BASE_URL; do
+            if [ -z "${!v}" ]; then echo "::error::$v is not set (see data/cdn/README.md)"; missing=1; fi
+          done
+          case "$CDN_BASE_URL" in https://*) ;; *) echo "::error::CDN_BASE_URL must start with https://"; missing=1 ;; esac
+          exit $missing
+
+      - name: Versioned file is served from the CDN
+        run: |
+          key="_smoke/bundles/14100/${RUN}.json"
+          data/scripts/cdn_put.sh data/schema/examples/bundles/14100/1.json "$key" immutable
+          url="${CDN_BASE_URL%/}/$key"
+          want=$(sha256sum data/schema/examples/bundles/14100/1.json | cut -d' ' -f1)
+          for i in 1 2; do
+            curl -fsS -D headers.txt -o got.json "$url"
+            got=$(sha256sum got.json | cut -d' ' -f1)
+            status=$(grep -i '^cf-cache-status:' headers.txt | tr -d '\r' | cut -d' ' -f2)
+            cc=$(grep -i '^cache-control:' headers.txt | tr -d '\r' | cut -d' ' -f2-)
+            echo "request $i: cf-cache-status=${status:-none} cache-control=$cc"
+            [ "$got" = "$want" ] || { echo "::error::checksum mismatch"; exit 1; }
+          done
+          case "$cc" in *immutable*) ;; *) echo "::error::bundle is missing the immutable Cache-Control"; exit 1 ;; esac
+          [ "$status" = HIT ] || echo "::warning::second request was not a cache HIT ($status); check the cache rule"
+          {
+            echo "### CDN smoke test"
+            echo
+            echo "| Check | Result |"
+            echo "| -- | -- |"
+            echo "| Bundle over HTTPS | ok, checksum matches |"
+            echo "| Bundle Cache-Control | \`$cc\` |"
+            echo "| Second request | \`${status:-none}\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Manifest update is visible within 5 minutes
+        run: |
+          key="_smoke/manifest.json"
+          url="${CDN_BASE_URL%/}/$key"
+          echo "{\"run\": \"$RUN\", \"step\": 1}" > m1.json
+          data/scripts/cdn_put.sh m1.json "$key" short
+          curl -fsS -o /dev/null "$url"  # warm the edge cache with the old version
+
+          echo "{\"run\": \"$RUN\", \"step\": 2}" > m2.json
+          data/scripts/cdn_put.sh m2.json "$key" short
+          start=$(date +%s)
+          while true; do
+            body=$(curl -fsS "$url")
+            elapsed=$(( $(date +%s) - start ))
+            if echo "$body" | grep -q "\"run\": \"$RUN\", \"step\": 2"; then break; fi
+            if [ "$elapsed" -ge 300 ]; then
+              echo "::error::manifest update not visible after ${elapsed}s"; exit 1
+            fi
+            sleep 10
+          done
+          echo "manifest update visible after ${elapsed}s"
+          echo "| Manifest update visible | after ${elapsed} s |" >> "$GITHUB_STEP_SUMMARY"
