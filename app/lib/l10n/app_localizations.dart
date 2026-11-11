@@ -199,6 +199,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'About BinPal'**
   String get settingsAbout;
+
+  /// No description provided for @aboutTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Garbage sorting and collection days in Japan, in plain English.'**
+  String get aboutTagline;
+
+  /// No description provided for @aboutLicenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Open-source licences'**
+  String get aboutLicenses;
+
+  /// No description provided for @logoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'BinPal logo'**
+  String get logoLabel;
 }
 
 class _AppLocalizationsDelegate

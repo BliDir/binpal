@@ -16,5 +16,8 @@
   "settingsAreaNotSet": "Not set",
   "settingsReminders": "Reminders",
   "settingsRemindersOff": "Off",
-  "settingsAbout": "About BinPal"
+  "settingsAbout": "About BinPal",
+  "aboutTagline": "Garbage sorting and collection days in Japan, in plain English.",
+  "aboutLicenses": "Open-source licences",
+  "logoLabel": "BinPal logo"
 }

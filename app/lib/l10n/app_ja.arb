@@ -16,5 +16,8 @@
   "settingsAreaNotSet": "未設定",
   "settingsReminders": "リマインダー",
   "settingsRemindersOff": "オフ",
-  "settingsAbout": "BinPalについて"
+  "settingsAbout": "BinPalについて",
+  "aboutTagline": "日本のごみの分け方と収集日を、\nわかりやすく。",
+  "aboutLicenses": "オープンソースライセンス",
+  "logoLabel": "BinPalのロゴ"
 }

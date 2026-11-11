@@ -63,6 +63,16 @@ void main() {
         expect(find.text(ja ? 'リマインダー' : 'Reminders'), findsOneWidget);
         await screenshot(tester, '${locale.languageCode}_settings');
 
+        await tester.tap(find.text(ja ? 'BinPalについて' : 'About BinPal'));
+        await tester.pumpAndSettle();
+        expect(
+          find.bySemanticsLabel(ja ? 'BinPalのロゴ' : 'BinPal logo'),
+          findsOneWidget,
+        );
+        await screenshot(tester, '${locale.languageCode}_about');
+
+        await tester.tap(find.byType(BackButton));
+        await tester.pumpAndSettle();
         await tester.tap(find.byType(BackButton));
         await tester.pumpAndSettle();
         // Back on Search, and the tab kept its text.

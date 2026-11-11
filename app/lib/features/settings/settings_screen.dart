@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../l10n/app_localizations.dart';
+import 'about_screen.dart';
 
 /// Area, reminders and about. Entries are placeholders until their features land.
 class SettingsScreen extends StatelessWidget {
@@ -27,9 +28,9 @@ class SettingsScreen extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.info_outline),
             title: Text(l10n.settingsAbout),
-            onTap: () => showLicensePage(
-              context: context,
-              applicationName: l10n.appTitle,
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(builder: (_) => const AboutScreen()),
             ),
           ),
         ],

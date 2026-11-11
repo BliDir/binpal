@@ -25,6 +25,19 @@ void main() {
     expect(find.text('Reminders'), findsOneWidget);
   });
 
+  testWidgets('About shows the logo', (tester) async {
+    await tester.pumpWidget(const BinPalApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byTooltip('Settings').first);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('About BinPal'));
+    await tester.pumpAndSettle();
+
+    expect(find.bySemanticsLabel('BinPal logo'), findsOneWidget);
+    expect(find.text('Open-source licences'), findsOneWidget);
+  });
+
   testWidgets('shows Japanese when the device is in Japanese', (tester) async {
     tester.platformDispatcher.localesTestValue = const [Locale('ja')];
     addTearDown(tester.platformDispatcher.clearLocalesTestValue);
