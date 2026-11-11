@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/BliDir/binpal/main/data/schema/common.v1.schema.json",
+  "title": "BinPal shared definitions, schema version 1",
+  "$defs": {
+    "schemaVersion": {
+      "description": "Major version of the schema this document follows. See data/schema/README.md.",
+      "const": 1
+    },
+    "municipalityId": {
+      "description": "5-digit local government code (全国地方公共団体コード without the check digit), the same value as N03_007 in MLIT boundary data. Setagaya is 13112.",
+      "type": "string",
+      "pattern": "^[0-9]{5}$"
+    },
+    "areaId": {
+      "description": "Municipality ID, a hyphen, and the 6-digit e-Stat small-area code (S_AREA) for the town or chōme. Together they form the 11-digit e-Stat KEY_CODE.",
+      "type": "string",
+      "pattern": "^[0-9]{5}-[0-9]{6}$"
+    },
+    "slug": {
+      "description": "Lowercase identifier, stable across bundle versions.",
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:[_-][a-z0-9]+)*$",
+      "maxLength": 64
+    },
+    "date": {
+      "description": "Calendar date in Japan time (YYYY-MM-DD).",
+      "type": "string",
+      "format": "date",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "dateTime": {
+      "description": "RFC 3339 timestamp with offset.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "sha256": {
+      "description": "Lowercase hex SHA-256 of the exact bytes served.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https?://"
+    },
+    "langTag": {
+      "description": "BCP 47 language tag, kept to language and an optional script or region.",
+      "type": "string",
+      "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$"
+    },
+    "localizedText": {
+      "description": "Text keyed by language. Japanese and English are required; other languages may be added.",
+      "type": "object",
+      "required": ["ja", "en"],
+      "propertyNames": { "$ref": "#/$defs/langTag" },
+      "additionalProperties": { "type": "string", "minLength": 1 }
+    },
+    "names": {
+      "description": "Display and search names. kana is the reading in hiragana or katakana, used for search and sorting.",
+      "type": "object",
+      "required": ["ja", "kana", "en"],
+      "properties": {
+        "ja": { "type": "string", "minLength": 1 },
+        "kana": { "type": "string", "minLength": 1, "pattern": "^[\\u3040-\\u30FF\\u30FC\\s・]+$" },
+        "en": { "type": "string", "minLength": 1 }
+      },
+      "propertyNames": { "anyOf": [{ "const": "kana" }, { "$ref": "#/$defs/langTag" }] },
+      "additionalProperties": { "type": "string", "minLength": 1 }
+    },
+    "validity": {
+      "description": "Effective date range in Japan time. Both ends are inclusive. Omit valid_to for open-ended.",
+      "type": "object",
+      "required": ["valid_from"],
+      "properties": {
+        "valid_from": { "$ref": "#/$defs/date" },
+        "valid_to": { "$ref": "#/$defs/date" }
+      }
+    },
+    "commonCategory": {
+      "description": "Small shared set that drives icons and colours. Every municipal category maps to one of these.",
+      "enum": [
+        "burnable",
+        "non_burnable",
+        "plastic",
+        "paper",
+        "cans_bottles",
+        "pet_bottles",
+        "resources",
+        "hazardous",
+        "bulky",
+        "not_collected",
+        "other"
+      ]
+    },
+    "weekday": {
+      "enum": ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+    }
+  }
+}

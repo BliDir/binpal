@@ -1,0 +1,257 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/BliDir/binpal/main/data/schema/bundle.v1.schema.json",
+  "title": "BinPal municipality bundle, schema version 1",
+  "description": "Everything the app needs offline for one municipality: areas, categories, sorting rules, collection calendars and exception dates. Served at /bundles/{municipality_id}/{bundle_version}.json.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "bundle_version",
+    "generated_at",
+    "municipality",
+    "attribution",
+    "areas",
+    "categories",
+    "rules",
+    "calendars",
+    "exceptions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "schema_version": { "$ref": "common.v1.schema.json#/$defs/schemaVersion" },
+    "bundle_version": {
+      "description": "Increases by 1 each time this municipality's bundle is published. Never reused.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "generated_at": { "$ref": "common.v1.schema.json#/$defs/dateTime" },
+    "municipality": {
+      "type": "object",
+      "required": ["id", "prefecture_code", "names"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "common.v1.schema.json#/$defs/municipalityId" },
+        "prefecture_code": {
+          "description": "2-digit prefecture code. Tokyo is 13.",
+          "type": "string",
+          "pattern": "^[0-9]{2}$"
+        },
+        "names": { "$ref": "common.v1.schema.json#/$defs/names" },
+        "website_url": { "$ref": "common.v1.schema.json#/$defs/url" }
+      }
+    },
+    "attribution": {
+      "description": "Licence credits the app must show, for example CC BY sources.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["text", "license"],
+        "additionalProperties": false,
+        "properties": {
+          "text": { "$ref": "common.v1.schema.json#/$defs/localizedText" },
+          "license": { "description": "SPDX identifier where one exists, for example CC-BY-4.0.", "type": "string", "minLength": 1 },
+          "url": { "$ref": "common.v1.schema.json#/$defs/url" }
+        }
+      }
+    },
+    "areas": {
+      "description": "Towns or chōme within the municipality. The smallest unit a collection calendar can target.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/area" }
+    },
+    "categories": {
+      "description": "This municipality's own sorting categories.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/category" }
+    },
+    "rules": {
+      "description": "How to sort and put out each item. The same item_id may appear more than once with non-overlapping validity ranges.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/rule" }
+    },
+    "calendars": {
+      "description": "Regular collection patterns per category and set of areas.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/calendar" }
+    },
+    "exceptions": {
+      "description": "Dates that differ from the regular pattern, such as the year-end and New Year schedule.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/exception" }
+    }
+  },
+  "$defs": {
+    "area": {
+      "type": "object",
+      "required": ["id", "names", "town"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "common.v1.schema.json#/$defs/areaId" },
+        "names": {
+          "description": "Full display name, for example 太子堂一丁目.",
+          "$ref": "common.v1.schema.json#/$defs/names"
+        },
+        "town": {
+          "description": "Town the chōme belongs to, used to group the manual area picker. Equal to names when the town has no chōme.",
+          "$ref": "common.v1.schema.json#/$defs/names"
+        },
+        "chome": { "type": "integer", "minimum": 1 },
+        "postal_codes": {
+          "description": "7-digit postal codes covering this area, for the postal-code fallback.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[0-9]{7}$" }
+        }
+      }
+    },
+    "category": {
+      "type": "object",
+      "required": ["id", "names", "common"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "common.v1.schema.json#/$defs/slug" },
+        "names": { "$ref": "common.v1.schema.json#/$defs/names" },
+        "common": { "$ref": "common.v1.schema.json#/$defs/commonCategory" },
+        "description": { "$ref": "common.v1.schema.json#/$defs/localizedText" },
+        "source_url": { "$ref": "common.v1.schema.json#/$defs/url" }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "required": [
+        "item_id",
+        "names",
+        "aliases",
+        "category",
+        "instructions",
+        "valid_from",
+        "source_url",
+        "verified_at"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "item_id": {
+          "description": "Stable across versions and municipalities where the item is the same thing, so reports and analytics can refer to it.",
+          "$ref": "common.v1.schema.json#/$defs/slug"
+        },
+        "names": { "$ref": "common.v1.schema.json#/$defs/names" },
+        "aliases": {
+          "description": "Extra search terms in any language: variants, brand names, common misspellings.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "category": {
+          "description": "id of a category in this bundle.",
+          "$ref": "common.v1.schema.json#/$defs/slug"
+        },
+        "instructions": {
+          "description": "How to prepare and put out the item.",
+          "$ref": "common.v1.schema.json#/$defs/localizedText"
+        },
+        "valid_from": { "$ref": "common.v1.schema.json#/$defs/date" },
+        "valid_to": { "$ref": "common.v1.schema.json#/$defs/date" },
+        "source_url": { "$ref": "common.v1.schema.json#/$defs/url" },
+        "verified_at": {
+          "description": "Date a person last checked this rule against the source.",
+          "$ref": "common.v1.schema.json#/$defs/date"
+        }
+      }
+    },
+    "calendar": {
+      "type": "object",
+      "required": ["id", "category", "area_ids", "pattern", "valid_from"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "common.v1.schema.json#/$defs/slug" },
+        "category": {
+          "description": "id of a category in this bundle.",
+          "$ref": "common.v1.schema.json#/$defs/slug"
+        },
+        "area_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "common.v1.schema.json#/$defs/areaId" }
+        },
+        "pattern": { "$ref": "#/$defs/pattern" },
+        "put_out_by": {
+          "description": "Local time by which items must be out on collection day, used for reminders.",
+          "type": "string",
+          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+        },
+        "valid_from": { "$ref": "common.v1.schema.json#/$defs/date" },
+        "valid_to": { "$ref": "common.v1.schema.json#/$defs/date" },
+        "source_url": { "$ref": "common.v1.schema.json#/$defs/url" }
+      }
+    },
+    "pattern": {
+      "oneOf": [
+        {
+          "description": "Every week on the given weekdays.",
+          "type": "object",
+          "required": ["type", "weekdays"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "weekly" },
+            "weekdays": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": { "$ref": "common.v1.schema.json#/$defs/weekday" }
+            }
+          }
+        },
+        {
+          "description": "The nth occurrence of a weekday in each calendar month. Days 1–7 hold the 1st occurrence, days 8–14 the 2nd, and so on. For mixed weekdays (1st Mon and 3rd Thu), use two calendars.",
+          "type": "object",
+          "required": ["type", "weekday", "nth"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "monthly_nth_weekday" },
+            "weekday": { "$ref": "common.v1.schema.json#/$defs/weekday" },
+            "nth": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": { "type": "integer", "minimum": 1, "maximum": 5 }
+            }
+          }
+        }
+      ]
+    },
+    "exception": {
+      "type": "object",
+      "required": ["date", "type"],
+      "additionalProperties": false,
+      "properties": {
+        "date": { "$ref": "common.v1.schema.json#/$defs/date" },
+        "type": {
+          "description": "no_collection removes collections that the pattern would put on this date. extra_collection adds one. A moved collection is one of each.",
+          "enum": ["no_collection", "extra_collection"]
+        },
+        "categories": {
+          "description": "Category ids affected. Omit to mean every category (allowed for no_collection only).",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "common.v1.schema.json#/$defs/slug" }
+        },
+        "area_ids": {
+          "description": "Areas affected. Omit to mean every area in the bundle.",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "common.v1.schema.json#/$defs/areaId" }
+        },
+        "note": { "$ref": "common.v1.schema.json#/$defs/localizedText" },
+        "source_url": { "$ref": "common.v1.schema.json#/$defs/url" }
+      },
+      "if": { "properties": { "type": { "const": "extra_collection" } } },
+      "then": { "required": ["categories"] }
+    }
+  }
+}

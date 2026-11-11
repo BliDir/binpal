@@ -1,0 +1,22 @@
+{
+  "$schema": "../manifest.v1.schema.json",
+  "schema_version": 1,
+  "generated_at": "2026-11-11T09:00:00+09:00",
+  "municipalities": [
+    {
+      "id": "13112",
+      "names": { "ja": "世田谷区", "kana": "せたがやく", "en": "Setagaya City" },
+      "area_ids": ["13112-001001", "13112-001002", "13112-002001"],
+      "bundles": [
+        {
+          "schema_version": 1,
+          "bundle_version": 1,
+          "path": "/bundles/13112/1.json",
+          "sha256": "4b7be7aa8bbec85d785fdb0e72a349e507765585fae500457036ae7f19871f85",
+          "size_bytes": 8435,
+          "published_at": "2026-11-11T09:00:00+09:00"
+        }
+      ]
+    }
+  ]
+}
