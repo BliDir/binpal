@@ -50,11 +50,11 @@ flutter build appbundle --release --obfuscate --split-debug-info=build/symbols/a
 flutter build ios --release --obfuscate --split-debug-info=build/symbols/ios
 ```
 
-Keep `build/symbols/` from every release: it is needed to read obfuscated crash stack traces (`flutter symbolize`). CI uploads it with each build.
+Keep `build/symbols/` from every build you ship: it is needed to read obfuscated crash stack traces (`flutter symbolize`).
 
 Android release builds use R8 shrinking and are signed with debug keys until a Play upload key exists. `compileSdk` is 37 because `flutter_local_notifications` 23 requires it; `targetSdk` stays on Flutter's default.
 
-CI (`.github/workflows/app.yml`) analyzes, tests and builds both platforms on every PR touching `app/`, and writes a size table to the run summary.
+CI (`.github/workflows/app.yml`) checks formatting, analyzes and runs the tests on every PR touching `app/`. It does not build releases or upload artifacts, to stay within the free GitHub Actions quota; build releases locally with the commands above.
 
 ## Baseline (skeleton, 11 Nov 2026)
 
