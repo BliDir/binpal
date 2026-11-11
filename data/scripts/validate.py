@@ -24,6 +24,7 @@ import json
 import sys
 from collections import defaultdict
 from datetime import date
+from itertools import pairwise
 from pathlib import Path
 
 from jsonschema import Draft202012Validator, FormatChecker
@@ -116,7 +117,7 @@ def bundle_errors(doc: dict) -> list[str]:
     # Versions of one item must not overlap, or the app cannot pick one.
     for item_id, versions in by_item.items():
         versions.sort(key=lambda r: r["valid_from"])
-        for prev, cur in zip(versions, versions[1:]):
+        for prev, cur in pairwise(versions):
             if "valid_to" not in prev or prev["valid_to"] >= cur["valid_from"]:
                 errors.append(
                     f"rule {item_id!r}: version from {prev['valid_from']} overlaps version from {cur['valid_from']}"
