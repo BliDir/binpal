@@ -1,0 +1,35 @@
+{
+  "$schema": "../manifest.v1.schema.json",
+  "schema_version": 1,
+  "generated_at": "2026-11-11T09:00:00+09:00",
+  "municipalities": [
+    {
+      "id": "14100",
+      "names": {
+        "ja": "横浜市",
+        "kana": "よこはまし",
+        "en": "Yokohama City"
+      },
+      "ward_ids": [
+        "14117",
+        "14104"
+      ],
+      "area_ids": [
+        "14117-001001",
+        "14117-001002",
+        "14117-002003",
+        "14104-002000"
+      ],
+      "bundles": [
+        {
+          "schema_version": 1,
+          "bundle_version": 1,
+          "path": "/bundles/14100/1.json",
+          "sha256": "79482f5c2dc06032222f616195f95ec4289ed2ceb4aff3698072258c1b515c73",
+          "size_bytes": 12617,
+          "published_at": "2026-11-11T09:00:00+09:00"
+        }
+      ]
+    }
+  ]
+}
