@@ -4,16 +4,28 @@
   "generated_at": "2026-11-11T09:00:00+09:00",
   "municipalities": [
     {
-      "id": "13112",
-      "names": { "ja": "世田谷区", "kana": "せたがやく", "en": "Setagaya City" },
-      "area_ids": ["13112-001001", "13112-001002", "13112-002001"],
+      "id": "14100",
+      "names": {
+        "ja": "横浜市",
+        "kana": "よこはまし",
+        "en": "Yokohama City"
+      },
+      "ward_ids": [
+        "14103",
+        "14104"
+      ],
+      "area_ids": [
+        "14103-001001",
+        "14103-001002",
+        "14104-002000"
+      ],
       "bundles": [
         {
           "schema_version": 1,
           "bundle_version": 1,
-          "path": "/bundles/13112/1.json",
-          "sha256": "4b7be7aa8bbec85d785fdb0e72a349e507765585fae500457036ae7f19871f85",
-          "size_bytes": 8435,
+          "path": "/bundles/14100/1.json",
+          "sha256": "0338f8ca7d8ac5d6551043fb4503277fea5a6d9168321bf2090aaac112fc7ac2",
+          "size_bytes": 11196,
           "published_at": "2026-11-11T09:00:00+09:00"
         }
       ]

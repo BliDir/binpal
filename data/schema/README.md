@@ -5,13 +5,13 @@ The data contract between the back office and the app. The publisher writes thes
 | File | Describes |
 | -- | -- |
 | `manifest.v1.schema.json` | `/manifest.json`: covered areas and the latest bundle per municipality |
-| `bundle.v1.schema.json` | `/bundles/{municipality_id}/{bundle_version}.json`: areas, categories, rules, calendars, exceptions |
+| `bundle.v1.schema.json` | `/bundles/{municipality_id}/{bundle_version}.json`: wards, areas, categories, rules, calendars, exceptions |
 | `common.v1.schema.json` | Shared types (IDs, dates, localised text, the common category set) |
-| `examples/` | A hand-written manifest and Setagaya bundle laid out like the CDN |
+| `examples/` | A hand-written manifest and Yokohama bundle laid out like the CDN |
 
 All schemas use JSON Schema draft 2020-12.
 
-> **The example data is illustrative.** Area codes, collection days and rules in `examples/` were written to exercise the schema, not taken from Setagaya's official sources. Do not ship them.
+> **The example data is illustrative.** Area codes, collection days and rules in `examples/` were written to exercise the schema, not taken from Yokohama's official sources. Do not ship them.
 
 ## Validate
 
@@ -30,17 +30,24 @@ Pass a manifest to validate it and every bundle it points to (paths resolve agai
 
 | ID | Format | Example |
 | -- | -- | -- |
-| Municipality | 5-digit local government code, as in MLIT N03 (`N03_007`) | `13112` (Setagaya) |
-| Area | Municipality ID + `-` + 6-digit e-Stat small-area code; together the 11-digit e-Stat `KEY_CODE` | `13112-001001` |
-| Category, calendar, item | Lowercase slug, stable across bundle versions | `kanen`, `pet-bottle` |
+| Municipality | 5-digit local government code | `14100` (Yokohama City), `13112` (Setagaya) |
+| Ward | 5-digit code of a designated city's ward | `14103` (Nishi-ku, Yokohama) |
+| Area | Ward code (designated cities) or municipality code (elsewhere) + `-` + 6-digit e-Stat small-area code; together the 11-digit e-Stat `KEY_CODE` | `14103-001001` |
+| Category, calendar, item | Lowercase slug, stable across bundle versions | `moyasu`, `pet-bottle` |
 
-Area IDs come straight from the boundary data, so the on-device point-in-polygon lookup returns an ID the bundle already uses.
+Area IDs come straight from the boundary data (MLIT N03 `N03_007` and e-Stat both use the ward code where there is one), so the on-device point-in-polygon lookup returns an ID the bundle already uses.
+
+## Wards
+
+A designated city (政令指定都市) such as Yokohama has one set of sorting rules for the whole city, but its boundary data is split by ward. Its bundle is published under the city code (`/bundles/14100/…`) and lists its `wards`; each area has a `ward_id`, and its ID starts with that ward code. The manifest lists the same `ward_ids`, so the app can map a detected area to its city.
+
+Tokyo's special wards (Setagaya and so on) are municipalities in their own right: their bundles have no `wards`, and area IDs start with the municipality code.
 
 ## Conventions
 
 * **Dates** are `YYYY-MM-DD` in Japan time. `valid_from` and `valid_to` are both **inclusive**; no `valid_to` means open-ended.
 * **Text** shown to users is an object keyed by language. `ja` and `en` are required; other BCP 47 tags may be added. `names` also requires `kana` (hiragana or katakana reading) for search.
-* **Categories** are the municipality's own (Setagaya's 可燃ごみ, 資源, …). Each maps to one value of the common set, which drives icons and colours: `burnable`, `non_burnable`, `plastic`, `paper`, `cans_bottles`, `pet_bottles`, `resources`, `hazardous`, `bulky`, `not_collected`, `other`.
+* **Categories** are the municipality's own (Yokohama's 燃やすごみ, プラスチック資源, …). Each maps to one value of the common set, which drives icons and colours: `burnable`, `non_burnable`, `plastic`, `paper`, `cans_bottles`, `pet_bottles`, `resources`, `hazardous`, `bulky`, `not_collected`, `other`.
 * **Rule versions:** an announced change is published early as a second rule with the same `item_id` and a later `valid_from`. The app shows the version whose range contains today.
 * **Attribution** lists licence credits (for example CC BY 4.0) the app must display for this bundle.
 

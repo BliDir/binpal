@@ -76,16 +76,33 @@ def bundle_errors(doc: dict) -> list[str]:
     errors: list[str] = []
     muni = doc["municipality"]["id"]
 
+    ward_ids = [w["id"] for w in doc.get("wards", [])]
     area_ids = [a["id"] for a in doc["areas"]]
     category_ids = [c["id"] for c in doc["categories"]]
     calendar_ids = [c["id"] for c in doc["calendars"]]
-    for label, ids in (("area", area_ids), ("category", category_ids), ("calendar", calendar_ids)):
+    for label, ids in (
+        ("ward", ward_ids),
+        ("area", area_ids),
+        ("category", category_ids),
+        ("calendar", calendar_ids),
+    ):
         for d in duplicates(ids):
             errors.append(f"duplicate {label} id {d!r}")
 
-    areas, categories = set(area_ids), set(category_ids)
-    for a in area_ids:
-        if not a.startswith(muni + "-"):
+    areas, categories, wards = set(area_ids), set(category_ids), set(ward_ids)
+    for area in doc["areas"]:
+        a, ward = area["id"], area.get("ward_id")
+        if wards:
+            # Designated city: areas are keyed by ward code, not the city code.
+            if ward is None:
+                errors.append(f"area {a!r}: ward_id is required when the bundle has wards")
+            elif ward not in wards:
+                errors.append(f"area {a!r}: unknown ward {ward!r}")
+            elif not a.startswith(ward + "-"):
+                errors.append(f"area {a!r} does not start with its ward_id {ward}")
+        elif ward is not None:
+            errors.append(f"area {a!r}: ward_id set but the bundle has no wards")
+        elif not a.startswith(muni + "-"):
             errors.append(f"area {a!r} does not belong to municipality {muni}")
 
     by_item = defaultdict(list)
@@ -144,9 +161,10 @@ def validate_manifest(doc: dict, root: Path) -> list[str]:
         versions = [b["schema_version"] for b in m["bundles"]]
         if versions != sorted(set(versions), reverse=True):
             errors.append(f"{mid}: bundles must have distinct schema_version, highest first")
+        prefixes = tuple(p + "-" for p in m.get("ward_ids", [mid]))
         for a in m["area_ids"]:
-            if not a.startswith(mid + "-"):
-                errors.append(f"{mid}: area {a!r} does not belong to this municipality")
+            if not a.startswith(prefixes):
+                errors.append(f"{mid}: area {a!r} does not belong to this municipality or its wards")
 
         for ref in m["bundles"]:
             where = f"{mid} bundle {ref['path']}"
@@ -172,6 +190,8 @@ def validate_manifest(doc: dict, root: Path) -> list[str]:
                 errors.append(f"{where}: schema_version does not match manifest entry")
             if sorted(a["id"] for a in bundle.get("areas", [])) != sorted(m["area_ids"]):
                 errors.append(f"{where}: area ids differ from manifest area_ids")
+            if sorted(w["id"] for w in bundle.get("wards", [])) != sorted(m.get("ward_ids", [])):
+                errors.append(f"{where}: ward ids differ from manifest ward_ids")
 
     return errors
 

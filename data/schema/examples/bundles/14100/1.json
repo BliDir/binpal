@@ -1,0 +1,332 @@
+{
+  "$schema": "../../../bundle.v1.schema.json",
+  "schema_version": 1,
+  "bundle_version": 1,
+  "generated_at": "2026-11-11T09:00:00+09:00",
+  "municipality": {
+    "id": "14100",
+    "prefecture_code": "14",
+    "names": { "ja": "横浜市", "kana": "よこはまし", "en": "Yokohama City" },
+    "website_url": "https://www.city.yokohama.lg.jp/"
+  },
+  "attribution": [
+    {
+      "text": {
+        "ja": "横浜市のオープンデータを加工して作成",
+        "en": "Adapted from Yokohama City open data"
+      },
+      "license": "CC-BY-4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/"
+    }
+  ],
+  "wards": [
+    { "id": "14103", "names": { "ja": "西区", "kana": "にしく", "en": "Nishi Ward" } },
+    { "id": "14104", "names": { "ja": "中区", "kana": "なかく", "en": "Naka Ward" } }
+  ],
+  "areas": [
+    {
+      "id": "14103-001001",
+      "ward_id": "14103",
+      "names": { "ja": "高島一丁目", "kana": "たかしまいっちょうめ", "en": "Takashima 1-chome" },
+      "town": { "ja": "高島", "kana": "たかしま", "en": "Takashima" },
+      "chome": 1,
+      "postal_codes": ["2200011"]
+    },
+    {
+      "id": "14103-001002",
+      "ward_id": "14103",
+      "names": { "ja": "高島二丁目", "kana": "たかしまにちょうめ", "en": "Takashima 2-chome" },
+      "town": { "ja": "高島", "kana": "たかしま", "en": "Takashima" },
+      "chome": 2,
+      "postal_codes": ["2200011"]
+    },
+    {
+      "id": "14104-002000",
+      "ward_id": "14104",
+      "names": { "ja": "山下町", "kana": "やましたちょう", "en": "Yamashitacho" },
+      "town": { "ja": "山下町", "kana": "やましたちょう", "en": "Yamashitacho" },
+      "postal_codes": ["2310023"]
+    }
+  ],
+  "categories": [
+    {
+      "id": "moyasu",
+      "names": { "ja": "燃やすごみ", "kana": "もやすごみ", "en": "Burnable" },
+      "common": "burnable"
+    },
+    {
+      "id": "moenai",
+      "names": { "ja": "燃えないごみ", "kana": "もえないごみ", "en": "Non-burnable" },
+      "common": "non_burnable"
+    },
+    {
+      "id": "plastic",
+      "names": { "ja": "プラスチック資源", "kana": "ぷらすちっくしげん", "en": "Plastic resources" },
+      "common": "plastic",
+      "description": {
+        "ja": "プラスチック製の容器包装と製品",
+        "en": "Plastic packaging and plastic products"
+      }
+    },
+    {
+      "id": "kan-bin-pet",
+      "names": { "ja": "缶・びん・ペットボトル", "kana": "かん・びん・ぺっとぼとる", "en": "Cans, bottles and PET bottles" },
+      "common": "cans_bottles"
+    },
+    {
+      "id": "kinzoku",
+      "names": { "ja": "小さな金属類", "kana": "ちいさなきんぞくるい", "en": "Small metal items" },
+      "common": "resources",
+      "description": {
+        "ja": "金属が主な材料で、30cm未満のもの",
+        "en": "Mostly metal and under 30 cm"
+      }
+    },
+    {
+      "id": "kanden",
+      "names": { "ja": "乾電池", "kana": "かんでんち", "en": "Dry-cell batteries" },
+      "common": "hazardous"
+    },
+    {
+      "id": "koshi",
+      "names": { "ja": "古紙", "kana": "こし", "en": "Paper" },
+      "common": "paper"
+    },
+    {
+      "id": "sodai",
+      "names": { "ja": "粗大ごみ", "kana": "そだいごみ", "en": "Bulky waste" },
+      "common": "bulky",
+      "description": {
+        "ja": "事前申込制（有料）",
+        "en": "Book in advance; a fee applies"
+      }
+    }
+  ],
+  "rules": [
+    {
+      "item_id": "pet-bottle",
+      "names": { "ja": "ペットボトル", "kana": "ぺっとぼとる", "en": "PET bottle" },
+      "aliases": ["plastic bottle", "water bottle", "PETボトル"],
+      "category": "kan-bin-pet",
+      "instructions": {
+        "ja": "キャップとラベルを外し、中をすすいでください。キャップとラベルはプラスチック資源へ。",
+        "en": "Remove the cap and label and rinse. Put the cap and label out with plastic resources."
+      },
+      "valid_from": "2025-04-01",
+      "source_url": "https://www.city.yokohama.lg.jp/",
+      "verified_at": "2026-11-01"
+    },
+    {
+      "item_id": "umbrella",
+      "names": { "ja": "傘", "kana": "かさ", "en": "Umbrella" },
+      "aliases": ["かさ", "カサ", "parasol"],
+      "category": "kinzoku",
+      "instructions": {
+        "ja": "そのまま出してください。",
+        "en": "Put it out as it is."
+      },
+      "valid_from": "2025-04-01",
+      "source_url": "https://www.city.yokohama.lg.jp/",
+      "verified_at": "2026-11-01"
+    },
+    {
+      "item_id": "battery-dry-cell",
+      "names": { "ja": "電池", "kana": "でんち", "en": "Battery" },
+      "aliases": ["乾電池", "AA battery", "AAA battery"],
+      "category": "kanden",
+      "instructions": {
+        "ja": "透明か半透明の袋に入れて出してください。",
+        "en": "Put out in a clear or see-through bag."
+      },
+      "valid_from": "2025-04-01",
+      "source_url": "https://www.city.yokohama.lg.jp/",
+      "verified_at": "2026-11-01"
+    },
+    {
+      "item_id": "toothbrush",
+      "names": { "ja": "歯ブラシ", "kana": "はぶらし", "en": "Toothbrush" },
+      "aliases": ["ハブラシ", "tooth brush"],
+      "category": "moyasu",
+      "instructions": {
+        "ja": "燃やすごみに出してください。",
+        "en": "Put out with burnable waste."
+      },
+      "valid_from": "2022-04-01",
+      "valid_to": "2025-03-31",
+      "source_url": "https://www.city.yokohama.lg.jp/",
+      "verified_at": "2026-11-01"
+    },
+    {
+      "item_id": "toothbrush",
+      "names": { "ja": "歯ブラシ", "kana": "はぶらし", "en": "Toothbrush" },
+      "aliases": ["ハブラシ", "tooth brush"],
+      "category": "plastic",
+      "instructions": {
+        "ja": "プラスチック資源に出してください。",
+        "en": "Put out with plastic resources."
+      },
+      "valid_from": "2025-04-01",
+      "source_url": "https://www.city.yokohama.lg.jp/",
+      "verified_at": "2026-11-01"
+    },
+    {
+      "item_id": "sofa",
+      "names": { "ja": "ソファー", "kana": "そふぁー", "en": "Sofa" },
+      "aliases": ["ソファ", "couch"],
+      "category": "sodai",
+      "instructions": {
+        "ja": "粗大ごみ受付センターに申し込み、処理券を貼って指定日に出してください。",
+        "en": "Book a pickup with the bulky waste centre, attach the fee sticker, and put it out on the given day."
+      },
+      "valid_from": "2025-04-01",
+      "source_url": "https://www.city.yokohama.lg.jp/",
+      "verified_at": "2026-11-01"
+    }
+  ],
+  "calendars": [
+    {
+      "id": "takashima-moyasu",
+      "category": "moyasu",
+      "area_ids": ["14103-001001", "14103-001002"],
+      "pattern": { "type": "weekly", "weekdays": ["mon", "thu"] },
+      "put_out_by": "08:00",
+      "valid_from": "2025-04-01"
+    },
+    {
+      "id": "takashima-plastic",
+      "category": "plastic",
+      "area_ids": ["14103-001001", "14103-001002"],
+      "pattern": { "type": "weekly", "weekdays": ["tue"] },
+      "put_out_by": "08:00",
+      "valid_from": "2025-04-01"
+    },
+    {
+      "id": "takashima-kan-bin-pet",
+      "category": "kan-bin-pet",
+      "area_ids": ["14103-001001", "14103-001002"],
+      "pattern": { "type": "weekly", "weekdays": ["wed"] },
+      "put_out_by": "08:00",
+      "valid_from": "2025-04-01"
+    },
+    {
+      "id": "takashima-moenai",
+      "category": "moenai",
+      "area_ids": ["14103-001001", "14103-001002"],
+      "pattern": { "type": "weekly", "weekdays": ["wed"] },
+      "put_out_by": "08:00",
+      "valid_from": "2025-04-01"
+    },
+    {
+      "id": "takashima-kinzoku",
+      "category": "kinzoku",
+      "area_ids": ["14103-001001", "14103-001002"],
+      "pattern": { "type": "weekly", "weekdays": ["wed"] },
+      "put_out_by": "08:00",
+      "valid_from": "2025-04-01"
+    },
+    {
+      "id": "takashima-kanden",
+      "category": "kanden",
+      "area_ids": ["14103-001001", "14103-001002"],
+      "pattern": { "type": "weekly", "weekdays": ["wed"] },
+      "put_out_by": "08:00",
+      "valid_from": "2025-04-01"
+    },
+    {
+      "id": "takashima-koshi",
+      "category": "koshi",
+      "area_ids": ["14103-001001", "14103-001002"],
+      "pattern": { "type": "monthly_nth_weekday", "weekday": "fri", "nth": [2, 4] },
+      "put_out_by": "08:00",
+      "valid_from": "2025-04-01"
+    },
+    {
+      "id": "yamashita-moyasu",
+      "category": "moyasu",
+      "area_ids": ["14104-002000"],
+      "pattern": { "type": "weekly", "weekdays": ["tue", "fri"] },
+      "put_out_by": "08:00",
+      "valid_from": "2025-04-01"
+    },
+    {
+      "id": "yamashita-plastic",
+      "category": "plastic",
+      "area_ids": ["14104-002000"],
+      "pattern": { "type": "weekly", "weekdays": ["thu"] },
+      "put_out_by": "08:00",
+      "valid_from": "2025-04-01"
+    },
+    {
+      "id": "yamashita-kan-bin-pet",
+      "category": "kan-bin-pet",
+      "area_ids": ["14104-002000"],
+      "pattern": { "type": "weekly", "weekdays": ["mon"] },
+      "put_out_by": "08:00",
+      "valid_from": "2025-04-01"
+    },
+    {
+      "id": "yamashita-moenai",
+      "category": "moenai",
+      "area_ids": ["14104-002000"],
+      "pattern": { "type": "weekly", "weekdays": ["mon"] },
+      "put_out_by": "08:00",
+      "valid_from": "2025-04-01"
+    },
+    {
+      "id": "yamashita-kinzoku",
+      "category": "kinzoku",
+      "area_ids": ["14104-002000"],
+      "pattern": { "type": "weekly", "weekdays": ["mon"] },
+      "put_out_by": "08:00",
+      "valid_from": "2025-04-01"
+    },
+    {
+      "id": "yamashita-kanden",
+      "category": "kanden",
+      "area_ids": ["14104-002000"],
+      "pattern": { "type": "weekly", "weekdays": ["mon"] },
+      "put_out_by": "08:00",
+      "valid_from": "2025-04-01"
+    },
+    {
+      "id": "yamashita-koshi",
+      "category": "koshi",
+      "area_ids": ["14104-002000"],
+      "pattern": { "type": "monthly_nth_weekday", "weekday": "sat", "nth": [1, 3] },
+      "put_out_by": "08:00",
+      "valid_from": "2025-04-01"
+    }
+  ],
+  "exceptions": [
+    {
+      "date": "2026-12-31",
+      "type": "no_collection",
+      "note": { "ja": "年末年始のため収集なし", "en": "No collection over the New Year holidays" }
+    },
+    {
+      "date": "2027-01-01",
+      "type": "no_collection",
+      "note": { "ja": "年末年始のため収集なし", "en": "No collection over the New Year holidays" }
+    },
+    {
+      "date": "2027-01-02",
+      "type": "no_collection",
+      "note": { "ja": "年末年始のため収集なし", "en": "No collection over the New Year holidays" }
+    },
+    {
+      "date": "2027-01-03",
+      "type": "no_collection",
+      "note": { "ja": "年末年始のため収集なし", "en": "No collection over the New Year holidays" }
+    },
+    {
+      "date": "2027-01-04",
+      "type": "extra_collection",
+      "categories": ["moyasu"],
+      "area_ids": ["14104-002000"],
+      "note": {
+        "ja": "1月1日（金）分の燃やすごみを収集します",
+        "en": "Burnable collection moved here from Friday 1 January"
+      }
+    }
+  ]
+}

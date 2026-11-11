@@ -55,6 +55,12 @@
         }
       }
     },
+    "wards": {
+      "description": "Wards of a designated city (政令指定都市) such as Yokohama. Omit for municipalities without wards, including Tokyo's special wards, which are municipalities themselves.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/ward" }
+    },
     "areas": {
       "description": "Towns or chōme within the municipality. The smallest unit a collection calendar can target.",
       "type": "array",
@@ -84,12 +90,25 @@
     }
   },
   "$defs": {
+    "ward": {
+      "type": "object",
+      "required": ["id", "names"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "common.v1.schema.json#/$defs/municipalityId" },
+        "names": { "$ref": "common.v1.schema.json#/$defs/names" }
+      }
+    },
     "area": {
       "type": "object",
       "required": ["id", "names", "town"],
       "additionalProperties": false,
       "properties": {
         "id": { "$ref": "common.v1.schema.json#/$defs/areaId" },
+        "ward_id": {
+          "description": "id of a ward in this bundle. Required when the bundle has wards; the area id starts with it.",
+          "$ref": "common.v1.schema.json#/$defs/municipalityId"
+        },
         "names": {
           "description": "Full display name, for example 太子堂一丁目.",
           "$ref": "common.v1.schema.json#/$defs/names"

@@ -23,6 +23,13 @@
       "properties": {
         "id": { "$ref": "common.v1.schema.json#/$defs/municipalityId" },
         "names": { "$ref": "common.v1.schema.json#/$defs/names" },
+        "ward_ids": {
+          "description": "Ward codes of a designated city, so the app can map the ward prefix of a detected area ID to this municipality. Omit when the municipality has no wards.",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "common.v1.schema.json#/$defs/municipalityId" }
+        },
         "area_ids": {
           "description": "Every area in the latest bundle, so the app can tell whether a detected chōme is covered before downloading.",
           "type": "array",
