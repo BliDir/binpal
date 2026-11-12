@@ -150,6 +150,32 @@ def validate_bundle(doc: dict) -> list[str]:
     return errors or bundle_errors(doc)
 
 
+def validate_boundaries(doc: dict) -> list[str]:
+    """Schema, plus what it cannot express: ids, their prefecture and municipality, and arc references."""
+    errors = schema_errors(doc, "boundaries.v1.schema.json")
+    if errors:
+        return errors
+    prefecture, topology = doc["prefecture_code"], doc["topology"]
+    geometries = topology["objects"]["areas"]["geometries"]
+    for d in duplicates(g["id"] for g in geometries):
+        errors.append(f"duplicate area id {d!r}")
+    arc_count = len(topology["arcs"])
+    for geometry in geometries:
+        gid = geometry["id"]
+        if not gid.startswith(prefecture):
+            errors.append(f"area {gid!r} is not in prefecture {prefecture}")
+        if gid.split("-")[0] not in doc["municipalities"]:
+            errors.append(f"area {gid!r}: its municipality has no name in municipalities")
+        polygons = geometry["arcs"] if geometry["type"] == "MultiPolygon" else [geometry["arcs"]]
+        indexes = [i for polygon in polygons for ring in polygon for i in ring]
+        if any(not isinstance(i, int) or not -arc_count <= i < arc_count for i in indexes):
+            errors.append(f"area {gid!r} refers to an arc that does not exist")
+    west, south, east, north = doc["bbox"]
+    if not (west < east and south < north):
+        errors.append("bbox must be west, south, east, north")
+    return errors
+
+
 def validate_manifest(doc: dict, root: Path) -> list[str]:
     errors = schema_errors(doc, "manifest.v1.schema.json")
     if errors:
@@ -195,6 +221,29 @@ def validate_manifest(doc: dict, root: Path) -> list[str]:
             if sorted(w["id"] for w in bundle.get("wards", [])) != sorted(m.get("ward_ids", [])):
                 errors.append(f"{where}: ward ids differ from manifest ward_ids")
 
+    for d in duplicates(b["prefecture_code"] for b in doc.get("boundaries", [])):
+        errors.append(f"duplicate boundaries for prefecture {d!r}")
+    for ref in doc.get("boundaries", []):
+        where = f"boundaries {ref['path']}"
+        file = root / ref["path"].lstrip("/")
+        if not file.is_file():
+            errors.append(f"{where}: file not found under {root}")
+            continue
+        raw = file.read_bytes()
+        if hashlib.sha256(raw).hexdigest() != ref["sha256"]:
+            errors.append(f"{where}: sha256 does not match file")
+        if len(raw) != ref["size_bytes"]:
+            errors.append(f"{where}: size_bytes {ref['size_bytes']} != actual {len(raw)}")
+        if ref["schema_version"] not in SUPPORTED_SCHEMA_VERSIONS:
+            continue
+        package = json.loads(raw)
+        errors += [f"{where}: {e}" for e in validate_boundaries(package)]
+        for key in ("prefecture_code", "version", "schema_version", "bbox"):
+            if package.get(key) != ref[key]:
+                errors.append(f"{where}: {key} does not match manifest entry")
+        if ref["path"] != f"/boundaries/{ref['prefecture_code']}/{ref['version']}.json":
+            errors.append(f"{where}: path does not match prefecture_code and version")
+
     return errors
 
 
@@ -213,7 +262,9 @@ def main() -> int:
             failed = True
             continue
 
-        if isinstance(doc, dict) and "municipalities" in doc:
+        if isinstance(doc, dict) and "topology" in doc:
+            kind, errors = "boundaries", validate_boundaries(doc)
+        elif isinstance(doc, dict) and "municipalities" in doc:
             kind, errors = "manifest", validate_manifest(doc, args.root or path.parent)
         else:
             kind, errors = "bundle", validate_bundle(doc)

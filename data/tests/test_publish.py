@@ -232,6 +232,7 @@ def test_command_line_dry_run_then_publish_under_a_prefix(tmp_path, monkeypatch,
     (source / "14100").mkdir(parents=True)
     (source / "14100" / "bundle.json").write_text(json.dumps(yokohama()), encoding="utf-8")
     base = ["publish.py", "--root", str(root), "--municipalities", str(source), "--prefix", "_smoke/publish"]
+    base += ["--boundaries", str(tmp_path / "no-boundaries")]
     monkeypatch.delenv("GITHUB_STEP_SUMMARY", raising=False)
 
     monkeypatch.setattr(sys, "argv", [*base, "--dry-run"])
@@ -254,10 +255,102 @@ def test_command_line_dry_run_then_publish_under_a_prefix(tmp_path, monkeypatch,
     assert "Nothing to publish under _smoke/publish/" in capsys.readouterr().out
 
 
-def test_the_repo_bundles_would_publish_cleanly(tmp_path):
+def kanagawa() -> dict:
+    """A one-square boundary package."""
+    arcs = [[[0, 0], [999, 0], [0, 999], [-999, 0], [0, -999]]]
+    area = {"type": "Polygon", "id": "14117-100001", "properties": {"name": "青葉台一丁目"}, "arcs": [[0]]}
+    return {
+        "schema_version": 1,
+        "prefecture_code": "14",
+        "version": 1,
+        "generated_at": FIRST,
+        "attribution": [{"text": {"ja": "出典", "en": "Source"}, "license": "LicenseRef-Test"}],
+        "bbox": [139.5, 35.5, 139.6, 35.6],
+        "municipalities": {"14117": {"ja": "横浜市青葉区"}},
+        "topology": {
+            "type": "Topology",
+            "transform": {"scale": [0.0001, 0.0001], "translate": [139.5, 35.5]},
+            "objects": {"areas": {"type": "GeometryCollection", "geometries": [area]}},
+            "arcs": arcs,
+        },
+    }
+
+
+def test_boundaries_are_published_and_listed_in_the_manifest(store, tmp_path):
+    result = publish.plan({"14100": yokohama()}, store.get, FIRST, {"14": kanagawa()})
+    publish.publish(result, store.put)
+    assert files(tmp_path) == ["boundaries/14/1.json", "bundles/14100/1.json", "manifest.json"]
+    data = store.get("boundaries/14/1.json")
+    assert manifest(store)["boundaries"] == [
+        {
+            "prefecture_code": "14",
+            "schema_version": 1,
+            "version": 1,
+            "path": "/boundaries/14/1.json",
+            "bbox": [139.5, 35.5, 139.6, 35.6],
+            "sha256": hashlib.sha256(data).hexdigest(),
+            "size_bytes": len(data),
+            "published_at": FIRST,
+        }
+    ]
+    assert validate.validate_manifest(manifest(store), tmp_path) == []
+
+
+def test_adding_boundaries_later_leaves_bundles_untouched_and_the_reverse(store, tmp_path):
+    run(store, {"14100": yokohama()})
+    before = manifest(store)["municipalities"]
+    assert "boundaries" not in manifest(store)
+
+    added = publish.plan({"14100": yokohama()}, store.get, LATER, {"14": kanagawa()})
+    publish.publish(added, store.put)
+    assert [path for path, _ in added.uploads] == ["/boundaries/14/1.json"]
+    assert manifest(store)["municipalities"] == before
+    assert added.lines[0] == "14100: unchanged, stays at version 1"
+    assert added.lines[1].startswith("boundaries 14: version 1 (first publish), ")
+
+    again = publish.plan({"14100": yokohama()}, store.get, LATER, {"14": kanagawa() | {"version": 9}})
+    assert again.manifest is None and again.uploads == []
+
+    changed = yokohama()
+    changed["rules"][0]["instructions"]["en"] = "Rinse it first."
+    bundle_only = publish.plan({"14100": changed}, store.get, LATER, {"14": kanagawa()})
+    publish.publish(bundle_only, store.put)
+    assert [path for path, _ in bundle_only.uploads] == ["/bundles/14100/2.json"]
+    assert manifest(store)["boundaries"][0]["version"] == 1
+    assert validate.validate_manifest(manifest(store), tmp_path) == []
+
+
+def test_changed_boundaries_get_the_next_version(store):
+    publish.publish(publish.plan({"14100": yokohama()}, store.get, FIRST, {"14": kanagawa()}), store.put)
+    moved = kanagawa()
+    moved["topology"]["arcs"][0][1] = [998, 0]
+    result = publish.plan({"14100": yokohama()}, store.get, LATER, {"14": moved})
+    publish.publish(result, store.put)
+    assert [path for path, _ in result.uploads] == ["/boundaries/14/2.json"]
+    assert manifest(store)["boundaries"][0]["version"] == 2
+    assert json.loads(store.get("boundaries/14/2.json"))["version"] == 2
+
+
+def test_invalid_boundaries_publish_nothing(store, tmp_path):
+    bad = kanagawa()
+    bad["topology"]["objects"]["areas"]["geometries"][0]["arcs"] = [[5]]
+    with pytest.raises(publish.PublishError, match="boundaries 14: .*arc that does not exist"):
+        publish.plan({"14100": yokohama()}, store.get, FIRST, {"14": bad})
+    assert files(tmp_path) == []
+
+
+def test_boundary_file_name_must_match_the_prefecture(tmp_path):
+    (tmp_path / "13.json").write_text(json.dumps(kanagawa()), encoding="utf-8")
+    with pytest.raises(publish.PublishError, match="does not match its file name 13"):
+        publish.load_boundaries(tmp_path)
+
+
+def test_the_repo_files_would_publish_cleanly(tmp_path):
     store = publish.DirStore(tmp_path)
-    result = run(store, publish.load_local(publish.MUNICIPALITIES_DIR))
-    assert result.manifest is not None
+    local, boundaries = publish.load_local(publish.MUNICIPALITIES_DIR), publish.load_boundaries(publish.BOUNDARIES_DIR)
+    result = publish.plan(local, store.get, FIRST, boundaries)
+    publish.publish(result, store.put)
+    assert sorted(result.manifest) == ["boundaries", "generated_at", "municipalities", "schema_version"]
     assert validate.validate_manifest(manifest(store), tmp_path) == []
 
 

@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/BliDir/binpal/main/data/schema/boundaries.v1.schema.json",
+  "title": "BinPal boundary package, schema version 1",
+  "description": "Town and chōme boundaries for one prefecture, for finding the user's area from a coordinate on the device. Served at /boundaries/{prefecture_code}/{version}.json.",
+  "type": "object",
+  "required": ["schema_version", "prefecture_code", "version", "generated_at", "attribution", "bbox", "municipalities", "topology"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "schema_version": { "$ref": "common.v1.schema.json#/$defs/schemaVersion" },
+    "prefecture_code": { "$ref": "#/$defs/prefectureCode" },
+    "version": {
+      "description": "Increases by 1 each time this prefecture's package is published. Never reused.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "generated_at": { "$ref": "common.v1.schema.json#/$defs/dateTime" },
+    "attribution": {
+      "description": "Licence credits the app must show.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["text", "license"],
+        "additionalProperties": false,
+        "properties": {
+          "text": { "$ref": "common.v1.schema.json#/$defs/localizedText" },
+          "license": { "type": "string", "minLength": 1 },
+          "url": { "$ref": "common.v1.schema.json#/$defs/url" }
+        }
+      }
+    },
+    "bbox": { "$ref": "#/$defs/bbox" },
+    "municipalities": {
+      "description": "Japanese name of every municipality or ward that has an area in the package, keyed by its 5-digit code (the part of an area ID before the hyphen). Lets the app name where the user is even when no bundle covers it.",
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "$ref": "common.v1.schema.json#/$defs/municipalityId" },
+      "additionalProperties": {
+        "type": "object",
+        "required": ["ja"],
+        "additionalProperties": false,
+        "properties": { "ja": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "topology": {
+      "description": "TopoJSON (https://github.com/topojson/topojson-specification). Coordinates are longitude and latitude in JGD2000, which is within GPS error of WGS 84. Arcs are quantized and delta-encoded; borders shared by two areas are stored once.",
+      "type": "object",
+      "required": ["type", "transform", "objects", "arcs"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "const": "Topology" },
+        "transform": {
+          "type": "object",
+          "required": ["scale", "translate"],
+          "additionalProperties": false,
+          "properties": {
+            "scale": { "$ref": "#/$defs/pair" },
+            "translate": { "$ref": "#/$defs/pair" }
+          }
+        },
+        "objects": {
+          "type": "object",
+          "required": ["areas"],
+          "additionalProperties": false,
+          "properties": {
+            "areas": {
+              "type": "object",
+              "required": ["type", "geometries"],
+              "additionalProperties": false,
+              "properties": {
+                "type": { "const": "GeometryCollection" },
+                "geometries": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/area" } }
+              }
+            }
+          }
+        },
+        "arcs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "items": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "type": "integer" } }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "prefectureCode": {
+      "description": "2-digit prefecture code. Kanagawa is 14.",
+      "type": "string",
+      "pattern": "^[0-9]{2}$"
+    },
+    "pair": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "type": "number" } },
+    "bbox": {
+      "description": "West, south, east, north in degrees.",
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": { "type": "number" }
+    },
+    "area": {
+      "type": "object",
+      "required": ["type", "id", "properties", "arcs"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "enum": ["Polygon", "MultiPolygon"] },
+        "id": { "$ref": "common.v1.schema.json#/$defs/areaId" },
+        "properties": {
+          "type": "object",
+          "required": ["name"],
+          "additionalProperties": false,
+          "properties": {
+            "name": { "description": "The area's Japanese name as e-Stat gives it. Empty for a few unnamed slivers.", "type": "string" }
+          }
+        },
+        "arcs": { "type": "array", "minItems": 1 }
+      }
+    }
+  }
+}

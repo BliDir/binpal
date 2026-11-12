@@ -7,9 +7,10 @@ Everything that turns municipal pages and files into the bundles the app downloa
 | `sources.yaml` | The pages, PDFs and open datasets the data comes from |
 | `snapshots/` | Last seen text of every source, written by the rule monitor |
 | `schema/` | Bundle and manifest JSON Schemas with examples ([README](schema/README.md)) |
+| `boundaries/` | Town and chōme boundaries per prefecture, for finding the user's area from GPS ([README](boundaries/README.md)) |
 | `municipalities/` | One folder per municipality: its config, translation tables and built bundle ([Yokohama](municipalities/14100/README.md)) |
 | `cdn/` | How bundles are hosted on Cloudflare R2 ([README](cdn/README.md)) |
-| `scripts/` | `monitor.py`, `build_yokohama.py`, `publish.py`, `validate.py`, `cdn_put.sh` |
+| `scripts/` | `monitor.py`, `build_yokohama.py`, `build_boundaries.py`, `locate.py`, `publish.py`, `validate.py`, `cdn_put.sh` |
 | `tests/` | Tests for the scripts |
 
 ## Rule monitor
@@ -55,7 +56,7 @@ gh workflow run rule-monitor.yml      # run on GitHub, opening real issues
 
 ## Publishing
 
-`.github/workflows/publish.yml` runs `scripts/publish.py` whenever a `municipalities/<id>/bundle.json` changes on `main`, or when started by hand. It publishes the committed bundles; it does not rebuild them from the municipal sites, so what goes out is exactly what was reviewed in the pull request.
+`.github/workflows/publish.yml` runs `scripts/publish.py` whenever a `municipalities/<id>/bundle.json` or a `boundaries/<prefecture>.json` changes on `main`, or when started by hand. It publishes the committed bundles; it does not rebuild them from the municipal sites, so what goes out is exactly what was reviewed in the pull request.
 
 For each municipality it compares the committed bundle with the one the live manifest points to, ignoring `bundle_version` and `generated_at`:
 
@@ -63,6 +64,8 @@ For each municipality it compares the committed bundle with the one the live man
 | -- | -- |
 | Same content | Nothing. Its manifest entry, version and file are left as they are |
 | Different content, or not published yet | It gets the next `bundle_version`, is uploaded to `/bundles/<id>/<version>.json`, and its manifest entry is replaced |
+
+Boundary packages work the same way, under `/boundaries/<prefecture>/<version>.json`, and are listed under `boundaries` in the manifest.
 
 Then `manifest.json` is uploaded, last. Older bundle files are never overwritten or deleted, so an app holding a manifest from a minute ago can still download what it lists.
 

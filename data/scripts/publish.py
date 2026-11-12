@@ -3,7 +3,7 @@
 # requires-python = ">=3.11"
 # dependencies = ["httpx>=0.27", "jsonschema[format-nongpl]>=4.23"]
 # ///
-"""Publish changed municipality bundles and the manifest to the CDN.
+"""Publish changed bundles and boundary packages, and the manifest, to the CDN.
 
 Usage:
     uv run data/scripts/publish.py [--dry-run] [--prefix PREFIX] [--root DIR]
@@ -11,10 +11,11 @@ Usage:
 Reads every data/municipalities/<id>/bundle.json and compares it with the
 bundle the live manifest points to. A bundle whose content changed gets the
 next bundle_version and is uploaded to /bundles/<id>/<version>.json; one that
-did not change is left alone. The manifest is written last, and only if every
-bundle upload succeeded.
+did not change is left alone. data/boundaries/<prefecture>.json is handled
+the same way, under /boundaries/<prefecture>/<version>.json. The manifest is
+written last, and only if every other upload succeeded.
 
-Nothing is uploaded unless every bundle, and the new manifest, is valid.
+Nothing is uploaded unless every file, and the new manifest, is valid.
 
     --dry-run   show what would be published, upload nothing
     --prefix    publish under this key prefix instead of the CDN root, for
@@ -48,11 +49,12 @@ import validate
 
 DATA_DIR = Path(__file__).resolve().parent.parent
 MUNICIPALITIES_DIR = DATA_DIR / "municipalities"
+BOUNDARIES_DIR = DATA_DIR / "boundaries"
 CDN_PUT = DATA_DIR / "scripts" / "cdn_put.sh"
-SCHEMA_VERSION = 1  # the bundle schema this publisher writes
+SCHEMA_VERSION = 1  # the bundle and boundary schema this publisher writes
 MANIFEST_KEY = "manifest.json"
 # Set by the publisher on every publish, so they do not count as a content change.
-STAMPED = ("bundle_version", "generated_at")
+STAMPED = ("bundle_version", "version", "generated_at")
 JST = ZoneInfo("Asia/Tokyo")
 
 
@@ -122,8 +124,8 @@ class R2Store:
 @dataclass
 class Plan:
     manifest: dict | None = None  # None when nothing changed
-    uploads: list[tuple[str, bytes]] = field(default_factory=list)  # (path, bytes), bundles only
-    lines: list[str] = field(default_factory=list)  # one human-readable line per municipality
+    uploads: list[tuple[str, bytes]] = field(default_factory=list)  # (path, bytes), everything but the manifest
+    lines: list[str] = field(default_factory=list)  # one human-readable line per bundle or package
 
 
 def content(bundle: dict) -> dict:
@@ -146,6 +148,17 @@ def load_local(directory: Path) -> dict[str, dict]:
     return bundles
 
 
+def load_boundaries(directory: Path) -> dict[str, dict]:
+    """Every committed boundary package, by prefecture code."""
+    packages = {}
+    for path in sorted(directory.glob("*.json")):
+        package = json.loads(path.read_text(encoding="utf-8"))
+        if package.get("prefecture_code") != path.stem:
+            raise PublishError(f"{path}: prefecture_code does not match its file name {path.stem}")
+        packages[path.stem] = package
+    return packages
+
+
 def bundle_ref(path: str, data: bytes, version: int, published_at: str) -> dict:
     return {
         "schema_version": SCHEMA_VERSION,
@@ -157,17 +170,34 @@ def bundle_ref(path: str, data: bytes, version: int, published_at: str) -> dict:
     }
 
 
-def plan(local: dict[str, dict], get, now: str) -> Plan:
+def next_version(document: dict, start: int, path_of, stamp: str, get, now: str) -> tuple[int, str, bytes, bool]:
+    """The first free version from `start`: its number, path, bytes, and whether they still need uploading."""
+    version = start
+    while True:
+        path = path_of(version)
+        leftover = get(path.lstrip("/"))  # from a run that uploaded files but never reached the manifest
+        if leftover is None:
+            return version, path, encode(document | {stamp: version, "generated_at": now}), True
+        if content(json.loads(leftover)) == content(document):
+            return version, path, leftover, False
+        version += 1
+
+
+def plan(local: dict[str, dict], get, now: str, boundaries: dict[str, dict] | None = None) -> Plan:
     """Work out what to publish. `get(key)` reads an object from the store, or returns None."""
+    boundaries = boundaries or {}
     errors = [f"{mid}: {e}" for mid, bundle in local.items() for e in validate.validate_bundle(bundle)]
+    errors += [
+        f"boundaries {c}: {e}" for c, package in boundaries.items() for e in validate.validate_boundaries(package)
+    ]
     if errors:
-        raise PublishError("invalid bundles, nothing published:\n  " + "\n  ".join(errors))
+        raise PublishError("invalid files, nothing published:\n  " + "\n  ".join(errors))
 
     raw_manifest = get(MANIFEST_KEY)
     manifest = json.loads(raw_manifest) if raw_manifest else {"municipalities": []}
     entries = {m["id"]: m for m in manifest["municipalities"]}
     result = Plan()
-    staged: dict[str, bytes] = {}  # every bundle the new manifest points to, for the final check
+    staged: dict[str, bytes] = {}  # every new file the manifest will point to, for the final check
 
     for mid, bundle in sorted(local.items()):
         entry = entries.get(mid)
@@ -181,18 +211,12 @@ def plan(local: dict[str, dict], get, now: str) -> Plan:
                 result.lines.append(f"{mid}: unchanged, stays at version {current['bundle_version']}")
                 continue
 
-        version = current["bundle_version"] + 1 if current else 1
-        while True:
-            path = f"/bundles/{mid}/{version}.json"
-            data = encode(bundle | {"bundle_version": version, "generated_at": now})
-            leftover = get(path.lstrip("/"))  # from a run that uploaded bundles but never reached the manifest
-            if leftover is None:
-                result.uploads.append((path, data))
-                break
-            if content(json.loads(leftover)) == content(bundle):
-                data = leftover
-                break
-            version += 1
+        start = current["bundle_version"] + 1 if current else 1
+        version, path, data, upload = next_version(
+            bundle, start, lambda v, mid=mid: f"/bundles/{mid}/{v}.json", "bundle_version", get, now
+        )
+        if upload:
+            result.uploads.append((path, data))
         staged[path] = data
 
         new_entry = {"id": mid, "names": bundle["municipality"]["names"]}
@@ -207,6 +231,36 @@ def plan(local: dict[str, dict], get, now: str) -> Plan:
         was = f"was {current['bundle_version']}" if current else "first publish"
         result.lines.append(f"{mid}: version {version} ({was}), {len(data):,} bytes")
 
+    boundary_refs = {b["prefecture_code"]: b for b in manifest.get("boundaries", [])}
+    for code, package in sorted(boundaries.items()):
+        current = boundary_refs.get(code)
+        if current:
+            published = get(current["path"].lstrip("/"))
+            if published is None:
+                raise PublishError(f"boundaries {code}: the manifest points to {current['path']}, which is missing")
+            if content(json.loads(published)) == content(package):
+                result.lines.append(f"boundaries {code}: unchanged, stays at version {current['version']}")
+                continue
+        start = current["version"] + 1 if current else 1
+        version, path, data, upload = next_version(
+            package, start, lambda v, code=code: f"/boundaries/{code}/{v}.json", "version", get, now
+        )
+        if upload:
+            result.uploads.append((path, data))
+        staged[path] = data
+        boundary_refs[code] = {
+            "prefecture_code": code,
+            "schema_version": SCHEMA_VERSION,
+            "version": version,
+            "path": path,
+            "bbox": package["bbox"],
+            "sha256": hashlib.sha256(data).hexdigest(),
+            "size_bytes": len(data),
+            "published_at": now,
+        }
+        was = f"was {current['version']}" if current else "first publish"
+        result.lines.append(f"boundaries {code}: version {version} ({was}), {len(data):,} bytes")
+
     if not staged:
         return result
 
@@ -215,16 +269,18 @@ def plan(local: dict[str, dict], get, now: str) -> Plan:
         "generated_at": now,
         "municipalities": [entries[mid] for mid in sorted(entries)],
     }
+    if boundary_refs:
+        result.manifest["boundaries"] = [boundary_refs[code] for code in sorted(boundary_refs)]
     # Check the manifest against the exact bytes it will point to, before anything is uploaded.
     with tempfile.TemporaryDirectory() as tmp:
-        for entry in result.manifest["municipalities"]:
-            for ref in entry["bundles"]:
-                data = staged.get(ref["path"]) or get(ref["path"].lstrip("/"))
-                if data is None:
-                    raise PublishError(f"{entry['id']}: {ref['path']} is in the manifest but missing")
-                target = Path(tmp) / ref["path"].lstrip("/")
-                target.parent.mkdir(parents=True, exist_ok=True)
-                target.write_bytes(data)
+        refs = [r for entry in result.manifest["municipalities"] for r in entry["bundles"]]
+        for ref in [*refs, *result.manifest.get("boundaries", [])]:
+            data = staged.get(ref["path"]) or get(ref["path"].lstrip("/"))
+            if data is None:
+                raise PublishError(f"{ref['path']} is in the manifest but missing")
+            target = Path(tmp) / ref["path"].lstrip("/")
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(data)
         errors = validate.validate_manifest(result.manifest, Path(tmp))
     if errors:
         raise PublishError("the new manifest is invalid, nothing published:\n  " + "\n  ".join(errors))
@@ -232,7 +288,7 @@ def plan(local: dict[str, dict], get, now: str) -> Plan:
 
 
 def publish(result: Plan, put) -> None:
-    """Upload the bundles, then the manifest. A failed upload leaves the old manifest in place."""
+    """Upload bundles and boundary packages, then the manifest. A failed upload leaves the old manifest in place."""
     for path, data in result.uploads:
         put(path.lstrip("/"), data, "immutable")
     if result.manifest is not None:
@@ -264,6 +320,7 @@ def main() -> int:
     parser.add_argument("--prefix", default="", help="key prefix, for example _smoke/publish/")
     parser.add_argument("--root", type=Path, help="publish into this directory instead of R2")
     parser.add_argument("--municipalities", type=Path, default=MUNICIPALITIES_DIR, help=argparse.SUPPRESS)
+    parser.add_argument("--boundaries", type=Path, default=BOUNDARIES_DIR, help=argparse.SUPPRESS)
     args = parser.parse_args()
     prefix = args.prefix.strip("/") + "/" if args.prefix.strip("/") else ""
 
@@ -273,7 +330,7 @@ def main() -> int:
         if not local:
             raise PublishError(f"no bundles under {args.municipalities}")
         now = datetime.now(JST).replace(microsecond=0).isoformat()
-        result = plan(local, lambda key: store.get(prefix + key), now)
+        result = plan(local, lambda key: store.get(prefix + key), now, load_boundaries(args.boundaries))
         if not args.dry_run:
             publish(result, lambda key, data, cache: store.put(prefix + key, data, cache))
     except PublishError as e:
@@ -286,7 +343,7 @@ def main() -> int:
     elif result.manifest is None:
         headline = f"Nothing to publish {target}"
     else:
-        headline = f"Published {target}: {len(result.uploads)} bundle(s), then the manifest"
+        headline = f"Published {target}: {len(result.uploads)} file(s), then the manifest"
     summary = [headline, "", *(f"- {line}" for line in result.lines)]
 
     status = 0
@@ -294,7 +351,7 @@ def main() -> int:
     if base_url and not args.root and not args.dry_run and result.uploads:
         problems = verify_cdn(base_url, prefix, result.uploads)
         summary += (
-            ["", *(f"- CDN check failed: {p}" for p in problems)] if problems else ["", "CDN check: new bundles match."]
+            ["", *(f"- CDN check failed: {p}" for p in problems)] if problems else ["", "CDN check: new files match."]
         )
         status = 1 if problems else 0
 
