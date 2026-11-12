@@ -1,4 +1,13 @@
 {
   "heartbeat": "2026-11-11",
-  "sources": {}
+  "sources": {
+    "yokohama-item-list-csv": {
+      "resources": {
+        "909c6f16-86ef-4ca5-8dd1-31a73e11f5ad": {
+          "modified": "2026-08-27T08:26:22.282231",
+          "sha256": "4fa728f9b6a3b6a2520ca10e17d8477eefe9340cfdcddc8d8fb0beb2a9b40f4b"
+        }
+      }
+    }
+  }
 }

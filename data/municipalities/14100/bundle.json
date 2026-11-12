@@ -4,7 +4,8 @@
   "generated_at": "2026-11-12T09:00:00+09:00",
   "municipality": {"id": "14100", "prefecture_code": "14", "names": {"ja": "横浜市", "kana": "よこはまし", "en": "Yokohama City"}, "website_url": "https://www.city.yokohama.lg.jp/"},
   "attribution": [
-    {"text": {"ja": "横浜市ウェブサイトの「ごみと資源物の出し方一覧表」と収集曜日のページをもとに作成。英語は BinPal による翻訳です。", "en": "Based on Yokohama City's list of how to put out waste and resources and its collection-day pages. English text is BinPal's own translation."}, "license": "LicenseRef-Yokohama-City-Website", "url": "https://www.city.yokohama.lg.jp/aboutweb/sitepolicy.html"},
+    {"text": {"ja": "この資料は、以下の著作物を改変して利用しています。ごみと資源物の出し方一覧表、神奈川県横浜市、クリエイティブ・コモンズ・ライセンス 表示4.0 国際。英語と読みがなは BinPal による翻訳・追加です。", "en": "This data is adapted from \"ごみと資源物の出し方一覧表\" (list of how to put out waste and resources) by the City of Yokohama, Kanagawa, licensed under Creative Commons Attribution 4.0 International. English text and kana readings were added by BinPal and are not the city's."}, "license": "CC-BY-4.0", "url": "https://creativecommons.org/licenses/by/4.0/deed.ja"},
+    {"text": {"ja": "収集曜日と年末年始の収集日程は、横浜市ウェブサイトの各区の収集曜日のページをもとに作成。", "en": "Collection days and the New Year schedule are taken from the collection-day pages on the City of Yokohama website."}, "license": "LicenseRef-Yokohama-City-Website", "url": "https://www.city.yokohama.lg.jp/aboutweb/sitepolicy.html"},
     {"text": {"ja": "町丁目の名称とコードは「政府統計の総合窓口(e-Stat)」の令和2年国勢調査 町丁・字等別境界データを加工して作成。", "en": "Town and chome names and codes are derived from the 2020 Population Census small-area boundary data on e-Stat, the portal site of official statistics of Japan."}, "license": "LicenseRef-e-Stat-Terms-of-Use", "url": "https://www.e-stat.go.jp/terms-of-use"}
   ],
   "wards": [

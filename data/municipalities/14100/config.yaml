@@ -10,8 +10,13 @@ municipality:
 
 attribution:
   - text:
-      ja: 横浜市ウェブサイトの「ごみと資源物の出し方一覧表」と収集曜日のページをもとに作成。英語は BinPal による翻訳です。
-      en: Based on Yokohama City's list of how to put out waste and resources and its collection-day pages. English text is BinPal's own translation.
+      ja: この資料は、以下の著作物を改変して利用しています。ごみと資源物の出し方一覧表、神奈川県横浜市、クリエイティブ・コモンズ・ライセンス 表示4.0 国際。英語と読みがなは BinPal による翻訳・追加です。
+      en: This data is adapted from "ごみと資源物の出し方一覧表" (list of how to put out waste and resources) by the City of Yokohama, Kanagawa, licensed under Creative Commons Attribution 4.0 International. English text and kana readings were added by BinPal and are not the city's.
+    license: CC-BY-4.0
+    url: https://creativecommons.org/licenses/by/4.0/deed.ja
+  - text:
+      ja: 収集曜日と年末年始の収集日程は、横浜市ウェブサイトの各区の収集曜日のページをもとに作成。
+      en: Collection days and the New Year schedule are taken from the collection-day pages on the City of Yokohama website.
     license: LicenseRef-Yokohama-City-Website
     url: https://www.city.yokohama.lg.jp/aboutweb/sitepolicy.html
   - text:

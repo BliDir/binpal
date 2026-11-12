@@ -14,6 +14,36 @@ Everything that turns municipal pages and files into the bundles the app downloa
 | `scripts/` | `monitor.py`, `build_yokohama.py`, `build_boundaries.py`, `locate.py`, `publish.py`, `validate.py`, `cdn_put.sh` |
 | `tests/` | Tests for the scripts |
 
+## Launch area, sources and licences
+
+**Launch area: Yokohama City, all 18 wards.** One city means one set of sorting rules and one item list; only the collection-day pages differ per ward. Aoba-ku is built and published. The state of the other 17 is in the [Yokohama README](municipalities/14100/README.md#the-other-17-wards). Arakawa (Tokyo) exists as an unpublished pilot of the standard open-data importer.
+
+Every source below is in `sources.yaml` with its type, URL and content selector, and is checked daily by the rule monitor.
+
+| What | Source | Applies to | Type | Granularity |
+| -- | -- | -- | -- | -- |
+| Sorting rules by item | ごみと資源物の出し方一覧表, on the [Yokohama open data portal](https://data.city.yokohama.lg.jp/dataset/shigen_dashikata) and the [ごみの分別を調べる page](https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/dashikata.html) | All wards | CSV (CKAN) | 3,413 items |
+| How to put out each category | The city's page per category (燃やすごみ, プラスチック資源, …) | All wards | HTML | 11 pages |
+| Collection days | Each ward's 収集曜日 pages, grouped by the town's first kana | Per ward | HTML tables | Town and chōme; inside a chōme for 9% of areas |
+| New Year schedule | 年末年始の資源とごみの収集日程 | All wards | HTML | City-wide dates |
+| Bulky items | 粗大ごみ | All wards | HTML | City-wide; booked collection, no calendar |
+| Announcements | The city's ごみ・リサイクル news list and each ward's news list | City and ward | HTML | |
+| Area codes, names and boundaries | e-Stat 2020 census small-area boundary data | Kanagawa | Shapefile | Town and chōme |
+
+Licence and terms, as read on 12 November 2026:
+
+| Source | Terms | What that means for BinPal |
+| -- | -- | -- |
+| Item list (all Yokohama wards) | Published by 資源循環局 in the city's open data catalogue, whose [terms](https://data.city.yokohama.lg.jp/terms.html) license content under **CC BY 4.0** unless stated otherwise | Free to adapt and redistribute, including commercially. Credit the title and 神奈川県横浜市, name the licence, and say the work was modified. Do not present the modified data as the city's own. The bundle's `attribution` carries this credit, and the app must show it |
+| Collection-day pages, New Year page (all Yokohama wards) | The city's [site policy](https://www.city.yokohama.lg.jp/aboutweb/sitepolicy.html) reserves copyright on pages but states that numerical data and simple tables are not subject to copyright and are free to use | Weekdays per town and holiday dates are used as facts. The pages' prose is not copied |
+| Category pages (all Yokohama wards) | Same site policy; no Creative Commons mark on these pages | Used only as the reference for the short category descriptions BinPal writes itself in `config.yaml`. Not copied, and their text is kept only in the monitor's snapshots |
+| e-Stat boundary data | [e-Stat terms of use](https://www.e-stat.go.jp/terms-of-use), compatible with CC BY 4.0 | Free to adapt and redistribute, including commercially, with the source credited and a note that the data was processed. The credit is in each bundle and boundary package |
+| Arakawa item list (pilot) | CC BY 4.0, recorded in [its README](imports/13118/README.md) | Not published |
+
+The terms are the same for every Yokohama ward, because all 18 wards' pages are on the city's site under the one policy.
+
+BinPal's English names, kana readings and English notes are its own additions and are not covered by the city's licence; the attribution says so.
+
 ## Rule monitor
 
 Municipalities change sorting rules and collection days without notice. `.github/workflows/rule-monitor.yml` runs `scripts/monitor.py` once a day (06:17 in Japan) to notice.
