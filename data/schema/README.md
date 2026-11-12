@@ -4,8 +4,9 @@ The data contract between the back office and the app. The publisher writes thes
 
 | File | Describes |
 | -- | -- |
-| `manifest.v1.schema.json` | `/manifest.json`: covered areas and the latest bundle per municipality |
+| `manifest.v1.schema.json` | `/manifest.json`: covered areas and the latest bundle per municipality, and the latest boundary package per prefecture |
 | `bundle.v1.schema.json` | `/bundles/{municipality_id}/{bundle_version}.json`: wards, areas, categories, rules, calendars, exceptions |
+| `boundaries.v1.schema.json` | `/boundaries/{prefecture_code}/{version}.json`: town and chōme boundaries for on-device lookup ([details](../boundaries/README.md)) |
 | `common.v1.schema.json` | Shared types (IDs, dates, localised text, the common category set) |
 | `examples/` | A hand-written manifest and Yokohama bundle laid out like the CDN |
 
@@ -35,7 +36,7 @@ Pass a manifest to validate it and every bundle it points to (paths resolve agai
 | Area | Ward code (designated cities) or municipality code (elsewhere) + `-` + 6-digit e-Stat small-area code; together the 11-digit e-Stat `KEY_CODE` | `14117-001001` |
 | Category, calendar, item | Lowercase slug, stable across bundle versions | `moyasu`, `pet-bottle` |
 
-Area IDs come straight from the boundary data (MLIT N03 `N03_007` and e-Stat both use the ward code where there is one), so the on-device point-in-polygon lookup returns an ID the bundle already uses.
+Area IDs come straight from the boundary data (e-Stat uses the ward code where there is one), so the on-device point-in-polygon lookup returns an ID the bundle already uses.
 
 ## Wards
 

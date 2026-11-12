@@ -7,7 +7,7 @@ The manifest, bundles and (later) boundary data are public, read-only files in a
 ```
 https://<cdn-domain>/manifest.json                      short cache
 https://<cdn-domain>/bundles/{municipality_id}/{n}.json  long cache, never overwritten
-https://<cdn-domain>/boundaries/...                      long cache, never overwritten (DAI-561)
+https://<cdn-domain>/boundaries/{prefecture}/{n}.json    long cache, never overwritten
 https://<cdn-domain>/_smoke/...                          smoke-test files, safe to delete
 ```
 

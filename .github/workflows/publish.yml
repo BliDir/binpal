@@ -1,12 +1,13 @@
 name: Publish bundles
 
-# Uploads changed municipality bundles to R2 and then the manifest.
+# Uploads changed municipality bundles and boundary packages to R2, then the manifest.
 # See "Publishing" in data/README.md.
 on:
   push:
     branches: [main]
     paths:
       - "data/municipalities/*/bundle.json"
+      - "data/boundaries/*.json"
   workflow_dispatch:
     inputs:
       dry_run:
