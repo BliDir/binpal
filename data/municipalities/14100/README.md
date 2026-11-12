@@ -39,7 +39,7 @@ Without `--refresh` the build reuses the downloads in `data/.cache/14100/`. The 
 * a town's reading in `towns.tsv` does not start with the 五十音 heading the page lists it under;
 * a page no longer has the sentences the build relies on (the 8 a.m. deadline, which categories share a day, the New Year date range).
 
-After a rebuild from a fresh download, set `items.verified_at` in `config.yaml` to that day and raise `bundle_version`.
+After a rebuild from a fresh download, set `items.verified_at` in `config.yaml` to that day. Merging the changed `bundle.json` to `main` publishes it; the publisher assigns the real `bundle_version` and `generated_at`, so the values in the committed file are placeholders.
 
 ## Adding a ward
 
