@@ -32,3 +32,5 @@ jobs:
       - run: shellcheck data/scripts/*.sh
       - run: uv run data/scripts/validate.py data/schema/examples/manifest.json
       - run: uv run data/tests/test_monitor.py
+      - run: uv run data/tests/test_build_yokohama.py
+      - run: uv run data/scripts/validate.py data/municipalities/14100/bundle.json
