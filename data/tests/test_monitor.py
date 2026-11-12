@@ -318,5 +318,114 @@ def test_repo_sources_file_is_valid_and_has_a_snapshot_for_every_source():
         assert (monitor.DATA_DIR / "snapshots" / f"{source.id}.txt").is_file(), source.id
 
 
+NEWS = monitor.Source(id="news", type="news", url=PAGE_URL, title="News", selector="#main")
+
+
+def test_news_match_opens_issue_on_first_run_and_only_for_new_entries(tmp_path):
+    site = Site(
+        **{
+            PAGE_URL: """<meta charset="UTF-8"><div id="main"><ul>
+      <li><a href="/rules">4月からごみの収集曜日を変更します</a></li>
+      <li><a href="/park">公園が新しくなります</a></li>
+      <li><a href="/sort">ごみの分別方法</a></li></ul></div>""".encode()
+        }
+    )
+    issues = check(site, tmp_path, NEWS)
+    assert len(issues) == 1
+    assert "https://city.example/rules" in issues[0].body
+    assert "公園" not in issues[0].body
+    assert check(site, tmp_path, NEWS) == []
+    site.routes[PAGE_URL] = b'<div id="main"><ul></ul></div>'
+    assert check(site, tmp_path, NEWS) == []
+
+
+def test_llm_cosmetic_skips_issue_but_updates_snapshot(tmp_path, capsys):
+    site = Site(**{PAGE_URL: page()})
+    check(site, tmp_path, HTML)
+    site.routes[PAGE_URL] = page(days="毎週火曜日・土曜日")
+
+    class Cosmetic:
+        def summarize(self, source, old, new):
+            assert "毎週" not in old and "毎週" in new
+            return monitor.Summary("Wording only", "cosmetic", "Not stated", True)
+
+    assert monitor.run([HTML], tmp_path, site.fetcher, TODAY, summarizer=Cosmetic()) == []
+    assert "毎週" in (tmp_path / "days.txt").read_text()
+    assert "cosmetic days" in capsys.readouterr().out
+
+
+def test_llm_failure_keeps_alert(tmp_path):
+    site = Site(**{PAGE_URL: page()})
+    check(site, tmp_path, HTML)
+    site.routes[PAGE_URL] = page(days="水曜日")
+
+    class Broken:
+        def summarize(self, *args):
+            raise monitor.SourceError("unavailable")
+
+    issues = monitor.run([HTML], tmp_path, site.fetcher, TODAY, summarizer=Broken())
+    assert len(issues) == 1
+    assert "LLM unavailable" in issues[0].body
+    assert "+青葉台" in issues[0].body
+
+
+def test_summary_above_raw_diff():
+    summary = monitor.Summary("Collection changes to Friday", "schedule", "2027-04-01", False)
+    issue = monitor.change_issue(HTML, "Tuesday", "Friday", TODAY, summary)
+    assert issue.body.index(summary.summary) < issue.body.index("````diff")
+    assert "**Effective date:** 2027-04-01" in issue.body
+
+
+@pytest.mark.parametrize("failure", [429, 503, 404, "invalid", "truncated"])
+def test_gemini_falls_back_and_validates_response(monkeypatch, failure):
+    monkeypatch.setattr(monitor.time, "sleep", lambda _: None)
+    requests = []
+    result = {"summary": "Days changed", "change_type": "schedule", "effective_date": "Not stated", "cosmetic": False}
+
+    def handle(request):
+        requests.append(request)
+        if "gemini-3.5" in str(request.url):
+            if isinstance(failure, int):
+                return httpx.Response(failure)
+            return httpx.Response(
+                200,
+                json={
+                    "candidates": [
+                        {
+                            "finishReason": "MAX_TOKENS" if failure == "truncated" else "STOP",
+                            "content": {"parts": [{"text": "{}"}]},
+                        }
+                    ]
+                },
+            )
+        return httpx.Response(
+            200,
+            json={
+                "candidates": [
+                    {
+                        "finishReason": "STOP",
+                        "content": {"parts": [{"text": monitor.json.dumps(result)}]},
+                    }
+                ]
+            },
+        )
+
+    llm = monitor.Summarizer("test-secret", httpx.Client(transport=httpx.MockTransport(handle)))
+    summary = llm.summarize(HTML, "Tuesday", "Friday")
+    assert summary.change_type == "schedule"
+    assert "gemini-2.5-flash-lite" in str(requests[-1].url)
+    assert requests[-1].headers["x-goog-api-key"] == "test-secret"
+    assert "test-secret" not in str(requests[-1].url)
+    payload = monitor.json.loads(requests[-1].content)
+    assert "Tuesday" in payload["contents"][0]["parts"][0]["text"]
+
+
+def test_both_models_failing_raises_safe_error(monkeypatch):
+    monkeypatch.setattr(monitor.time, "sleep", lambda _: None)
+    client = httpx.Client(transport=httpx.MockTransport(lambda _: httpx.Response(403)))
+    with pytest.raises(monitor.SourceError, match="both Gemini"):
+        monitor.Summarizer("secret", client).summarize(HTML, "a", "b")
+
+
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-q", *sys.argv[1:]]))

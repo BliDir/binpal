@@ -26,11 +26,27 @@ For each source in `sources.yaml` it:
 | Outcome | What happens |
 | -- | -- |
 | Same text | Nothing |
-| Different text | The snapshot is committed to `main` and an issue **Rule source changed: `<id>`** is opened with the diff. If that issue is still open from an earlier change, the new diff is added as a comment |
-| No snapshot yet | The snapshot is committed as the baseline, with no issue |
+| Different text | Gemini summarizes the change and effective date above the raw diff. The updated snapshot is committed to `main`, including cosmetic-only changes, which are logged without an issue. Other changes open an issue **Rule source changed: `<id>`** is opened with the diff. If that issue is still open from an earlier change, the new diff is added as a comment |
+| No snapshot yet (rule sources) | The snapshot is committed as the baseline, with no issue |
 | Fetch or parse failure | Counted in `snapshots/state.json`. On the 3rd run in a row an issue **Rule source unreachable: `<id>`** is opened, once. A selector that no longer matches anything counts as a failure, so a redesigned page is not mistaken for a rule change |
 
-Issues carry the `rule-monitor` label.
+Issues carry the `rule-monitor` label. If the API key is missing, both models fail, or a response is invalid, the monitor keeps the alert with an explicit unavailable summary instead of suppressing it.
+
+### Gemini setup
+
+Add the repository Actions secret `GEMINI_API_KEY`:
+
+```sh
+gh secret set GEMINI_API_KEY --repo BliDir/binpal
+```
+
+The workflow passes it to the monitor through the environment. The default primary model is `gemini-3.5-flash-lite`; the fallback is `gemini-2.5-flash-lite`. Override them with `GEMINI_MODEL` and `GEMINI_FALLBACK_MODEL` when running locally. The key is sent in an HTTP header and never logged. Local runs without a key still fetch sources and print raw-diff alerts.
+
+Each changed source sends its complete old/new normalized text for a structured summary, change type, effective date and cosmetic classification. Uncertain classifications keep the issue. Requests are spaced at least 6.1 seconds apart; a 429 or server error receives one retry after a short backoff, then the fallback is tried. Large inputs or project token quotas can still exhaust rate limits; both-model failure preserves the alert. No model calls are made for unchanged sources or initial rule-page baselines.
+
+### Ward announcements
+
+Sources with `type: news` scan links in their content selector. An entry must contain both a waste-related term (such as ごみ, 資源 or 分別) and a change term (such as 変更, 新しく or 4月から). The snapshot stores matching entries and their absolute announcement URLs. Newly matching entries open an issue even on the first run; removals and reordering do not. The initial configured feed is the Aoba ward news list. This checks announcement headlines/list entries, not the body of every linked article; add other ward feeds as coverage expands.
 
 GitHub disables scheduled workflows in a public repo after 60 days without activity. The monitor rewrites the `heartbeat` date in `snapshots/state.json` every 30 days, so there is a commit even when no source changes.
 
