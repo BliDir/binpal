@@ -21,3 +21,212 @@ sources:
       - "#tmp_inquiry"
       - "#tmp_section_related"
       - ".wrap_pageid"
+  - id: yokohama-aoba-days-e-o
+    municipality: "14100"
+    title: 青葉区の収集曜日 え、お
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/e-o.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-aoba-days-ka
+    municipality: "14100"
+    title: 青葉区の収集曜日 か～こ
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/kagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-aoba-days-sa
+    municipality: "14100"
+    title: 青葉区の収集曜日 さ～そ
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/sagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-aoba-days-ta-na-ha
+    municipality: "14100"
+    title: 青葉区の収集曜日 た～と・な～の・は～ほ
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/ta-na-hagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-aoba-days-ma-wa
+    municipality: "14100"
+    title: 青葉区の収集曜日 ま～も・わ
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/magyou-wa.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-aoba-days-index
+    municipality: "14100"
+    title: 青葉区の収集曜日(ページ一覧)
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/index.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-item-list
+    municipality: "14100"
+    title: ごみの分別を調べる(出し方一覧表 CSV へのリンク)
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/dashikata.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-new-year
+    municipality: "14100"
+    title: 年末年始の資源とごみの収集日程について
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/nenmatsunenshi.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-batteries
+    municipality: "14100"
+    title: 小型充電式電池(リチウムイオン電池等)の収集
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/batteries.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-moyasu
+    municipality: "14100"
+    title: 燃やすごみ
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/das1.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-moenai
+    municipality: "14100"
+    title: 燃えないごみ
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/das11.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-denchi
+    municipality: "14100"
+    title: 電池類
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/das4.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-spray
+    municipality: "14100"
+    title: スプレー缶
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/das10.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kan-bin-pet
+    municipality: "14100"
+    title: 缶・びん・ペットボトル
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/das2.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kinzoku
+    municipality: "14100"
+    title: 小さな金属類
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/das8.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-plastic
+    municipality: "14100"
+    title: プラスチック資源
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/plasigen.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-koshi
+    municipality: "14100"
+    title: 古紙
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/kaishu/das14.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kofu
+    municipality: "14100"
+    title: 古布
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/kaishu/das13.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-shushu-fuka
+    municipality: "14100"
+    title: 市では収集できないごみ
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushufuka/das6.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"

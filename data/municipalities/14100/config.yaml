@@ -1,0 +1,238 @@
+# Yokohama City (14100). Read by data/scripts/build_yokohama.py.
+
+bundle_version: 1
+
+municipality:
+  id: "14100"
+  prefecture_code: "14"
+  names: { ja: 横浜市, kana: よこはまし, en: Yokohama City }
+  website_url: https://www.city.yokohama.lg.jp/
+
+attribution:
+  - text:
+      ja: 横浜市ウェブサイトの「ごみと資源物の出し方一覧表」と収集曜日のページをもとに作成。英語は BinPal による翻訳です。
+      en: Based on Yokohama City's list of how to put out waste and resources and its collection-day pages. English text is BinPal's own translation.
+    license: LicenseRef-Yokohama-City-Website
+    url: https://www.city.yokohama.lg.jp/aboutweb/sitepolicy.html
+  - text:
+      ja: 町丁目の名称とコードは「政府統計の総合窓口(e-Stat)」の令和2年国勢調査 町丁・字等別境界データを加工して作成。
+      en: Town and chome names and codes are derived from the 2020 Population Census small-area boundary data on e-Stat, the portal site of official statistics of Japan.
+    license: LicenseRef-e-Stat-Terms-of-Use
+    url: https://www.e-stat.go.jp/terms-of-use
+
+# --- Items (sorting rules) --------------------------------------------------
+
+items:
+  # The page that links to the item list CSV. The CSV's own URL changes with
+  # every update, so the build finds it here.
+  page_url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/dashikata.html
+  # Date the Japanese item, category and note of every rule were last taken
+  # from the city's CSV. The build copies them as they are, so they match the
+  # source by construction. Bump this when you rebuild from a fresh download.
+  verified_at: "2026-11-11"
+  # Appended to the instructions of items the CSV marks with ◎.
+  small_appliance_note:
+    ja: 区役所などの小型家電回収ボックスにも出せます(投入口30cm×15cmに入る、長さ30cm未満のもの)。
+    en: Can also go in a small-appliance collection box at ward offices and other city facilities (if under 30 cm long and able to fit the 30 × 15 cm slot).
+
+categories:
+  - id: moyasu
+    names: { ja: 燃やすごみ, kana: もやすごみ, en: Burnable }
+    common: burnable
+    description:
+      ja: 週2回収集。中身がはっきり確認できる透明または半透明の袋にまとめて入れてください。
+      en: Collected twice a week. Put it all in a clear or semi-transparent bag so the contents can be seen.
+    default: { ja: 燃やすごみとして出してください。, en: Put out as Burnable. }
+    source_url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/das1.html
+  - id: moenai
+    names: { ja: 燃えないごみ, kana: もえないごみ, en: Non-burnable }
+    common: non_burnable
+    description:
+      ja: 燃やすごみと同じ日に収集。購入時の箱や新聞紙、厚紙などで破れないように包み、ガラス、陶器、蛍光灯など品物名を表示してください。
+      en: Collected on Burnable days. Wrap in the original box, newspaper or thick paper so it cannot tear through, and label what it is (glass, ceramics, fluorescent tube and so on).
+    default: { ja: 燃えないごみとして出してください。, en: Put out as Non-burnable. }
+    source_url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/das11.html
+  - id: spray
+    names: { ja: スプレー缶, kana: すぷれーかん, en: Spray cans }
+    common: hazardous
+    description:
+      ja: 燃やすごみと同じ日に収集。火気のない安全な場所で中身を必ず出しきり、燃やすごみとは別の透明または半透明の袋にまとめて入れてください。プラスチック製のキャップはプラスチック資源へ。
+      en: Collected on Burnable days. Empty the can completely in a safe place away from flames, and put spray cans together in a clear or semi-transparent bag separate from Burnable waste. Plastic caps go to Plastic resources.
+    default: { ja: 中身を使い切って、スプレー缶として出してください。, en: Use up the contents and put out as Spray cans. }
+    source_url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/das10.html
+  - id: denchi
+    names: { ja: 電池類, kana: でんちるい, en: Batteries }
+    common: hazardous
+    description:
+      ja: 燃やすごみと同じ日に収集。電池を使い切り、端子部をテープ等で絶縁して、燃やすごみとは別の透明または半透明の袋に入れてください。膨張・破損した電池やポータブル電源は集積場所に出せません。
+      en: Collected on Burnable days. Use batteries up, insulate the terminals with tape, and put them in a clear or semi-transparent bag separate from Burnable waste. Swollen or damaged batteries and portable power stations cannot be put out at the collection point.
+    default: { ja: 電池類として出してください。, en: Put out as Batteries. }
+    source_url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/das4.html
+  - id: plastic
+    names: { ja: プラスチック資源, kana: ぷらすちっくしげん, en: Plastic resources }
+    common: plastic
+    description:
+      ja: 週1回収集。プラスチック製容器包装と、プラスチックのみでできた一番長い辺が50cm未満の製品が対象です。中身を残さず、中をゆすいで、透明または半透明の袋にまとめて入れてください。
+      en: Collected once a week. Covers plastic containers and packaging, and products made only of plastic whose longest side is under 50 cm. Empty and rinse them, and put them together in a clear or semi-transparent bag.
+    default: { ja: プラスチック資源として出してください。, en: Put out as Plastic resources. }
+    source_url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/plasigen.html
+  - id: kan-bin-pet
+    names: { ja: 缶・びん・ペットボトル, kana: かん・びん・ぺっとぼとる, en: "Cans, bottles and PET bottles" }
+    common: cans_bottles
+    description:
+      ja: 週1回収集。食べ物・飲み物の入っていた缶とガラスびん、マークのあるペットボトルが対象です。中を空にして洗い、一緒に透明または半透明の袋に入れてください。
+      en: Collected once a week. Covers cans and glass bottles that held food or drink, and PET bottles with the PET mark. Empty and rinse them, and put them together in a clear or semi-transparent bag.
+    default: { ja: 缶・びん・ペットボトルとして出してください。, en: "Put out with Cans, bottles and PET bottles." }
+    source_url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/das2.html
+  - id: kinzoku
+    names: { ja: 小さな金属類, kana: ちいさなきんぞくるい, en: Small metal items }
+    common: resources
+    description:
+      ja: 缶・びん・ペットボトルと同じ日に収集。主に金属でできた一番長い辺が30cm未満のものと、金属製の傘の骨が対象です。缶・びん・ペットボトルの袋とは分け、細かなもの以外は袋に入れずに出してください。
+      en: Collected on Cans, bottles and PET bottles days. Covers mainly-metal items whose longest side is under 30 cm, and metal umbrella frames. Keep them separate from the cans and bottles bag; put them out loose unless they are very small.
+    default: { ja: 小さな金属類として出してください。, en: Put out as Small metal items. }
+    source_url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/das8.html
+  - id: koshi
+    names: { ja: 古紙, kana: こし, en: Used paper }
+    common: paper
+    description:
+      ja: 市の収集ではなく、地域の資源集団回収に出します。回収日は集積場所の青いステッカーで確認してください。新聞、雑誌・その他の紙、段ボール、紙パックの種類ごとに出してください。
+      en: Not collected by the city. Put it out for your neighbourhood's group resource collection; the blue sticker at your collection point shows the dates. Sort into newspapers, magazines and other paper, cardboard, and cartons.
+    default: { ja: 古紙として資源集団回収に出してください。, en: Put out as Used paper for the neighbourhood group collection. }
+    source_url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/kaishu/das14.html
+  - id: kofu
+    names: { ja: 古布, kana: こふ, en: Used cloth }
+    common: resources
+    description:
+      ja: 市の収集ではなく、地域の資源集団回収に出します。回収日は集積場所の青いステッカーで確認してください。洗濯して乾いているものを透明または半透明の袋に入れてください。雨の日には出せません。
+      en: Not collected by the city. Put it out for your neighbourhood's group resource collection; the blue sticker at your collection point shows the dates. Put washed, dry items in a clear or semi-transparent bag. Do not put out on rainy days.
+    default: { ja: 古布として資源集団回収に出してください。, en: Put out as Used cloth for the neighbourhood group collection. }
+    source_url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/kaishu/das13.html
+  - id: sodai
+    names: { ja: 粗大ごみ, kana: そだいごみ, en: Bulky waste }
+    common: bulky
+    description:
+      ja: 事前申込制(有料)。一番長い辺が金属製で30cm以上、それ以外で50cm以上のものが対象です。
+      en: Collected by booking only, for a fee. Covers metal items whose longest side is 30 cm or more, and other items 50 cm or more.
+    default: { ja: 粗大ごみとして申し込んでください。, en: Book a Bulky waste collection. }
+    source_url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/sodaigomi/index.html
+  - id: shushu-fuka
+    names: { ja: 市では収集しないもの, kana: しではしゅうしゅうしないもの, en: Not collected by the city }
+    common: not_collected
+    description:
+      ja: 集積場所には出せません。販売店やメーカー、専門の窓口に相談してください。
+      en: Cannot be put out at the collection point. Ask the retailer, the manufacturer or the specialist contact given for the item.
+    default: { ja: 市では収集しません。, en: The city does not collect this. }
+    source_url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushufuka/das6.html
+  - id: sonota
+    names: { ja: その他, kana: そのた, en: Other }
+    common: other
+    default: { ja: 出し方は品目の説明を確認してください。, en: See the item's own instructions. }
+
+# How the CSV's 出し方 column maps to a category. `lead` opens the rule's
+# instructions when the column says more than a category name.
+methods:
+  燃やすごみ: { category: moyasu }
+  燃えないごみ: { category: moenai }
+  スプレー缶: { category: spray }
+  電池類: { category: denchi }
+  プラスチック資源: { category: plastic }
+  缶・びん・ペットボトル: { category: kan-bin-pet }
+  小さな金属類: { category: kinzoku }
+  古布: { category: kofu }
+  粗大ごみ: { category: sodai }
+  古紙(雑誌・その他の紙):
+    category: koshi
+    lead: { ja: 古紙「雑誌・その他の紙」として出してください。, en: Put out as Used paper (magazines and other paper). }
+  古紙(新聞):
+    category: koshi
+    lead: { ja: 古紙「新聞」として出してください。, en: Put out as Used paper (newspapers). }
+  古紙(段ボール):
+    category: koshi
+    lead: { ja: 古紙「段ボール」として出してください。, en: Put out as Used paper (cardboard). }
+  古紙(紙パック):
+    category: koshi
+    lead: { ja: 古紙「紙パック」として出してください。, en: Put out as Used paper (cartons). }
+  販売店または缶・びん・ペットボトル:
+    category: kan-bin-pet
+    lead: { ja: 販売店に返すか、缶・びん・ペットボトルとして出してください。, en: "Return it to the retailer, or put it out with Cans, bottles and PET bottles." }
+  医療機関・薬局または燃やすごみ:
+    category: moyasu
+    lead: { ja: 医療機関・薬局に返すか、燃やすごみとして出してください。, en: "Return it to a medical institution or pharmacy, or put it out as Burnable." }
+  区役所・収集事務所または燃えないごみ:
+    category: moenai
+    lead: { ja: 区役所・収集事務所に持ち込むか、燃えないごみとして出してください。, en: "Take it to a ward office or collection office, or put it out as Non-burnable." }
+  専用回収箱または燃やすごみ:
+    category: moyasu
+    lead: { ja: 専用回収箱に出すか、燃やすごみとして出してください。, en: "Put it in a dedicated collection box, or put it out as Burnable." }
+  販売店へ相談:
+    category: shushu-fuka
+    lead: { ja: 販売店へ相談してください。, en: Ask the retailer. }
+  登録販売店に相談:
+    category: shushu-fuka
+    lead: { ja: 登録販売店に相談してください。, en: Ask a registered dealer. }
+  販売店か回収協力店:
+    category: shushu-fuka
+    lead: { ja: 販売店か回収協力店へ。, en: Take it to the retailer or a collection partner shop. }
+  家電リサイクル:
+    category: shushu-fuka
+    lead: { ja: 家電リサイクルの対象です。市では収集しません。, en: Covered by home appliance recycling. The city does not collect it. }
+  パソコンリサイクル:
+    category: shushu-fuka
+    lead: { ja: パソコンリサイクルの対象です。市では収集しません。, en: Covered by computer recycling. The city does not collect it. }
+  (株)消火器リサイクル推進センターへ:
+    category: shushu-fuka
+    lead: { ja: (株)消火器リサイクル推進センターへ。, en: Contact the Fire Extinguisher Recycling Promotion Center. }
+  最寄りの警察署に相談:
+    category: shushu-fuka
+    lead: { ja: 最寄りの警察署に相談してください。, en: Ask your nearest police station. }
+  個別に相談:
+    category: shushu-fuka
+    lead: { ja: 個別に相談してください。, en: Needs individual arrangement. Contact the city. }
+  収集事務所:
+    category: shushu-fuka
+    lead: { ja: 収集事務所へ。, en: Take it to a collection office. }
+  トイレに流す:
+    category: sonota
+    lead: { ja: トイレに流してください。, en: Flush it down the toilet. }
+  その他: { category: sonota }
+
+# --- Collection days --------------------------------------------------------
+
+# What a cell of a ward's collection-day table means. Each group is one
+# calendar; `with` lists the categories the page's notes say share the day,
+# and `note` is the sentence on the page that says so (the build fails if a
+# page stops saying it).
+schedule_groups:
+  燃やすごみ:
+    slug: moyasu
+    categories: [moyasu, moenai, spray, denchi]
+    note: 燃えないごみ、スプレー缶、電池類は「燃やすごみ」と同じ日に収集します
+  プラスチック資源:
+    slug: plastic
+    categories: [plastic]
+  缶・びん・ペットボトル:
+    slug: kan-bin-pet
+    categories: [kan-bin-pet, kinzoku]
+    note: 小さな金属類は「缶・びん・ペットボトル」と同じ日に収集します
+
+exceptions:
+  new_year:
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/nenmatsunenshi.html
+    note: { ja: 年末年始のため収集はお休みです。, en: No collection over the New Year holidays. }
+
+wards:
+  - id: "14117"
+    slug: aoba
+    names: { ja: 青葉区, kana: あおばく, en: Aoba Ward }
+    index_url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/index.html
+    pages:
+      - https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/a-u.html
+      - https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/e-o.html
+      - https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/kagyou.html
+      - https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/sagyou.html
+      - https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/ta-na-hagyou.html
+      - https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/magyou-wa.html
+    # Town names the collection-day pages spell differently from e-Stat.
+    town_aliases:
+      黒須田町: 黒須田

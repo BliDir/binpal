@@ -7,8 +7,9 @@ Everything that turns municipal pages and files into the bundles the app downloa
 | `sources.yaml` | The pages, PDFs and open datasets the data comes from |
 | `snapshots/` | Last seen text of every source, written by the rule monitor |
 | `schema/` | Bundle and manifest JSON Schemas with examples ([README](schema/README.md)) |
+| `municipalities/` | One folder per municipality: its config, translation tables and built bundle ([Yokohama](municipalities/14100/README.md)) |
 | `cdn/` | How bundles are hosted on Cloudflare R2 ([README](cdn/README.md)) |
-| `scripts/` | `monitor.py`, `validate.py`, `cdn_put.sh` |
+| `scripts/` | `monitor.py`, `build_yokohama.py`, `validate.py`, `cdn_put.sh` |
 | `tests/` | Tests for the scripts |
 
 ## Rule monitor
