@@ -9,7 +9,7 @@ Everything that turns municipal pages and files into the bundles the app downloa
 | `schema/` | Bundle and manifest JSON Schemas with examples ([README](schema/README.md)) |
 | `municipalities/` | One folder per municipality: its config, translation tables and built bundle ([Yokohama](municipalities/14100/README.md)) |
 | `cdn/` | How bundles are hosted on Cloudflare R2 ([README](cdn/README.md)) |
-| `scripts/` | `monitor.py`, `build_yokohama.py`, `validate.py`, `cdn_put.sh` |
+| `scripts/` | `monitor.py`, `build_yokohama.py`, `publish.py`, `validate.py`, `cdn_put.sh` |
 | `tests/` | Tests for the scripts |
 
 ## Rule monitor
@@ -51,4 +51,29 @@ Commit the entry and the snapshot together. If the snapshot contains lines that 
 uv run data/scripts/monitor.py        # check everything, print the issues it would open
 uv run data/tests/test_monitor.py     # tests, against fixture sources
 gh workflow run rule-monitor.yml      # run on GitHub, opening real issues
+```
+
+## Publishing
+
+`.github/workflows/publish.yml` runs `scripts/publish.py` whenever a `municipalities/<id>/bundle.json` changes on `main`, or when started by hand. It publishes the committed bundles; it does not rebuild them from the municipal sites, so what goes out is exactly what was reviewed in the pull request.
+
+For each municipality it compares the committed bundle with the one the live manifest points to, ignoring `bundle_version` and `generated_at`:
+
+| Bundle | What happens |
+| -- | -- |
+| Same content | Nothing. Its manifest entry, version and file are left as they are |
+| Different content, or not published yet | It gets the next `bundle_version`, is uploaded to `/bundles/<id>/<version>.json`, and its manifest entry is replaced |
+
+Then `manifest.json` is uploaded, last. Older bundle files are never overwritten or deleted, so an app holding a manifest from a minute ago can still download what it lists.
+
+Nothing is uploaded unless every bundle in the repo passes `validate.py` and the new manifest matches the exact bytes it will point to. If an upload fails part way, the old manifest stays in place and the next run picks up the bundles that did arrive. After uploading, each new bundle is fetched back through the CDN and its checksum compared.
+
+The version counter is the live manifest, read straight from the bucket. Nothing is committed back to the repo.
+
+```sh
+gh workflow run publish.yml -f dry_run=true               # show what would be published
+gh workflow run publish.yml -f prefix=_smoke/publish/     # publish a full copy under a test prefix
+gh workflow run publish.yml                               # publish for real
+uv run data/scripts/publish.py --root /tmp/cdn            # publish into a local folder
+uv run data/tests/test_publish.py
 ```

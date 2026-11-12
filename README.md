@@ -18,6 +18,7 @@ Each folder has its own workflow, run on pull requests that touch it:
 | `app.yml` | `app/**` | format, analyze, tests |
 | `data.yml` | `data/**` | ruff, shellcheck, schema and example validation, script tests |
 | `rule-monitor.yml` | daily schedule | watches the sources for rule changes ([details](data/README.md#rule-monitor)) |
+| `publish.yml` | a changed `bundle.json` on `main`, or by hand | uploads changed bundles and the manifest to the CDN ([details](data/README.md#publishing)) |
 
 ## License
 

@@ -1,0 +1,50 @@
+name: Publish bundles
+
+# Uploads changed municipality bundles to R2 and then the manifest.
+# See "Publishing" in data/README.md.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "data/municipalities/*/bundle.json"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Show what would be published without uploading
+        type: boolean
+        default: false
+      prefix:
+        description: Publish under this key prefix instead of the CDN root (for example _smoke/publish/)
+        type: string
+        default: ""
+
+# One publish at a time, and never cancel one half way through.
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+      R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      R2_BUCKET: ${{ vars.R2_BUCKET }}
+      CDN_BASE_URL: ${{ vars.CDN_BASE_URL }}
+      DRY_RUN: ${{ inputs.dry_run }}
+      PREFIX: ${{ inputs.prefix }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v6
+      - name: Publish
+        run: |
+          args=()
+          if [ "$DRY_RUN" = "true" ]; then args+=(--dry-run); fi
+          if [ -n "$PREFIX" ]; then args+=(--prefix "$PREFIX"); fi
+          uv run data/scripts/publish.py "${args[@]}"
