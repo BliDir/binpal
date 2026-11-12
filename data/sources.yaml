@@ -236,3 +236,1538 @@ sources:
     type: news
     url: https://www.city.yokohama.lg.jp/aoba/allNewsList.html
     selector: "#tmp_contents"
+  - id: yokohama-asahi-days-index
+    municipality: "14100"
+    title: "旭区の収集曜日(ページ一覧)"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/asahi/index.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-asahi-days-agyou
+    municipality: "14100"
+    title: "旭区の収集曜日 あ～お"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/asahi/agyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-asahi-days-kagyou
+    municipality: "14100"
+    title: "旭区の収集曜日 か～こ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/asahi/kagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-asahi-days-sagyou
+    municipality: "14100"
+    title: "旭区の収集曜日 さ～そ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/asahi/sagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-asahi-days-ta-nagyou
+    municipality: "14100"
+    title: "旭区の収集曜日 た～と・な～の"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/asahi/ta-nagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-asahi-days-hagyou
+    municipality: "14100"
+    title: "旭区の収集曜日 は～ほ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/asahi/hagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-asahi-days-ma-yagyou-wa
+    municipality: "14100"
+    title: "旭区の収集曜日 ま～も・や～よ・わ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/asahi/ma-yagyou-wa.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-izumi-days-index
+    municipality: "14100"
+    title: "泉区の収集曜日(ページ一覧)"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/izumi/index.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-izumi-days-a-e
+    municipality: "14100"
+    title: "泉区の収集曜日 あ～え"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/izumi/a-e.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-izumi-days-o
+    municipality: "14100"
+    title: "泉区の収集曜日 お"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/izumi/o.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-izumi-days-kagyou
+    municipality: "14100"
+    title: "泉区の収集曜日 か～こ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/izumi/kagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-izumi-days-sagyou
+    municipality: "14100"
+    title: "泉区の収集曜日 さ～そ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/izumi/sagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-izumi-days-nagyou
+    municipality: "14100"
+    title: "泉区の収集曜日 な～の"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/izumi/nagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-izumi-days-ya-ragyou
+    municipality: "14100"
+    title: "泉区の収集曜日 や、ゆ、よ・ら～ろ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/izumi/ya-ragyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-isogo-days-index
+    municipality: "14100"
+    title: "磯子区の収集曜日(ページ一覧)"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/isogo/index.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-isogo-days-a-e
+    municipality: "14100"
+    title: "磯子区の収集曜日 あ～え"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/isogo/a-e.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-isogo-days-o
+    municipality: "14100"
+    title: "磯子区の収集曜日 お"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/isogo/o.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-isogo-days-kagyou
+    municipality: "14100"
+    title: "磯子区の収集曜日 か～こ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/isogo/kagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-isogo-days-sa-si
+    municipality: "14100"
+    title: "磯子区の収集曜日 さ、し"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/isogo/sa-si.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-isogo-days-su-so
+    municipality: "14100"
+    title: "磯子区の収集曜日 す～そ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/isogo/su-so.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-isogo-days-ta-nagyou
+    municipality: "14100"
+    title: "磯子区の収集曜日 た～と・な～の"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/isogo/ta-nagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-isogo-days-hagyou
+    municipality: "14100"
+    title: "磯子区の収集曜日 は～ほ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/isogo/hagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-isogo-days-magyou
+    municipality: "14100"
+    title: "磯子区の収集曜日 ま～も"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/isogo/magyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-isogo-days-yagyou
+    municipality: "14100"
+    title: "磯子区の収集曜日 や、ゆ、よ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/isogo/yagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kanagawa-days-index
+    municipality: "14100"
+    title: "神奈川区の収集曜日(ページ一覧)"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kanagawa/index.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kanagawa-days-a-e
+    municipality: "14100"
+    title: "神奈川区の収集曜日 あ～え"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kanagawa/a-e.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kanagawa-days-o
+    municipality: "14100"
+    title: "神奈川区の収集曜日 お"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kanagawa/o.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kanagawa-days-ka
+    municipality: "14100"
+    title: "神奈川区の収集曜日 か"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kanagawa/ka.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kanagawa-days-ki-ko
+    municipality: "14100"
+    title: "神奈川区の収集曜日 き～こ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kanagawa/ki-ko.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kanagawa-days-sa
+    municipality: "14100"
+    title: "神奈川区の収集曜日 さ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kanagawa/sa.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kanagawa-days-shi
+    municipality: "14100"
+    title: "神奈川区の収集曜日 し"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kanagawa/shi.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kanagawa-days-su
+    municipality: "14100"
+    title: "神奈川区の収集曜日 す"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kanagawa/su.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kanagawa-days-tagyou
+    municipality: "14100"
+    title: "神奈川区の収集曜日 た～と"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kanagawa/tagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kanagawa-days-nagyou
+    municipality: "14100"
+    title: "神奈川区の収集曜日 な～の"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kanagawa/nagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kanagawa-days-hagyou
+    municipality: "14100"
+    title: "神奈川区の収集曜日 は～ほ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kanagawa/hagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kanagawa-days-magyou
+    municipality: "14100"
+    title: "神奈川区の収集曜日 ま～も"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kanagawa/magyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kanagawa-days-ragyou
+    municipality: "14100"
+    title: "神奈川区の収集曜日 ら～ろ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kanagawa/ragyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kanazawa-days-index
+    municipality: "14100"
+    title: "金沢区の収集曜日(ページ一覧)"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kanazawa/index.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kanazawa-days-agyou
+    municipality: "14100"
+    title: "金沢区の収集曜日 あ～お"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kanazawa/agyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kanazawa-days-kagyou
+    municipality: "14100"
+    title: "金沢区の収集曜日 か～こ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kanazawa/kagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kanazawa-days-sagyou
+    municipality: "14100"
+    title: "金沢区の収集曜日 さ～そ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kanazawa/sagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kanazawa-days-tagyou
+    municipality: "14100"
+    title: "金沢区の収集曜日 た～と"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kanazawa/tagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kanazawa-days-nagyou
+    municipality: "14100"
+    title: "金沢区の収集曜日 な～の"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kanazawa/nagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kanazawa-days-ha-magyou
+    municipality: "14100"
+    title: "金沢区の収集曜日 は～ほ・ま～も"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kanazawa/ha-magyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kanazawa-days-yagyou
+    municipality: "14100"
+    title: "金沢区の収集曜日 や、ゆ、よ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kanazawa/yagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-konan-days-index
+    municipality: "14100"
+    title: "港南区の収集曜日(ページ一覧)"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/konan/index.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-konan-days-a-kagyou
+    municipality: "14100"
+    title: "港南区の収集曜日 あ～お・か～こ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/konan/a-kagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-konan-days-sagyou
+    municipality: "14100"
+    title: "港南区の収集曜日 さ～そ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/konan/sagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-konan-days-nagyou
+    municipality: "14100"
+    title: "港南区の収集曜日 な～の"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/konan/nagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-konan-days-hagyou
+    municipality: "14100"
+    title: "港南区の収集曜日 は～ほ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/konan/hagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-konan-days-magyou
+    municipality: "14100"
+    title: "港南区の収集曜日 ま～も"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/konan/magyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kohoku-days-index
+    municipality: "14100"
+    title: "港北区の収集曜日(ページ一覧)"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kohoku/index.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kohoku-days-agyou
+    municipality: "14100"
+    title: "港北区の収集曜日 あ～お"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kohoku/agyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kohoku-days-kagyou
+    municipality: "14100"
+    title: "港北区の収集曜日 か～こ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kohoku/kagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kohoku-days-sagyou
+    municipality: "14100"
+    title: "港北区の収集曜日 さ～そ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kohoku/sagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kohoku-days-tagyou
+    municipality: "14100"
+    title: "港北区の収集曜日 た～と"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kohoku/tagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kohoku-days-nagyou
+    municipality: "14100"
+    title: "港北区の収集曜日 な～の"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kohoku/nagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kohoku-days-hagyou
+    municipality: "14100"
+    title: "港北区の収集曜日 は～ほ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kohoku/hagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-kohoku-days-magyou
+    municipality: "14100"
+    title: "港北区の収集曜日 ま～も"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/kohoku/magyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-sakae-days-index
+    municipality: "14100"
+    title: "栄区の収集曜日(ページ一覧)"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/sakae/index.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-sakae-days-agyou
+    municipality: "14100"
+    title: "栄区の収集曜日 あ～お"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/sakae/agyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-sakae-days-ka-ki
+    municipality: "14100"
+    title: "栄区の収集曜日 か、き"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/sakae/ka-ki.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-sakae-days-ku-ko
+    municipality: "14100"
+    title: "栄区の収集曜日 く～こ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/sakae/ku-ko.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-sakae-days-sa-ta-nagyou
+    municipality: "14100"
+    title: "栄区の収集曜日 さ～そ・た～と・な～の"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/sakae/sa-ta-nagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-sakae-days-ha-magyou-wa
+    municipality: "14100"
+    title: "栄区の収集曜日 は～ほ・ま～も・わ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/sakae/ha-magyou-wa.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-seya-days-index
+    municipality: "14100"
+    title: "瀬谷区の収集曜日(ページ一覧)"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/seya/index.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-seya-days-agyou
+    municipality: "14100"
+    title: "瀬谷区の収集曜日 あ～お"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/seya/agyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-seya-days-kagyou
+    municipality: "14100"
+    title: "瀬谷区の収集曜日 か～こ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/seya/kagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-seya-days-sagyou
+    municipality: "14100"
+    title: "瀬谷区の収集曜日 さ～そ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/seya/sagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-seya-days-ta-nagyou
+    municipality: "14100"
+    title: "瀬谷区の収集曜日 た～と・な～の"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/seya/ta-nagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-seya-days-hagyou
+    municipality: "14100"
+    title: "瀬谷区の収集曜日 は～ほ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/seya/hagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-seya-days-magyou
+    municipality: "14100"
+    title: "瀬谷区の収集曜日 ま～も"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/seya/magyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-tsuzuki-days-index
+    municipality: "14100"
+    title: "都筑区の収集曜日(ページ一覧)"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/tsuzuki/index.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-tsuzuki-days-a-u
+    municipality: "14100"
+    title: "都筑区の収集曜日 あ～う"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/tsuzuki/a-u.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-tsuzuki-days-e-o
+    municipality: "14100"
+    title: "都筑区の収集曜日 え、お"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/tsuzuki/e-o.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-tsuzuki-days-kagyou
+    municipality: "14100"
+    title: "都筑区の収集曜日 か～こ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/tsuzuki/kagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-tsuzuki-days-sagyou
+    municipality: "14100"
+    title: "都筑区の収集曜日 さ～そ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/tsuzuki/sagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-tsuzuki-days-tagyou
+    municipality: "14100"
+    title: "都筑区の収集曜日 た～と"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/tsuzuki/tagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-tsuzuki-days-nagyou
+    municipality: "14100"
+    title: "都筑区の収集曜日 な～の"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/tsuzuki/nagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-tsuzuki-days-hagyou
+    municipality: "14100"
+    title: "都筑区の収集曜日 は～ほ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/tsuzuki/hagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-tsuzuki-days-magyou
+    municipality: "14100"
+    title: "都筑区の収集曜日 ま～も"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/tsuzuki/magyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-tsurumi-days-index
+    municipality: "14100"
+    title: "鶴見区の収集曜日(ページ一覧)"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/tsurumi/index.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-tsurumi-days-agyou
+    municipality: "14100"
+    title: "鶴見区の収集曜日 あ～お"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/tsurumi/agyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-tsurumi-days-kagyou
+    municipality: "14100"
+    title: "鶴見区の収集曜日 か～こ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/tsurumi/kagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-tsurumi-days-sagyou
+    municipality: "14100"
+    title: "鶴見区の収集曜日 さ～そ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/tsurumi/sagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-tsurumi-days-tagyou
+    municipality: "14100"
+    title: "鶴見区の収集曜日 た～と"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/tsurumi/tagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-tsurumi-days-nagyou
+    municipality: "14100"
+    title: "鶴見区の収集曜日 な～の"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/tsurumi/nagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-tsurumi-days-hagyou
+    municipality: "14100"
+    title: "鶴見区の収集曜日 は～ほ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/tsurumi/hagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-tsurumi-days-ma-yagyou
+    municipality: "14100"
+    title: "鶴見区の収集曜日 ま～も・や、ゆ、よ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/tsurumi/ma-yagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-totsuka-days-index
+    municipality: "14100"
+    title: "戸塚区の収集曜日(ページ一覧)"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/totsuka/index.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-totsuka-days-agyou
+    municipality: "14100"
+    title: "戸塚区の収集曜日 あ～お"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/totsuka/agyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-totsuka-days-ka-ko
+    municipality: "14100"
+    title: "戸塚区の収集曜日 か～こ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/totsuka/ka-ko.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-totsuka-days-sa-ta-nagyou
+    municipality: "14100"
+    title: "戸塚区の収集曜日 さ～そ・た～と・な～の"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/totsuka/sa-ta-nagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-totsuka-days-hagyou
+    municipality: "14100"
+    title: "戸塚区の収集曜日 は～ほ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/totsuka/hagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-totsuka-days-ma-yagyou
+    municipality: "14100"
+    title: "戸塚区の収集曜日 ま～も・や、ゆ、よ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/totsuka/ma-yagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-naka-days-index
+    municipality: "14100"
+    title: "中区の収集曜日(ページ一覧)"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/naka/index.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-naka-days-a-e
+    municipality: "14100"
+    title: "中区の収集曜日 あ～え"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/naka/a-e.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-naka-days-o
+    municipality: "14100"
+    title: "中区の収集曜日 お"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/naka/o.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-naka-days-kagyou
+    municipality: "14100"
+    title: "中区の収集曜日 か～こ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/naka/kagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-naka-days-sagyou
+    municipality: "14100"
+    title: "中区の収集曜日 さ～そ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/naka/sagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-naka-days-tagyou
+    municipality: "14100"
+    title: "中区の収集曜日 た～と"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/naka/tagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-naka-days-nagyou
+    municipality: "14100"
+    title: "中区の収集曜日 な～の"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/naka/nagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-naka-days-ha-he
+    municipality: "14100"
+    title: "中区の収集曜日 は～へ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/naka/ha-he.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-naka-days-ho
+    municipality: "14100"
+    title: "中区の収集曜日 ほ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/naka/ho.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-naka-days-ma-mi
+    municipality: "14100"
+    title: "中区の収集曜日 ま、み"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/naka/ma-mi.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-naka-days-mu-mo
+    municipality: "14100"
+    title: "中区の収集曜日 む～も"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/naka/mu-mo.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-naka-days-yagyou
+    municipality: "14100"
+    title: "中区の収集曜日 や～よ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/naka/yagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-naka-days-naka-youbi-wa
+    municipality: "14100"
+    title: "中区の収集曜日 わ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/naka/naka-youbi-wa.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-nishi-days-index
+    municipality: "14100"
+    title: "西区の収集曜日(ページ一覧)"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/nishi/index.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-nishi-days-agyou
+    municipality: "14100"
+    title: "西区の収集曜日 あ～お"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/nishi/agyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-nishi-days-kagyou
+    municipality: "14100"
+    title: "西区の収集曜日 か～こ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/nishi/kagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-nishi-days-sagyou
+    municipality: "14100"
+    title: "西区の収集曜日 さ～そ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/nishi/sagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-nishi-days-ta-nagyou
+    municipality: "14100"
+    title: "西区の収集曜日 た～と・な～の"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/nishi/ta-nagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-nishi-days-hagyou
+    municipality: "14100"
+    title: "西区の収集曜日 は～ほ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/nishi/hagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-nishi-days-magyou
+    municipality: "14100"
+    title: "西区の収集曜日 ま～も"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/nishi/magyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-hodogaya-days-index
+    municipality: "14100"
+    title: "保土ケ谷区の収集曜日(ページ一覧)"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/hodogaya/index.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-hodogaya-days-agyou
+    municipality: "14100"
+    title: "保土ケ谷区の収集曜日 あ～お"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/hodogaya/agyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-hodogaya-days-kagyou
+    municipality: "14100"
+    title: "保土ケ谷区の収集曜日 か～こ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/hodogaya/kagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-hodogaya-days-sagyou
+    municipality: "14100"
+    title: "保土ケ谷区の収集曜日 さ～そ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/hodogaya/sagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-hodogaya-days-ta-nagyou
+    municipality: "14100"
+    title: "保土ケ谷区の収集曜日 た～と・な～の"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/hodogaya/ta-nagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-hodogaya-days-hagyou
+    municipality: "14100"
+    title: "保土ケ谷区の収集曜日 は～ほ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/hodogaya/hagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-hodogaya-days-magyou-wa
+    municipality: "14100"
+    title: "保土ケ谷区の収集曜日 ま～も・わ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/hodogaya/magyou-wa.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-midori-days-index
+    municipality: "14100"
+    title: "緑区の収集曜日(ページ一覧)"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/midori/index.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-midori-days-agyou
+    municipality: "14100"
+    title: "緑区の収集曜日 あ～お"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/midori/agyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-midori-days-kagyou
+    municipality: "14100"
+    title: "緑区の収集曜日 か～こ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/midori/kagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-midori-days-tagyou
+    municipality: "14100"
+    title: "緑区の収集曜日 た～と"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/midori/tagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-midori-days-nagyou
+    municipality: "14100"
+    title: "緑区の収集曜日 な～の"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/midori/nagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-midori-days-ha-magyou
+    municipality: "14100"
+    title: "緑区の収集曜日 は～ほ・ま～も"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/midori/ha-magyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-minami-days-index
+    municipality: "14100"
+    title: "南区の収集曜日(ページ一覧)"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/minami/index.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-minami-days-agyou
+    municipality: "14100"
+    title: "南区の収集曜日 あ～お"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/minami/agyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-minami-days-kagyou
+    municipality: "14100"
+    title: "南区の収集曜日 か～こ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/minami/kagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-minami-days-sagyou
+    municipality: "14100"
+    title: "南区の収集曜日 さ～そ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/minami/sagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-minami-days-tagyou
+    municipality: "14100"
+    title: "南区の収集曜日 た～と"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/minami/tagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-minami-days-nagyou
+    municipality: "14100"
+    title: "南区の収集曜日 な～の"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/minami/nagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-minami-days-hagyou
+    municipality: "14100"
+    title: "南区の収集曜日 は～ほ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/minami/hagyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-minami-days-magyou
+    municipality: "14100"
+    title: "南区の収集曜日 ま～も"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/minami/magyou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-minami-days-yagyou-wa
+    municipality: "14100"
+    title: "南区の収集曜日 や、ゆ、よ・わ"
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/minami/yagyou-wa.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-sodai
+    municipality: "14100"
+    title: 粗大ごみ
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/sodaigomi/index.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-news
+    municipality: "14100"
+    title: ごみ・リサイクルのお知らせ
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/news/index.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-item-list-csv
+    municipality: "14100"
+    title: ごみと資源物の出し方一覧表(横浜市オープンデータポータル)
+    type: ckan
+    url: https://data.city.yokohama.lg.jp/api/3/action/package_show?id=shigen_dashikata
+    formats: [CSV]
