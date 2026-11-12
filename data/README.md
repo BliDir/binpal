@@ -8,6 +8,7 @@ Everything that turns municipal pages and files into the bundles the app downloa
 | `snapshots/` | Last seen text of every source, written by the rule monitor |
 | `schema/` | Bundle and manifest JSON Schemas with examples ([README](schema/README.md)) |
 | `boundaries/` | Town and chōme boundaries per prefecture, for finding the user's area from GPS ([README](boundaries/README.md)) |
+| `imports/` | Future-rollout standard open-data pilots; excluded from publishing ([Arakawa](imports/13118/README.md)) |
 | `municipalities/` | One folder per municipality: its config, translation tables and built bundle ([Yokohama](municipalities/14100/README.md)) |
 | `cdn/` | How bundles are hosted on Cloudflare R2 ([README](cdn/README.md)) |
 | `scripts/` | `monitor.py`, `build_yokohama.py`, `build_boundaries.py`, `locate.py`, `publish.py`, `validate.py`, `cdn_put.sh` |
@@ -69,6 +70,27 @@ uv run data/scripts/monitor.py        # check everything, print the issues it wo
 uv run data/tests/test_monitor.py     # tests, against fixture sources
 gh workflow run rule-monitor.yml      # run on GitHub, opening real issues
 ```
+
+## Standard open-data importer
+
+`import_standard.py` reads the Digital Agency standard CSV layout for **ゴミの分別方法一覧** (item-definition C: 全国地方公共団体コード, ID, 地方公共団体名, ゴミの品目, 分別区分, 注意点, 料金種別, 料金, 料金備考, 備考). Other layouts are rejected explicitly. Municipality-specific mappings, English text and schedules live with each dataset; the importer contains no Arakawa-specific item or category rules.
+
+```sh
+uv run data/scripts/import_standard.py data/imports/13118           # offline, reproducible
+uv run data/scripts/import_standard.py data/imports/13118 --refresh # resolve CSV through CKAN
+uv run data/scripts/validate.py data/imports/13118/bundle.json
+uv run data/tests/test_import_standard.py
+```
+
+A configured CKAN `package_show` endpoint resolves a pinned resource ID, verifies its CSV format and expected licence, then downloads the resource URL. The default run uses committed `source/package.json` and `source/sorting.csv`; `--refresh` requires their reviewed CSV digest to remain unchanged. If a download changes, the importer reports the new digest and leaves existing snapshots and bundle untouched. Download the candidate to a separate path, review its changes, then update the source snapshot, `config.yaml` digest and affected translations together before rebuilding.
+
+`items.tsv` binds every translation to the complete source row with a SHA-256 digest, including category, caution and fee fields. Missing, added, removed or changed rows stop the build for review; a renamed item cannot silently retain its old translation. The Japanese instructions preserve all nonempty source fields. English names, kana, aliases and complete English instructions are curated independently of the build; it never calls an LLM. `valid_from` is configured explicitly, since catalog timestamps need not be effective dates.
+
+`base.json` supplies municipality details, source credits, categories, real e-Stat area IDs, calendars and exceptions from separately checked municipal pages. The importer replaces only its empty rules array and validates the complete bundle before writing. Check the source licence and include attribution when adding a municipality. Do not infer schedules from item categories.
+
+To reuse it, create another dataset directory with `config.yaml`, `base.json`, `items.tsv` and the two source snapshots. Set the CKAN API root, package name, resource UUID, expected licence and CSV digest; map every published category to a category in `base.json`. TSV columns are `id`, `ja`, `kana`, `en`, `aliases` (semicolon separated), `source_sha256` and `instructions_en`. `row_digest` in the importer computes the digest from the parsed Japanese row; it is independent of CSV encoding and column line endings. Validate and review the resulting rules, translations and calendar coverage before moving a candidate under `municipalities/` for publishing.
+
+The first pilot is [Arakawa](imports/13118/README.md), whose catalog explicitly identifies its dataset as conforming to the Digital Agency standard and licenses it CC BY 4.0. It is a future-rollout artifact and is not published by merging this importer. Yokohama continues to use its existing official-page pipeline.
 
 ## Publishing
 

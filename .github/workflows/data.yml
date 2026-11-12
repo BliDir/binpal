@@ -32,6 +32,10 @@ jobs:
       - run: shellcheck data/scripts/*.sh
       - run: uv run data/scripts/validate.py data/schema/examples/manifest.json
       - run: uv run data/tests/test_monitor.py
+      - run: uv run data/tests/test_import_standard.py
+      - run: uv run data/scripts/import_standard.py data/imports/13118
+      - run: git diff --exit-code -- data/imports/13118/bundle.json
+      - run: uv run data/scripts/validate.py data/imports/13118/bundle.json
       - run: uv run data/tests/test_build_yokohama.py
       - run: uv run data/tests/test_publish.py
       - run: uv run data/tests/test_boundaries.py

@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "bundle_version": 1,
+  "generated_at": "2026-11-12T00:00:00+09:00",
+  "municipality": {
+    "id": "13118",
+    "prefecture_code": "13",
+    "names": {
+      "ja": "荒川区",
+      "kana": "アラカワク",
+      "en": "Arakawa City"
+    },
+    "website_url": "https://www.city.arakawa.tokyo.jp/"
+  },
+  "attribution": [
+    {
+      "text": {
+        "ja": "荒川区「ごみの分別方法一覧」（CC BY 4.0）を加工し、英訳・読み・検索語を追加。",
+        "en": "Adapted from Arakawa City’s List of Waste Separation Methods (CC BY 4.0); English translations, readings and search aliases added."
+      },
+      "license": "CC-BY-4.0",
+      "url": "https://catalog.data.metro.tokyo.lg.jp/dataset/t131181d0000000014"
+    },
+    {
+      "text": {
+        "ja": "e-Stat 令和2年国勢調査の町丁・字等別境界データの地域コードを使用。",
+        "en": "Area code derived from e-Stat 2020 Population Census small-area boundary data."
+      },
+      "license": "LicenseRef-e-Stat-Terms-of-Use",
+      "url": "https://www.e-stat.go.jp/terms-of-use"
+    },
+    {
+      "text": {
+        "ja": "荒川区のごみ収集日ページの収集曜日を加工。",
+        "en": "Collection-day facts adapted from Arakawa City’s official waste collection page."
+      },
+      "license": "LicenseRef-Arakawa-Website",
+      "url": "https://www.city.arakawa.tokyo.jp/a025/recycle/shuushuubi/syusyubi.html"
+    }
+  ],
+  "areas": [
+    {
+      "id": "13118-001001",
+      "names": {
+        "ja": "南千住一丁目",
+        "kana": "ミナミセンジュイッチョウメ",
+        "en": "Minamisenju 1-chome"
+      },
+      "town": {
+        "ja": "南千住",
+        "kana": "ミナミセンジュ",
+        "en": "Minamisenju"
+      },
+      "chome": 1
+    }
+  ],
+  "categories": [
+    {
+      "id": "moyasu",
+      "names": {
+        "ja": "燃やすごみ",
+        "kana": "モヤスゴミ",
+        "en": "Burnable waste"
+      },
+      "common": "burnable"
+    },
+    {
+      "id": "moyasanai",
+      "names": {
+        "ja": "燃やさないごみ",
+        "kana": "モヤサナイゴミ",
+        "en": "Non-burnable waste"
+      },
+      "common": "non_burnable"
+    },
+    {
+      "id": "plastic",
+      "names": {
+        "ja": "プラスチック",
+        "kana": "プラスチック",
+        "en": "Plastics"
+      },
+      "common": "plastic"
+    },
+    {
+      "id": "resources",
+      "names": {
+        "ja": "資源",
+        "kana": "シゲン",
+        "en": "Recyclables"
+      },
+      "common": "resources"
+    },
+    {
+      "id": "bulky",
+      "names": {
+        "ja": "粗大ごみ",
+        "kana": "ソダイゴミ",
+        "en": "Bulky waste"
+      },
+      "common": "bulky"
+    },
+    {
+      "id": "not-collected",
+      "names": {
+        "ja": "収集できないもの",
+        "kana": "シュウシュウデキナイモノ",
+        "en": "Not collected by the ward"
+      },
+      "common": "not_collected"
+    },
+    {
+      "id": "other",
+      "names": {
+        "ja": "その他",
+        "kana": "ソノタ",
+        "en": "Other disposal routes"
+      },
+      "common": "other"
+    }
+  ],
+  "rules": [],
+  "calendars": [
+    {
+      "id": "minamisenju-1-moyasu",
+      "categories": [
+        "moyasu"
+      ],
+      "area_ids": [
+        "13118-001001"
+      ],
+      "pattern": {
+        "type": "weekly",
+        "weekdays": [
+          "mon",
+          "thu"
+        ]
+      },
+      "put_out_by": "08:00",
+      "valid_from": "2026-11-12",
+      "source_url": "https://www.city.arakawa.tokyo.jp/a025/recycle/shuushuubi/syusyubi.html"
+    },
+    {
+      "id": "minamisenju-1-moyasanai",
+      "categories": [
+        "moyasanai"
+      ],
+      "area_ids": [
+        "13118-001001"
+      ],
+      "pattern": {
+        "type": "monthly_nth_weekday",
+        "weekday": "fri",
+        "nth": [
+          1,
+          3
+        ]
+      },
+      "put_out_by": "08:00",
+      "valid_from": "2026-11-12",
+      "source_url": "https://www.city.arakawa.tokyo.jp/a025/recycle/shuushuubi/syusyubi.html"
+    },
+    {
+      "id": "minamisenju-1-plastic",
+      "categories": [
+        "plastic"
+      ],
+      "area_ids": [
+        "13118-001001"
+      ],
+      "pattern": {
+        "type": "weekly",
+        "weekdays": [
+          "wed"
+        ]
+      },
+      "put_out_by": "08:00",
+      "valid_from": "2026-11-12",
+      "source_url": "https://www.city.arakawa.tokyo.jp/a025/recycle/shuushuubi/syusyubi.html"
+    }
+  ],
+  "exceptions": []
+}
