@@ -3,10 +3,10 @@
 #   id            lowercase slug, unique; also the snapshot's file name
 #   municipality  5-digit local government code of the bundle this feeds
 #   title         shown in the issue the monitor opens
-#   type          html | pdf | ckan
+#   type          html | pdf | ckan | news
 #   url           the page or PDF; for ckan, the dataset's package_show API URL
-#   selector      html only: CSS selector of the main content
-#   strip         html only: CSS selectors removed from the content first
+#   selector      html/news: CSS selector of the main content
+#   strip         html/news: CSS selectors removed from the content first
 #   ignore        regexes; matching lines are dropped before comparing
 #   formats       ckan only: file formats to watch (default: all)
 sources:
@@ -230,3 +230,9 @@ sources:
       - "#tmp_inquiry"
       - "#tmp_section_related"
       - ".wrap_pageid"
+  - id: yokohama-aoba-news
+    municipality: "14100"
+    title: 青葉区 新着情報
+    type: news
+    url: https://www.city.yokohama.lg.jp/aoba/allNewsList.html
+    selector: "#tmp_contents"

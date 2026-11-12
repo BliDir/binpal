@@ -28,6 +28,7 @@ jobs:
       - name: Check sources
         env:
           GH_TOKEN: ${{ github.token }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: uv run data/scripts/monitor.py --open-issues
 
       # Also commits the monthly heartbeat in state.json, which keeps this
