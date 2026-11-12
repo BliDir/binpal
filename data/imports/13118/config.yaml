@@ -1,0 +1,18 @@
+# Digital Agency standard CSV; future-rollout pilot, not a published municipality.
+catalog_api: https://catalog.data.metro.tokyo.lg.jp/api/3/action
+package: t131181d0000000014
+resource: 69a49f19-fc49-4a75-8c77-8b6f983bcb53
+license_id: CC-BY-4.0
+source_sha256: da74f0c73156e25e2737f54ac26d6a0832d3d93db1e97841dad3988f0d5edebe
+# Observation baseline, not a claim that all these rules took effect on this date.
+valid_from: "2026-11-12"
+# Agent source check. Human release review is pending; see REVIEW.md.
+verified_at: "2026-11-12"
+categories:
+  燃やすごみ: moyasu
+  燃やさないごみ: moyasanai
+  プラスチック: plastic
+  資源: resources
+  粗大ごみ: bulky
+  収集できないもの: not-collected
+  その他: other

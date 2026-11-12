@@ -1,0 +1,92 @@
+{
+  "help": "https://catalog.data.metro.tokyo.lg.jp/api/3/action/help_show?name=package_show",
+  "success": true,
+  "result": {
+    "author": null,
+    "author_email": null,
+    "creator_user_id": "808114df-af4f-4b09-bcfd-f655635cdec2",
+    "id": "92ee513d-d604-4ac3-9bd5-d6306c6003b0",
+    "isopen": true,
+    "license_id": "CC-BY-4.0",
+    "license_title": "クリエイティブ・コモンズ 表示（CC BY）",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/deed.ja",
+    "maintainer": "環境清掃部清掃リサイクル推進課",
+    "maintainer_email": null,
+    "metadata_created": "2025-05-26T12:23:19.318765",
+    "metadata_modified": "2025-12-12T08:45:10.783420",
+    "name": "t131181d0000000014",
+    "notes": "【荒川区】ごみの分別方法の一覧です。\r\n\r\n※デジタル庁が公開を推奨している「自治体標準オープンデータセット」に準拠し、作成しています。\r\n",
+    "num_resources": 1,
+    "num_tags": 1,
+    "organization": {
+      "id": "4945caea-12a3-4c66-9f7c-e00446623e2b",
+      "name": "t131181",
+      "title": "荒川区",
+      "type": "organization",
+      "description": "https://www.city.arakawa.tokyo.jp/",
+      "image_url": "https://catalog.data.metro.tokyo.lg.jp/static/images/organizations/t131181.png",
+      "created": "2026-01-28T04:57:43.331323",
+      "is_organization": true,
+      "approval_status": "approved",
+      "state": "active"
+    },
+    "owner_org": "4945caea-12a3-4c66-9f7c-e00446623e2b",
+    "private": false,
+    "state": "active",
+    "title": "ごみの分別方法一覧",
+    "type": "dataset",
+    "url": "https://www.city.arakawa.tokyo.jp/a008/jouhoukoukai/jouhoukoukai/opendata.html",
+    "version": null,
+    "extras": [
+      {
+        "key": "更新頻度",
+        "value": "随時"
+      }
+    ],
+    "groups": [
+      {
+        "description": "環境、エネルギー、廃棄物などに関するデータ",
+        "display_name": "環境・自然",
+        "id": "f4681e08-e42f-46b8-9894-89503e33354b",
+        "image_display_url": "https://catalog.data.metro.tokyo.lg.jp/static/images/categories/c022.svg",
+        "name": "c022",
+        "title": "環境・自然"
+      }
+    ],
+    "resources": [
+      {
+        "cache_last_updated": null,
+        "cache_url": null,
+        "created": "2025-03-24T15:00:00",
+        "datastore_active": false,
+        "description": null,
+        "format": "CSV",
+        "hash": "",
+        "id": "69a49f19-fc49-4a75-8c77-8b6f983bcb53",
+        "last_modified": "2025-03-24T15:00:00",
+        "metadata_modified": "2026-01-30T13:16:16.970900",
+        "mimetype": null,
+        "mimetype_inner": null,
+        "name": "ごみの分別方法一覧",
+        "package_id": "92ee513d-d604-4ac3-9bd5-d6306c6003b0",
+        "position": 0,
+        "resource_type": null,
+        "size": 28672,
+        "state": "active",
+        "url": "https://www.city.arakawa.tokyo.jp/documents/23112/131181_garbage_separation.csv",
+        "url_type": null
+      }
+    ],
+    "tags": [
+      {
+        "display_name": "自治体標準オープンデータセット",
+        "id": "2df4a951-8535-4677-925a-f7089170b53d",
+        "name": "自治体標準オープンデータセット",
+        "state": "active",
+        "vocabulary_id": null
+      }
+    ],
+    "relationships_as_subject": [],
+    "relationships_as_object": []
+  }
+}

@@ -1,0 +1,2 @@
+# Preserve downloaded source bytes (including CP932 and CRLF) for digest checks.
+*/source/sorting.csv binary
