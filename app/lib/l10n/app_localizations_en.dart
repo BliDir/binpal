@@ -167,4 +167,126 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get logoLabel => 'BinPal logo';
+
+  @override
+  String areaLabel(String area, String ward) {
+    return '$area, $ward';
+  }
+
+  @override
+  String get areaPickerTitle => 'Collection area';
+
+  @override
+  String get areaPickerWard => 'Choose your ward';
+
+  @override
+  String get areaPickerTown => 'Choose your town';
+
+  @override
+  String get areaPickerChome => 'Choose your chōme';
+
+  @override
+  String get areaPickerNoData =>
+      'Area data hasn\'t downloaded yet. Check your connection, then try again.';
+
+  @override
+  String get areaPickerHint => 'Pick the town where you put out your rubbish.';
+
+  @override
+  String get todayAreaBody =>
+      'Today\'s and tomorrow\'s collections for your area will show here.';
+
+  @override
+  String get remindersTitle => 'Collection reminders';
+
+  @override
+  String get remindersSubtitle => 'Get a reminder before collection time.';
+
+  @override
+  String get remindersSwitch => 'Remind me';
+
+  @override
+  String get remindersNeedArea => 'Choose your collection area first.';
+
+  @override
+  String get remindersCategories => 'Rubbish types to remind';
+
+  @override
+  String get remindersCategoriesHint =>
+      'Choose which types you want reminders for.';
+
+  @override
+  String get remindersTimes => 'Reminder times';
+
+  @override
+  String get remindersEvening => 'Evening before';
+
+  @override
+  String get remindersEveningHint => 'The day before collection';
+
+  @override
+  String get remindersMorning => 'Morning of';
+
+  @override
+  String get remindersMorningHint => 'On the collection day';
+
+  @override
+  String remindersMorningLate(String time) {
+    return 'Rubbish has to be out by $time. A reminder after that is too late.';
+  }
+
+  @override
+  String get remindersDenied =>
+      'Notifications are off for BinPal. Turn them on in your phone\'s settings to get reminders.';
+
+  @override
+  String remindersScheduled(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count reminders scheduled',
+      one: '1 reminder scheduled',
+      zero: 'No reminders in the next few weeks',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String remindersSummaryEvening(String time) {
+    return 'Evening before · $time';
+  }
+
+  @override
+  String remindersSummaryMorning(String time) {
+    return 'Morning of · $time';
+  }
+
+  @override
+  String get reminderChannel => 'Collection reminders';
+
+  @override
+  String reminderEveningTitle(String categories) {
+    return 'Tomorrow: $categories';
+  }
+
+  @override
+  String reminderMorningTitle(String categories) {
+    return 'Today: $categories';
+  }
+
+  @override
+  String reminderEveningBody(String time) {
+    return 'Put it out by $time tomorrow morning.';
+  }
+
+  @override
+  String reminderMorningBody(String time) {
+    return 'Put it out by $time.';
+  }
+
+  @override
+  String get reminderBodyNoTime => 'Check the time at your collection point.';
+
+  @override
+  String get reminderListSeparator => ', ';
 }

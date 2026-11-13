@@ -1,15 +1,32 @@
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
+import '../data/area_controller.dart';
 import '../data/bundle_sync.dart';
 import '../data/database.dart';
 import '../data/sync_controller.dart';
+import '../reminders/reminder_notifications.dart';
+import '../reminders/reminder_service.dart';
 
-/// The app's long-lived objects: the local database and the bundle sync.
+/// The app's long-lived objects: the local database, the bundle sync, the
+/// chosen area and the reminders.
 class AppServices {
-  AppServices({required this.db, required this.sync, this.syncOnLaunch = true});
+  AppServices({
+    required this.db,
+    required this.sync,
+    required this.area,
+    required this.reminders,
+    this.syncOnLaunch = true,
+  }) {
+    // After every refresh (launch, foreground, bundle update): re-read the
+    // area, which a new bundle can change, and top up reminders.
+    sync.afterRefresh ??= () async {
+      await area.load();
+      await reminders.reschedule();
+    };
+  }
 
-  /// The real database file and network client.
+  /// The real database file, network client and notifications.
   factory AppServices.live() {
     final db = AppDatabase();
     return AppServices(
@@ -18,11 +35,18 @@ class AppServices {
         db: db,
         sync: BundleSync(db: db, client: http.Client()),
       ),
+      area: AreaController(db: db),
+      reminders: ReminderService(
+        db: db,
+        notifications: LocalReminderNotifications(),
+      ),
     );
   }
 
   final AppDatabase db;
   final SyncController sync;
+  final AreaController area;
+  final ReminderService reminders;
 
   /// Off in widget tests, which must not touch the database or the network.
   final bool syncOnLaunch;
