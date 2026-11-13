@@ -182,5 +182,86 @@
     }
   },
   "reminderBodyNoTime": "Check the time at your collection point.",
-  "reminderListSeparator": ", "
+  "reminderListSeparator": ", ",
+  "todayPutOutBy": "Put out by {time}",
+  "@todayPutOutBy": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "todayAlso": "Also: {categories}",
+  "@todayAlso": {
+    "placeholders": {
+      "categories": {
+        "type": "String"
+      }
+    }
+  },
+  "todayNoCollection": "No collection today",
+  "todayNoCollectionBody": "There is no rubbish collection in your area today.",
+  "todayTomorrow": "Tomorrow · {date}",
+  "@todayTomorrow": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "todayNoCollectionTomorrow": "No collection tomorrow",
+  "todaySearchHint": "How do I sort this item?",
+  "todayReminders": "Reminders",
+  "todayViewCalendar": "View calendar",
+  "todayStaleTitle": "Schedule may be out of date",
+  "todayStaleBody": "BinPal hasn't been able to check for updates since {date}. Collection days can change for holidays or ward updates.",
+  "@todayStaleBody": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "todayStaleLink": "Check ward information",
+  "todayChecked": "Checked {date} · {source}",
+  "@todayChecked": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "todayOffline": "Available offline",
+  "todayNoData": "Your area's data hasn't downloaded yet.",
+  "calendarTitle": "Calendar",
+  "calendarDetails": "Collection details: {date}",
+  "@calendarDetails": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "calendarNone": "No collection",
+  "calendarArea": "Area: {area}",
+  "@calendarArea": {
+    "placeholders": {
+      "area": {
+        "type": "String"
+      }
+    }
+  },
+  "calendarSource": "Source: {source}",
+  "@calendarSource": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "calendarPrevious": "Previous month",
+  "calendarNext": "Next month"
 }

@@ -19,8 +19,12 @@ class _BinPalAppState extends State<BinPalApp> {
   @override
   void initState() {
     super.initState();
-    // Starts in the background; the first screen never waits for it.
-    if (widget.services.syncOnLaunch) widget.services.sync.start();
+    // Starts in the background; the first screen never waits for it. The
+    // area is read from the database straight away, not after the network.
+    if (widget.services.syncOnLaunch) {
+      widget.services.area.load();
+      widget.services.sync.start();
+    }
   }
 
   @override

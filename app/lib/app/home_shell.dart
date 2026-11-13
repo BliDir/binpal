@@ -23,7 +23,10 @@ class _HomeShellState extends State<HomeShell> {
       // IndexedStack keeps each tab's state (scroll, search text) when switching.
       body: IndexedStack(
         index: _index,
-        children: const [TodayScreen(), SearchScreen()],
+        children: [
+          TodayScreen(onOpenSearch: () => setState(() => _index = 1)),
+          const SearchScreen(),
+        ],
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _index,

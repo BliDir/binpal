@@ -17,7 +17,8 @@ class AppServices {
     required this.area,
     required this.reminders,
     this.syncOnLaunch = true,
-  }) {
+    DateTime Function()? clock,
+  }) : clock = clock ?? DateTime.now {
     // After every refresh (launch, foreground, bundle update): re-read the
     // area, which a new bundle can change, and top up reminders.
     sync.afterRefresh ??= () async {
@@ -50,6 +51,9 @@ class AppServices {
 
   /// Off in widget tests, which must not touch the database or the network.
   final bool syncOnLaunch;
+
+  /// The current time. Tests set it to a fixed day.
+  final DateTime Function() clock;
 
   static AppServices of(BuildContext context) {
     final scope = context

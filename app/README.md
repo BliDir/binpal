@@ -13,6 +13,7 @@ lib/
   reminders/      reminder planning and local notifications
   features/
     today/        today's and tomorrow's collections
+    calendar/     month calendar for the chosen area
     search/       offline item search
     item/         one item's category, instructions and source
     settings/     area, reminders, about
@@ -35,6 +36,19 @@ Core packages only: `drift` (SQLite with FTS5), `http` and `crypto` (bundle down
 * Dates are `JapanDate`s: the calendar date in Japan whatever the phone's time zone.
 
 The next 60 days for one Aoba-ku area take about 2 ms (15 ms the first time) on an Android 16 emulator and an iPhone 17 simulator, including reading from the database (`integration_test/schedule_test.dart`).
+
+## Today and the calendar
+
+Today shows what goes out today and tomorrow in the chosen area, from the local database only: nothing on it waits for the network, and the area is read from the database at launch rather than after the bundle check.
+
+* **Day cards**: the first category collected, large, with its illustration (`assets/illustrations/`) and put-out time ("Put out by 8:00 AM", in the phone's time format), then the categories that share the day ("Also: Non-burnable, Spray cans, Batteries"). Days with nothing say so, with the reason when an exception gives one (the New Year closure).
+* **Freshness**: "Checked {date} · Aoba Ward", linking to the city's collection-day page. The date is the last time the app confirmed with the CDN that its bundle is current.
+* **Stale notice**: if that was more than 14 days ago (`staleAfter`), Today says the schedule may be out of date and links to the ward's page.
+* **Calendar** (View calendar): a Sunday-first month with one dot per collection group, a legend, and the chosen day's categories and put-out times.
+
+`test/features/today/official_schedule_test.dart` checks all 47 rows of Aoba-ku's collection-day tables, read from the rule monitor's snapshots of the city's pages, against what Today shows for each covered area over a week.
+
+To time a cold start to Today content, build with `--dart-define=STARTUP_LOG=true`. The app then prints `BinPal startup: Today content shown` once, which can be compared with the launch in `adb logcat -v epoch`.
 
 ## Reminders
 

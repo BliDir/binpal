@@ -273,4 +273,86 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get reminderListSeparator => '・';
+
+  @override
+  String todayPutOutBy(String time) {
+    return '$timeまでに出す';
+  }
+
+  @override
+  String todayAlso(String categories) {
+    return '同じ日：$categories';
+  }
+
+  @override
+  String get todayNoCollection => '今日は収集がありません';
+
+  @override
+  String get todayNoCollectionBody => '今日はこの地域でごみの収集はありません。';
+
+  @override
+  String todayTomorrow(String date) {
+    return '明日・$date';
+  }
+
+  @override
+  String get todayNoCollectionTomorrow => '明日は収集がありません';
+
+  @override
+  String get todaySearchHint => 'この品目の分け方は？';
+
+  @override
+  String get todayReminders => 'お知らせ';
+
+  @override
+  String get todayViewCalendar => 'カレンダーを見る';
+
+  @override
+  String get todayStaleTitle => '収集日が古い可能性があります';
+
+  @override
+  String todayStaleBody(String date) {
+    return '$dateから更新を確認できていません。祝日や区の変更で収集日が変わることがあります。';
+  }
+
+  @override
+  String get todayStaleLink => '区の情報を確認する';
+
+  @override
+  String todayChecked(String date, String source) {
+    return '$dateに確認・$source';
+  }
+
+  @override
+  String get todayOffline => 'オフラインで使えます';
+
+  @override
+  String get todayNoData => '地域のデータがまだダウンロードされていません。';
+
+  @override
+  String get calendarTitle => 'カレンダー';
+
+  @override
+  String calendarDetails(String date) {
+    return '$dateの収集';
+  }
+
+  @override
+  String get calendarNone => '収集なし';
+
+  @override
+  String calendarArea(String area) {
+    return '地域：$area';
+  }
+
+  @override
+  String calendarSource(String source) {
+    return '情報源：$source';
+  }
+
+  @override
+  String get calendarPrevious => '前の月';
+
+  @override
+  String get calendarNext => '次の月';
 }

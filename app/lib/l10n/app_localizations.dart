@@ -553,6 +553,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **', '**
   String get reminderListSeparator;
+
+  /// No description provided for @todayPutOutBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Put out by {time}'**
+  String todayPutOutBy(String time);
+
+  /// No description provided for @todayAlso.
+  ///
+  /// In en, this message translates to:
+  /// **'Also: {categories}'**
+  String todayAlso(String categories);
+
+  /// No description provided for @todayNoCollection.
+  ///
+  /// In en, this message translates to:
+  /// **'No collection today'**
+  String get todayNoCollection;
+
+  /// No description provided for @todayNoCollectionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no rubbish collection in your area today.'**
+  String get todayNoCollectionBody;
+
+  /// No description provided for @todayTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow · {date}'**
+  String todayTomorrow(String date);
+
+  /// No description provided for @todayNoCollectionTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'No collection tomorrow'**
+  String get todayNoCollectionTomorrow;
+
+  /// No description provided for @todaySearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'How do I sort this item?'**
+  String get todaySearchHint;
+
+  /// No description provided for @todayReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders'**
+  String get todayReminders;
+
+  /// No description provided for @todayViewCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'View calendar'**
+  String get todayViewCalendar;
+
+  /// No description provided for @todayStaleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule may be out of date'**
+  String get todayStaleTitle;
+
+  /// No description provided for @todayStaleBody.
+  ///
+  /// In en, this message translates to:
+  /// **'BinPal hasn\'t been able to check for updates since {date}. Collection days can change for holidays or ward updates.'**
+  String todayStaleBody(String date);
+
+  /// No description provided for @todayStaleLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Check ward information'**
+  String get todayStaleLink;
+
+  /// No description provided for @todayChecked.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked {date} · {source}'**
+  String todayChecked(String date, String source);
+
+  /// No description provided for @todayOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Available offline'**
+  String get todayOffline;
+
+  /// No description provided for @todayNoData.
+  ///
+  /// In en, this message translates to:
+  /// **'Your area\'s data hasn\'t downloaded yet.'**
+  String get todayNoData;
+
+  /// No description provided for @calendarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar'**
+  String get calendarTitle;
+
+  /// No description provided for @calendarDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Collection details: {date}'**
+  String calendarDetails(String date);
+
+  /// No description provided for @calendarNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No collection'**
+  String get calendarNone;
+
+  /// No description provided for @calendarArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Area: {area}'**
+  String calendarArea(String area);
+
+  /// No description provided for @calendarSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Source: {source}'**
+  String calendarSource(String source);
+
+  /// No description provided for @calendarPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous month'**
+  String get calendarPrevious;
+
+  /// No description provided for @calendarNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next month'**
+  String get calendarNext;
 }
 
 class _AppLocalizationsDelegate

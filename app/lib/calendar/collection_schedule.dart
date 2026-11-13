@@ -170,6 +170,7 @@ class CalendarEntry {
     required this.validFrom,
     this.validTo,
     this.putOutBy,
+    this.sourceUrl,
   });
 
   final String id;
@@ -180,6 +181,9 @@ class CalendarEntry {
 
   /// `HH:MM` local time by which items must be out, if the bundle says.
   final String? putOutBy;
+
+  /// The official page the calendar was taken from.
+  final String? sourceUrl;
 
   bool collectsOn(JapanDate date) =>
       isValidOn(date, validFrom, validTo) && pattern.matches(date);
