@@ -158,17 +158,131 @@ abstract class AppLocalizations {
   /// **'How do I sort this item?'**
   String get searchHint;
 
-  /// No description provided for @searchExamples.
-  ///
-  /// In en, this message translates to:
-  /// **'Try umbrella, batteries or 傘'**
-  String get searchExamples;
-
   /// No description provided for @searchNoAreaBody.
   ///
   /// In en, this message translates to:
   /// **'Item search works offline once your area\'s data is downloaded.'**
   String get searchNoAreaBody;
+
+  /// No description provided for @searchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get searchTitle;
+
+  /// No description provided for @searchSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find how to sort and put out an item.'**
+  String get searchSubtitle;
+
+  /// No description provided for @searchExamplesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search examples'**
+  String get searchExamplesTitle;
+
+  /// No description provided for @searchOfflineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Available offline'**
+  String get searchOfflineTitle;
+
+  /// No description provided for @searchOfflineBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Search and sorting rules work without internet once your area\'s data is downloaded.'**
+  String get searchOfflineBody;
+
+  /// No description provided for @searchDownloading.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading your area\'s data…'**
+  String get searchDownloading;
+
+  /// No description provided for @searchDownloadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t download your area\'s data. Check your connection and try again.'**
+  String get searchDownloadFailed;
+
+  /// No description provided for @searchRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get searchRetry;
+
+  /// No description provided for @searchClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get searchClear;
+
+  /// No description provided for @searchResultCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 result for “{query}”} other{{count} results for “{query}”}}'**
+  String searchResultCount(int count, String query);
+
+  /// No description provided for @searchNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No results for “{query}”'**
+  String searchNoResults(String query);
+
+  /// No description provided for @searchNoResultsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Try another word, in English or Japanese, or a more general one: “bag” rather than “handbag”.'**
+  String get searchNoResultsBody;
+
+  /// No description provided for @itemHowTo.
+  ///
+  /// In en, this message translates to:
+  /// **'How to put it out'**
+  String get itemHowTo;
+
+  /// No description provided for @itemInJapanese.
+  ///
+  /// In en, this message translates to:
+  /// **'In Japanese'**
+  String get itemInJapanese;
+
+  /// No description provided for @itemTranslationNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The English is BinPal\'s translation. The Japanese is the city\'s own.'**
+  String get itemTranslationNote;
+
+  /// No description provided for @itemAboutCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'About {category}'**
+  String itemAboutCategory(String category);
+
+  /// No description provided for @itemSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Official source'**
+  String get itemSource;
+
+  /// No description provided for @itemSourceSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} website'**
+  String itemSourceSubtitle(String name);
+
+  /// No description provided for @itemVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked against the source'**
+  String get itemVerified;
+
+  /// No description provided for @itemOpenFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open the link.'**
+  String get itemOpenFailed;
 
   /// No description provided for @settingsArea.
   ///

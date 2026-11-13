@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 
+import 'normalize.dart';
+
 part 'database.g.dart';
 
 /// One row per downloaded municipality bundle.
@@ -141,6 +143,17 @@ class CollectionExceptions extends Table {
   TextColumn get sourceUrl => text().nullable()();
 }
 
+/// Searches that found nothing, counted on the device to improve aliases.
+/// Only the normalised query text and a count are kept; nothing is sent.
+class MissedSearches extends Table {
+  TextColumn get query => text()();
+  IntColumn get count => integer()();
+  DateTimeColumn get lastAt => dateTime()();
+
+  @override
+  Set<Column> get primaryKey => {query};
+}
+
 /// Small key-value store: the chosen municipality and area, last sync time.
 class Settings extends Table {
   TextColumn get key => text()();
@@ -161,6 +174,7 @@ class Settings extends Table {
     Calendars,
     CalendarAreas,
     CollectionExceptions,
+    MissedSearches,
     Settings,
   ],
 )
@@ -169,12 +183,87 @@ class AppDatabase extends _$AppDatabase {
     : super(executor ?? driftDatabase(name: 'binpal'));
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
+    onCreate: (m) async {
+      await m.createAll();
+      await _createSearchIndex();
+    },
+    onUpgrade: (m, from, to) async {
+      if (from < 2) {
+        await m.createTable(missedSearches);
+        await _createSearchIndex();
+        for (final b in await select(bundles).get()) {
+          await _indexMunicipality(b.municipalityId);
+        }
+      }
+    },
     beforeOpen: (details) => customStatement('PRAGMA foreign_keys = ON'),
   );
+
+  /// Full-text index over every rule's names and aliases, normalised with
+  /// [normalizeForSearch]. The trigram tokenizer matches any substring of
+  /// three or more characters; shorter queries use LIKE on the same table.
+  /// `is_alias` marks terms that came from the bundle's curated aliases.
+  Future<void> _createSearchIndex() => customStatement(
+    'CREATE VIRTUAL TABLE IF NOT EXISTS search_index USING fts5('
+    'term, rule_id UNINDEXED, municipality_id UNINDEXED, is_alias UNINDEXED, '
+    "tokenize = 'trigram')",
+  );
+
+  Future<void> _indexMunicipality(String mid) async {
+    await customStatement(
+      'DELETE FROM search_index WHERE municipality_id = ?',
+      [mid],
+    );
+    final rows = await customSelect(
+      'SELECT r.id, r.name_ja, r.name_kana, r.name_en, '
+      '(SELECT group_concat(alias, char(31)) FROM aliases a '
+      'WHERE a.rule_id = r.id) AS aliases '
+      'FROM rules r WHERE r.municipality_id = ?',
+      variables: [Variable.withString(mid)],
+    ).get();
+    await batch((b) {
+      for (final row in rows) {
+        final id = row.read<int>('id');
+        // Term -> whether it came from an alias. A term that is both a name
+        // and an alias counts as an alias.
+        final terms = <String, bool>{
+          for (final t in [
+            row.read<String>('name_ja'),
+            row.read<String>('name_kana'),
+            row.read<String>('name_en'),
+          ])
+            normalizeForSearch(t): false,
+          for (final t
+              in row.readNullable<String>('aliases')?.split('\u001f') ??
+                  const <String>[])
+            normalizeForSearch(t): true,
+        }..remove('');
+        for (final MapEntry(key: term, value: isAlias) in terms.entries) {
+          b.customStatement(
+            'INSERT INTO search_index '
+            '(term, rule_id, municipality_id, is_alias) VALUES (?, ?, ?, ?)',
+            [term, id, mid, if (isAlias) 1 else 0],
+          );
+        }
+      }
+    });
+  }
+
+  /// Counts a search that found nothing.
+  Future<void> recordMissedSearch(String query, {DateTime? at}) async {
+    final normalized = normalizeForSearch(query);
+    if (normalized.isEmpty) return;
+    await customStatement(
+      'INSERT INTO missed_searches (query, count, last_at) VALUES (?, 1, ?) '
+      'ON CONFLICT(query) DO UPDATE SET count = count + 1, '
+      'last_at = excluded.last_at',
+      [normalized, (at ?? DateTime.now()).millisecondsSinceEpoch ~/ 1000],
+    );
+  }
 
   Future<StoredBundle?> bundleFor(String municipalityId) => (select(
     bundles,
@@ -351,6 +440,8 @@ class AppDatabase extends _$AppDatabase {
           }
         }
       });
+
+      await _indexMunicipality(mid);
     });
   }
 
