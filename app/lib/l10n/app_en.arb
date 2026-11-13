@@ -16,6 +16,22 @@
   "settingsAreaNotSet": "Not set",
   "settingsReminders": "Reminders",
   "settingsRemindersOff": "Off",
+  "settingsData": "Area data",
+  "settingsDataVersion": "{name} · version {version}",
+  "@settingsDataVersion": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "version": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsDataNone": "Not downloaded yet",
+  "settingsDataDownloading": "Downloading…",
+  "settingsDataFailed": "Couldn't download. Tap to try again.",
+  "settingsDataStale": "Couldn't check for updates. Using the saved data.",
   "settingsAbout": "About BinPal",
   "aboutTagline": "Garbage sorting and collection days in Japan, in plain English.",
   "aboutLicenses": "Open-source licences",

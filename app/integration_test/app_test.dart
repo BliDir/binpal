@@ -9,6 +9,7 @@
 import 'dart:io';
 
 import 'package:binpal/app/app.dart';
+import 'package:binpal/app/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -46,7 +47,7 @@ void main() {
         await useLocale(tester, locale);
         final ja = locale.languageCode == 'ja';
 
-        await tester.pumpWidget(const BinPalApp());
+        await tester.pumpWidget(BinPalApp(services: AppServices.live()));
         await tester.pumpAndSettle();
         expect(find.text(ja ? '地域が未設定です' : 'No area yet'), findsOneWidget);
         await screenshot(tester, '${locale.languageCode}_today');

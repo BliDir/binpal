@@ -194,6 +194,42 @@ abstract class AppLocalizations {
   /// **'Off'**
   String get settingsRemindersOff;
 
+  /// No description provided for @settingsData.
+  ///
+  /// In en, this message translates to:
+  /// **'Area data'**
+  String get settingsData;
+
+  /// No description provided for @settingsDataVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} · version {version}'**
+  String settingsDataVersion(String name, int version);
+
+  /// No description provided for @settingsDataNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Not downloaded yet'**
+  String get settingsDataNone;
+
+  /// No description provided for @settingsDataDownloading.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading…'**
+  String get settingsDataDownloading;
+
+  /// No description provided for @settingsDataFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t download. Tap to try again.'**
+  String get settingsDataFailed;
+
+  /// No description provided for @settingsDataStale.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t check for updates. Using the saved data.'**
+  String get settingsDataStale;
+
   /// No description provided for @settingsAbout.
   ///
   /// In en, this message translates to:

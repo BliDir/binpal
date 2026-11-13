@@ -58,6 +58,26 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settingsRemindersOff => 'オフ';
 
   @override
+  String get settingsData => '地域のデータ';
+
+  @override
+  String settingsDataVersion(String name, int version) {
+    return '$name・バージョン$version';
+  }
+
+  @override
+  String get settingsDataNone => '未ダウンロード';
+
+  @override
+  String get settingsDataDownloading => 'ダウンロード中…';
+
+  @override
+  String get settingsDataFailed => 'ダウンロードできませんでした。タップして再試行。';
+
+  @override
+  String get settingsDataStale => '更新を確認できませんでした。保存済みのデータを使用します。';
+
+  @override
   String get settingsAbout => 'BinPalについて';
 
   @override

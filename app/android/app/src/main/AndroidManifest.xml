@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Downloading the manifest and the area's data bundle. -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <!-- Area detection only, while the app is open (geolocator). -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />

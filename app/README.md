@@ -7,7 +7,8 @@ Flutter app for iOS and Android. Works offline from a cached area bundle (see `.
 ```
 lib/
   main.dart
-  app/            app widget, theme (design tokens), tab shell, shared top bar
+  app/            app widget, services, theme (design tokens), tab shell, shared top bar
+  data/           local database (drift) and bundle sync from the CDN
   features/
     today/        today's and tomorrow's collections
     search/       offline item search
@@ -17,7 +18,24 @@ lib/
 
 Each feature owns its screens and, later, its state and data access. Shared code lives in `app/` until a second feature needs it.
 
-Core packages only: `drift` (SQLite with FTS5), `geolocator`, `flutter_local_notifications` and `intl`. Camera arrives in v2. Text uses the platform's system font, so no Japanese font is bundled.
+Core packages only: `drift` (SQLite with FTS5), `http` and `crypto` (bundle download and checksum), `geolocator`, `flutter_local_notifications` and `intl`. Camera arrives in v2. Text uses the platform's system font, so no Japanese font is bundled.
+
+## Data and sync
+
+`lib/data/database.dart` holds one SQLite database with the bundle's areas, categories, rules, aliases, calendars and exceptions, plus a small settings table. Generated code is in `database.g.dart`; after changing a table, run `dart run build_runner build`.
+
+`lib/data/bundle_sync.dart` keeps the user's municipality in step with the CDN:
+
+1. Fetch `manifest.json` and find the municipality's bundle in a schema version the app can read.
+2. If the stored bundle has the same version and SHA-256, stop. Otherwise download only that bundle.
+3. Check its size and SHA-256 against the manifest, and that it is the version and municipality the manifest promised.
+4. Replace the municipality's data in a single transaction.
+
+Any failure (no network, HTTP error, wrong size or checksum, a bundle that does not import) leaves the stored data exactly as it was.
+
+`SyncController` runs this on launch and when the app returns to the foreground, at most every six hours once data is stored, and never makes a screen wait for it. Until area setup exists, the municipality is Yokohama (`14100`). Settings → Area data shows which bundle is on the device and retries on tap.
+
+The CDN defaults to `https://data.blidir.fun`; override with `--dart-define=CDN_BASE_URL=…`.
 
 ## Run
 
@@ -25,6 +43,7 @@ Core packages only: `drift` (SQLite with FTS5), `geolocator`, `flutter_local_not
 flutter pub get
 flutter run                       # debug on a connected device
 flutter test
+flutter test integration_test/sync_test.dart -d <device-id>   # first-launch sync against the real CDN
 ```
 
 ## Integration tests
