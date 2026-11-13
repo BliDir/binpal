@@ -10,7 +10,7 @@ import '../../app/top_bar.dart';
 import '../../calendar/collection_schedule.dart';
 import '../../l10n/app_localizations.dart';
 import '../../reminders/reminder_preferences.dart';
-import '../area/area_picker_screen.dart';
+import '../area/area_setup_screen.dart';
 import '../calendar/calendar_screen.dart';
 import '../item/category_style.dart';
 import '../reminders/reminder_settings_screen.dart';
@@ -108,7 +108,7 @@ class _TodayScreenState extends State<TodayScreen> with WidgetsBindingObserver {
                   _Heading(now: _now()),
                   const SizedBox(height: AppSpacing.md),
                   if (services.area.area == null)
-                    _NoArea(onChoose: () => _open(const AreaPickerScreen()))
+                    _NoArea(onChoose: () => _open(const AreaSetupScreen()))
                   else if (data == null)
                     const SizedBox.shrink()
                   else

@@ -6,7 +6,7 @@ import '../../data/sync_controller.dart';
 import '../../l10n/app_localizations.dart';
 import '../../reminders/reminder_preferences.dart';
 import '../area/area_label.dart';
-import '../area/area_picker_screen.dart';
+import '../area/area_setup_screen.dart';
 import '../reminders/reminder_settings_screen.dart';
 import 'about_screen.dart';
 
@@ -59,7 +59,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       : areaLabel(context, area, services.area.ward),
                 ),
                 trailing: const Icon(Icons.chevron_right),
-                onTap: () => _open(const AreaPickerScreen()),
+                onTap: () => _open(const AreaSetupScreen()),
               );
             },
           ),

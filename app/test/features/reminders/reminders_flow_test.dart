@@ -63,6 +63,8 @@ void main() {
 
     await tester.tap(find.text('Area'));
     await settle(tester);
+    await tester.tap(find.text('Choose manually'));
+    await settle(tester);
     // The example has two wards.
     expect(find.text('Choose your ward'), findsOneWidget);
     await tester.tap(find.text('Aoba Ward'));
@@ -91,6 +93,8 @@ void main() {
     await withBundle(tester);
     await openSettings(tester);
     await tester.tap(find.text('Area'));
+    await settle(tester);
+    await tester.tap(find.text('Choose manually'));
     await settle(tester);
     await tester.tap(find.text('Naka Ward'));
     await settle(tester);

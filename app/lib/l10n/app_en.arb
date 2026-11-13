@@ -263,5 +263,55 @@
     }
   },
   "calendarPrevious": "Previous month",
-  "calendarNext": "Next month"
+  "calendarNext": "Next month",
+  "setupTitle": "Set your collection area",
+  "setupBody": "Choose your area to see the right collection days and sorting rules.",
+  "setupUseLocation": "Use my location",
+  "setupChooseManually": "Choose manually",
+  "setupPrivacyTitle": "Your privacy is protected",
+  "setupPrivacyBody": "Your location is used once, on this phone, to find your collection area. It is not saved or sent anywhere.",
+  "setupLocating": "Finding your area…",
+  "setupDownloadingMap": "Downloading the area map (about 2 MB, only the first time)…",
+  "setupDenied": "Location access wasn't allowed. You can choose your area from the list instead.",
+  "setupDeniedForever": "Location access is off for BinPal. Turn it on in Settings, or choose your area from the list.",
+  "setupServiceOff": "Location services are off on this phone. Turn them on, or choose your area from the list.",
+  "setupUnavailable": "Couldn't get your location. Try again near a window or outside, or choose your area from the list.",
+  "setupMapFailed": "Couldn't download the area map. Check your connection and try again, or choose your area from the list.",
+  "setupDataFailed": "Your area's data hasn't downloaded yet. Check your connection and try again.",
+  "setupNotCovered": "BinPal doesn't have collection days for {place} yet.",
+  "@setupNotCovered": {
+    "placeholders": {
+      "place": {
+        "type": "String"
+      }
+    }
+  },
+  "setupOutside": "BinPal doesn't cover where you are yet.",
+  "setupOpenSettings": "Open Settings",
+  "setupTryAgain": "Try again",
+  "confirmTitle": "Confirm area",
+  "confirmHeading": "Is this your area?",
+  "confirmBody": "Looks like you're in {area}. Is this where you put out your rubbish?",
+  "@confirmBody": {
+    "placeholders": {
+      "area": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmWardCity": "{ward}, {city}",
+  "@confirmWardCity": {
+    "placeholders": {
+      "ward": {
+        "type": "String"
+      },
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmNearby": "Also near you",
+  "confirmNearbyHint": "You're close to a boundary, so check which side you're on.",
+  "confirmButton": "Confirm area",
+  "confirmOther": "Choose another area"
 }

@@ -14,6 +14,10 @@ class AreaController extends ChangeNotifier {
   Area? area;
   Ward? ward;
 
+  /// Whether [load] has finished once, so a missing area means "not chosen"
+  /// rather than "not read yet".
+  bool loaded = false;
+
   /// Reads the chosen area from settings. The area can disappear from a new
   /// bundle; then [area] is null and the user is asked to choose again.
   Future<void> load() async {
@@ -28,9 +32,10 @@ class AreaController extends ChangeNotifier {
         : await (db.select(
             db.wards,
           )..where((w) => w.id.equals(found!.wardId!))).getSingleOrNull();
-    if (found != area || foundWard != ward) {
+    if (found != area || foundWard != ward || !loaded) {
       area = found;
       ward = foundWard;
+      loaded = true;
       notifyListeners();
     }
   }
