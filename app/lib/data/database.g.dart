@@ -4453,6 +4453,266 @@ class CollectionExceptionsCompanion
   }
 }
 
+class $MissedSearchesTable extends MissedSearches
+    with TableInfo<$MissedSearchesTable, MissedSearche> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MissedSearchesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _queryMeta = const VerificationMeta('query');
+  @override
+  late final GeneratedColumn<String> query = GeneratedColumn<String>(
+    'query',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _countMeta = const VerificationMeta('count');
+  @override
+  late final GeneratedColumn<int> count = GeneratedColumn<int>(
+    'count',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _lastAtMeta = const VerificationMeta('lastAt');
+  @override
+  late final GeneratedColumn<DateTime> lastAt = GeneratedColumn<DateTime>(
+    'last_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [query, count, lastAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'missed_searches';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MissedSearche> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('query')) {
+      context.handle(
+        _queryMeta,
+        query.isAcceptableOrUnknown(data['query']!, _queryMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_queryMeta);
+    }
+    if (data.containsKey('count')) {
+      context.handle(
+        _countMeta,
+        count.isAcceptableOrUnknown(data['count']!, _countMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_countMeta);
+    }
+    if (data.containsKey('last_at')) {
+      context.handle(
+        _lastAtMeta,
+        lastAt.isAcceptableOrUnknown(data['last_at']!, _lastAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_lastAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {query};
+  @override
+  MissedSearche map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MissedSearche(
+      query: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}query'],
+      )!,
+      count: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}count'],
+      )!,
+      lastAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}last_at'],
+      )!,
+    );
+  }
+
+  @override
+  $MissedSearchesTable createAlias(String alias) {
+    return $MissedSearchesTable(attachedDatabase, alias);
+  }
+}
+
+class MissedSearche extends DataClass implements Insertable<MissedSearche> {
+  final String query;
+  final int count;
+  final DateTime lastAt;
+  const MissedSearche({
+    required this.query,
+    required this.count,
+    required this.lastAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['query'] = Variable<String>(query);
+    map['count'] = Variable<int>(count);
+    map['last_at'] = Variable<DateTime>(lastAt);
+    return map;
+  }
+
+  MissedSearchesCompanion toCompanion(bool nullToAbsent) {
+    return MissedSearchesCompanion(
+      query: Value(query),
+      count: Value(count),
+      lastAt: Value(lastAt),
+    );
+  }
+
+  factory MissedSearche.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MissedSearche(
+      query: serializer.fromJson<String>(json['query']),
+      count: serializer.fromJson<int>(json['count']),
+      lastAt: serializer.fromJson<DateTime>(json['lastAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'query': serializer.toJson<String>(query),
+      'count': serializer.toJson<int>(count),
+      'lastAt': serializer.toJson<DateTime>(lastAt),
+    };
+  }
+
+  MissedSearche copyWith({String? query, int? count, DateTime? lastAt}) =>
+      MissedSearche(
+        query: query ?? this.query,
+        count: count ?? this.count,
+        lastAt: lastAt ?? this.lastAt,
+      );
+  MissedSearche copyWithCompanion(MissedSearchesCompanion data) {
+    return MissedSearche(
+      query: data.query.present ? data.query.value : this.query,
+      count: data.count.present ? data.count.value : this.count,
+      lastAt: data.lastAt.present ? data.lastAt.value : this.lastAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MissedSearche(')
+          ..write('query: $query, ')
+          ..write('count: $count, ')
+          ..write('lastAt: $lastAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(query, count, lastAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MissedSearche &&
+          other.query == this.query &&
+          other.count == this.count &&
+          other.lastAt == this.lastAt);
+}
+
+class MissedSearchesCompanion extends UpdateCompanion<MissedSearche> {
+  final Value<String> query;
+  final Value<int> count;
+  final Value<DateTime> lastAt;
+  final Value<int> rowid;
+  const MissedSearchesCompanion({
+    this.query = const Value.absent(),
+    this.count = const Value.absent(),
+    this.lastAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MissedSearchesCompanion.insert({
+    required String query,
+    required int count,
+    required DateTime lastAt,
+    this.rowid = const Value.absent(),
+  }) : query = Value(query),
+       count = Value(count),
+       lastAt = Value(lastAt);
+  static Insertable<MissedSearche> custom({
+    Expression<String>? query,
+    Expression<int>? count,
+    Expression<DateTime>? lastAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (query != null) 'query': query,
+      if (count != null) 'count': count,
+      if (lastAt != null) 'last_at': lastAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MissedSearchesCompanion copyWith({
+    Value<String>? query,
+    Value<int>? count,
+    Value<DateTime>? lastAt,
+    Value<int>? rowid,
+  }) {
+    return MissedSearchesCompanion(
+      query: query ?? this.query,
+      count: count ?? this.count,
+      lastAt: lastAt ?? this.lastAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (query.present) {
+      map['query'] = Variable<String>(query.value);
+    }
+    if (count.present) {
+      map['count'] = Variable<int>(count.value);
+    }
+    if (lastAt.present) {
+      map['last_at'] = Variable<DateTime>(lastAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MissedSearchesCompanion(')
+          ..write('query: $query, ')
+          ..write('count: $count, ')
+          ..write('lastAt: $lastAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -4671,6 +4931,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $CalendarAreasTable calendarAreas = $CalendarAreasTable(this);
   late final $CollectionExceptionsTable collectionExceptions =
       $CollectionExceptionsTable(this);
+  late final $MissedSearchesTable missedSearches = $MissedSearchesTable(this);
   late final $SettingsTable settings = $SettingsTable(this);
   late final Index rulesMunicipality = Index(
     'rules_municipality',
@@ -4698,6 +4959,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     calendars,
     calendarAreas,
     collectionExceptions,
+    missedSearches,
     settings,
     rulesMunicipality,
     aliasesRule,
@@ -7243,6 +7505,179 @@ typedef $$CollectionExceptionsTableProcessedTableManager =
       CollectionException,
       PrefetchHooks Function()
     >;
+typedef $$MissedSearchesTableCreateCompanionBuilder =
+    MissedSearchesCompanion Function({
+      required String query,
+      required int count,
+      required DateTime lastAt,
+      Value<int> rowid,
+    });
+typedef $$MissedSearchesTableUpdateCompanionBuilder =
+    MissedSearchesCompanion Function({
+      Value<String> query,
+      Value<int> count,
+      Value<DateTime> lastAt,
+      Value<int> rowid,
+    });
+
+class $$MissedSearchesTableFilterComposer
+    extends Composer<_$AppDatabase, $MissedSearchesTable> {
+  $$MissedSearchesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get query => $composableBuilder(
+    column: $table.query,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get count => $composableBuilder(
+    column: $table.count,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get lastAt => $composableBuilder(
+    column: $table.lastAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MissedSearchesTableOrderingComposer
+    extends Composer<_$AppDatabase, $MissedSearchesTable> {
+  $$MissedSearchesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get query => $composableBuilder(
+    column: $table.query,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get count => $composableBuilder(
+    column: $table.count,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get lastAt => $composableBuilder(
+    column: $table.lastAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MissedSearchesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MissedSearchesTable> {
+  $$MissedSearchesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get query =>
+      $composableBuilder(column: $table.query, builder: (column) => column);
+
+  GeneratedColumn<int> get count =>
+      $composableBuilder(column: $table.count, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get lastAt =>
+      $composableBuilder(column: $table.lastAt, builder: (column) => column);
+}
+
+class $$MissedSearchesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MissedSearchesTable,
+          MissedSearche,
+          $$MissedSearchesTableFilterComposer,
+          $$MissedSearchesTableOrderingComposer,
+          $$MissedSearchesTableAnnotationComposer,
+          $$MissedSearchesTableCreateCompanionBuilder,
+          $$MissedSearchesTableUpdateCompanionBuilder,
+          (
+            MissedSearche,
+            BaseReferences<_$AppDatabase, $MissedSearchesTable, MissedSearche>,
+          ),
+          MissedSearche,
+          PrefetchHooks Function()
+        > {
+  $$MissedSearchesTableTableManager(
+    _$AppDatabase db,
+    $MissedSearchesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MissedSearchesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MissedSearchesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MissedSearchesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> query = const Value.absent(),
+                Value<int> count = const Value.absent(),
+                Value<DateTime> lastAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MissedSearchesCompanion(
+                query: query,
+                count: count,
+                lastAt: lastAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String query,
+                required int count,
+                required DateTime lastAt,
+                Value<int> rowid = const Value.absent(),
+              }) => MissedSearchesCompanion.insert(
+                query: query,
+                count: count,
+                lastAt: lastAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$MissedSearchesTable, MissedSearche>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $MissedSearchesTable,
+                    MissedSearche
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MissedSearchesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MissedSearchesTable,
+      MissedSearche,
+      $$MissedSearchesTableFilterComposer,
+      $$MissedSearchesTableOrderingComposer,
+      $$MissedSearchesTableAnnotationComposer,
+      $$MissedSearchesTableCreateCompanionBuilder,
+      $$MissedSearchesTableUpdateCompanionBuilder,
+      (
+        MissedSearche,
+        BaseReferences<_$AppDatabase, $MissedSearchesTable, MissedSearche>,
+      ),
+      MissedSearche,
+      PrefetchHooks Function()
+    >;
 typedef $$SettingsTableCreateCompanionBuilder = SettingsCompanion Function({
   required String key,
   required String value,
@@ -7399,6 +7834,8 @@ class $AppDatabaseManager {
       $$CalendarAreasTableTableManager(_db, _db.calendarAreas);
   $$CollectionExceptionsTableTableManager get collectionExceptions =>
       $$CollectionExceptionsTableTableManager(_db, _db.collectionExceptions);
+  $$MissedSearchesTableTableManager get missedSearches =>
+      $$MissedSearchesTableTableManager(_db, _db.missedSearches);
   $$SettingsTableTableManager get settings =>
       $$SettingsTableTableManager(_db, _db.settings);
 }

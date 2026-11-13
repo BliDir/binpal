@@ -10,8 +10,58 @@
   "todayNoAreaTitle": "No area yet",
   "todayNoAreaBody": "Choose your area to see which garbage goes out today and tomorrow.",
   "searchHint": "How do I sort this item?",
-  "searchExamples": "Try umbrella, batteries or 傘",
   "searchNoAreaBody": "Item search works offline once your area's data is downloaded.",
+  "searchTitle": "Search",
+  "searchSubtitle": "Find how to sort and put out an item.",
+  "searchExamplesTitle": "Search examples",
+  "searchOfflineTitle": "Available offline",
+  "searchOfflineBody": "Search and sorting rules work without internet once your area's data is downloaded.",
+  "searchDownloading": "Downloading your area's data…",
+  "searchDownloadFailed": "Couldn't download your area's data. Check your connection and try again.",
+  "searchRetry": "Try again",
+  "searchClear": "Clear",
+  "searchResultCount": "{count, plural, =1{1 result for “{query}”} other{{count} results for “{query}”}}",
+  "@searchResultCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "searchNoResults": "No results for “{query}”",
+  "@searchNoResults": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "searchNoResultsBody": "Try another word, in English or Japanese, or a more general one: “bag” rather than “handbag”.",
+  "itemHowTo": "How to put it out",
+  "itemInJapanese": "In Japanese",
+  "itemTranslationNote": "The English is BinPal's translation. The Japanese is the city's own.",
+  "itemAboutCategory": "About {category}",
+  "@itemAboutCategory": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "itemSource": "Official source",
+  "itemSourceSubtitle": "{name} website",
+  "@itemSourceSubtitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "itemVerified": "Checked against the source",
+  "itemOpenFailed": "Couldn't open the link.",
   "settingsArea": "Area",
   "settingsAreaNotSet": "Not set",
   "settingsReminders": "Reminders",
