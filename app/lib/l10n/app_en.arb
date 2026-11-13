@@ -85,5 +85,102 @@
   "settingsAbout": "About BinPal",
   "aboutTagline": "Garbage sorting and collection days in Japan, in plain English.",
   "aboutLicenses": "Open-source licences",
-  "logoLabel": "BinPal logo"
+  "logoLabel": "BinPal logo",
+  "areaLabel": "{area}, {ward}",
+  "@areaLabel": {
+    "placeholders": {
+      "area": {
+        "type": "String"
+      },
+      "ward": {
+        "type": "String"
+      }
+    }
+  },
+  "areaPickerTitle": "Collection area",
+  "areaPickerWard": "Choose your ward",
+  "areaPickerTown": "Choose your town",
+  "areaPickerChome": "Choose your chōme",
+  "areaPickerNoData": "Area data hasn't downloaded yet. Check your connection, then try again.",
+  "areaPickerHint": "Pick the town where you put out your rubbish.",
+  "todayAreaBody": "Today's and tomorrow's collections for your area will show here.",
+  "remindersTitle": "Collection reminders",
+  "remindersSubtitle": "Get a reminder before collection time.",
+  "remindersSwitch": "Remind me",
+  "remindersNeedArea": "Choose your collection area first.",
+  "remindersCategories": "Rubbish types to remind",
+  "remindersCategoriesHint": "Choose which types you want reminders for.",
+  "remindersTimes": "Reminder times",
+  "remindersEvening": "Evening before",
+  "remindersEveningHint": "The day before collection",
+  "remindersMorning": "Morning of",
+  "remindersMorningHint": "On the collection day",
+  "remindersMorningLate": "Rubbish has to be out by {time}. A reminder after that is too late.",
+  "@remindersMorningLate": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersDenied": "Notifications are off for BinPal. Turn them on in your phone's settings to get reminders.",
+  "remindersScheduled": "{count, plural, =0{No reminders in the next few weeks} =1{1 reminder scheduled} other{{count} reminders scheduled}}",
+  "@remindersScheduled": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "remindersSummaryEvening": "Evening before · {time}",
+  "@remindersSummaryEvening": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersSummaryMorning": "Morning of · {time}",
+  "@remindersSummaryMorning": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "reminderChannel": "Collection reminders",
+  "reminderEveningTitle": "Tomorrow: {categories}",
+  "@reminderEveningTitle": {
+    "placeholders": {
+      "categories": {
+        "type": "String"
+      }
+    }
+  },
+  "reminderMorningTitle": "Today: {categories}",
+  "@reminderMorningTitle": {
+    "placeholders": {
+      "categories": {
+        "type": "String"
+      }
+    }
+  },
+  "reminderEveningBody": "Put it out by {time} tomorrow morning.",
+  "@reminderEveningBody": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "reminderMorningBody": "Put it out by {time}.",
+  "@reminderMorningBody": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "reminderBodyNoTime": "Check the time at your collection point.",
+  "reminderListSeparator": ", "
 }

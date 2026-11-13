@@ -3,9 +3,12 @@
 
 import 'package:binpal/app/app.dart';
 import 'package:binpal/app/services.dart';
+import 'package:binpal/data/area_controller.dart';
 import 'package:binpal/data/bundle_sync.dart';
 import 'package:binpal/data/database.dart';
 import 'package:binpal/data/sync_controller.dart';
+import 'package:binpal/reminders/reminder_notifications.dart';
+import 'package:binpal/reminders/reminder_service.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
@@ -25,6 +28,11 @@ void main() {
       sync: SyncController(
         db: db,
         sync: BundleSync(db: db, client: http.Client()),
+      ),
+      area: AreaController(db: db),
+      reminders: ReminderService(
+        db: db,
+        notifications: LocalReminderNotifications(),
       ),
     );
 

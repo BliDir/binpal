@@ -10,11 +10,14 @@ lib/
   app/            app widget, services, theme (design tokens), tab shell, shared top bar
   data/           local database (drift) and bundle sync from the CDN
   calendar/       collection calendar engine (pure Dart)
+  reminders/      reminder planning and local notifications
   features/
     today/        today's and tomorrow's collections
     search/       offline item search
     item/         one item's category, instructions and source
     settings/     area, reminders, about
+    area/         choosing the collection area by ward, town and chōme
+    reminders/    reminder preferences screen
   l10n/           English and Japanese strings (ARB); Dart files are generated
 ```
 
@@ -32,6 +35,19 @@ Core packages only: `drift` (SQLite with FTS5), `http` and `crypto` (bundle down
 * Dates are `JapanDate`s: the calendar date in Japan whatever the phone's time zone.
 
 The next 60 days for one Aoba-ku area take about 2 ms (15 ms the first time) on an Android 16 emulator and an iPhone 17 simulator, including reading from the database (`integration_test/schedule_test.dart`).
+
+## Reminders
+
+Collection-day reminders are local notifications; there is no push server.
+
+* **Settings → Reminders**: turn them on (this is when the app asks for notification permission), pick the rubbish types, and choose the evening before and/or the morning of, each at its own time. Defaults are 19:00 and 07:00. A morning time at or after the area's put-out time (08:00 in Yokohama) is flagged as too late.
+* **Planning** (`lib/reminders/reminder_planner.dart`, pure Dart): for each day in the next 60 with a chosen category collected, one reminder the evening before and/or that morning, soonest first. Nothing in the past, and at most 60, because iOS keeps only 64 pending local notifications per app and silently drops the rest. Days cancelled by exceptions (the New Year closure) get none; extra collections get one.
+* **Wording**: "Tomorrow: Burnable" / "Put it out by 8:00 AM tomorrow morning.", or "明日は燃やすごみの日" in Japanese, following the phone's language, with any exception note added.
+* **Scheduling** (`ReminderService.reschedule`): cancel everything pending, then schedule the plan. Ids are the date and kind (`YYYYMMDD × 10 + 1` evening, `+ 2` morning). It runs after every bundle refresh (launch, return to the foreground, bundle update) and whenever the area or the preferences change, so the window is topped up and schedule changes reach future reminders.
+* **Android** uses inexact alarms, which may arrive a minute or so late: exact alarms need a permission Google Play only allows for alarm and calendar apps. Reminders survive a reboot through the plugin's boot receiver.
+* **Background refresh is not used.** The window is only topped up when the app is opened. With typical Yokohama collection days, 60 reminders last about seven weeks.
+
+Until GPS area detection (DAI-569) exists, the area is chosen by hand: ward, then town, then chōme (Settings → Area, or the area chip at the top). Steps with a single choice are skipped.
 
 ## Data and sync
 
@@ -71,6 +87,7 @@ flutter test
 flutter test integration_test/sync_test.dart -d <device-id>   # first-launch sync against the real CDN
 flutter test integration_test/search_test.dart -d <device-id> # search speed with the full Yokohama bundle
 flutter test integration_test/schedule_test.dart -d <device-id> # calendar speed with the full Yokohama bundle
+flutter test integration_test/reminders_test.dart -d <device-id> # at most 64 pending reminders (see the file for the delivery check)
 ```
 
 ## Integration tests

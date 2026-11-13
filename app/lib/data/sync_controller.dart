@@ -17,10 +17,15 @@ const municipalitySettingKey = 'municipality_id';
 /// Nothing here is awaited by the UI: the first screen is drawn from whatever
 /// is already stored.
 class SyncController extends ChangeNotifier with WidgetsBindingObserver {
-  SyncController({required this.db, required this.sync});
+  SyncController({required this.db, required this.sync, this.afterRefresh});
 
   final AppDatabase db;
   final BundleSync sync;
+
+  /// Runs after every [refresh], whether or not it reached the network: on
+  /// launch, on returning to the foreground and after a bundle update. Used
+  /// to top up reminders.
+  Future<void> Function()? afterRefresh;
 
   /// The bundle currently stored for the user's municipality, if any.
   StoredBundle? bundle;
@@ -65,6 +70,7 @@ class SyncController extends ChangeNotifier with WidgetsBindingObserver {
       syncing = false;
       notifyListeners();
     }
+    await afterRefresh?.call();
   }
 
   @override

@@ -367,6 +367,192 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'BinPal logo'**
   String get logoLabel;
+
+  /// No description provided for @areaLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{area}, {ward}'**
+  String areaLabel(String area, String ward);
+
+  /// No description provided for @areaPickerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Collection area'**
+  String get areaPickerTitle;
+
+  /// No description provided for @areaPickerWard.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your ward'**
+  String get areaPickerWard;
+
+  /// No description provided for @areaPickerTown.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your town'**
+  String get areaPickerTown;
+
+  /// No description provided for @areaPickerChome.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your chōme'**
+  String get areaPickerChome;
+
+  /// No description provided for @areaPickerNoData.
+  ///
+  /// In en, this message translates to:
+  /// **'Area data hasn\'t downloaded yet. Check your connection, then try again.'**
+  String get areaPickerNoData;
+
+  /// No description provided for @areaPickerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick the town where you put out your rubbish.'**
+  String get areaPickerHint;
+
+  /// No description provided for @todayAreaBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s and tomorrow\'s collections for your area will show here.'**
+  String get todayAreaBody;
+
+  /// No description provided for @remindersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Collection reminders'**
+  String get remindersTitle;
+
+  /// No description provided for @remindersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get a reminder before collection time.'**
+  String get remindersSubtitle;
+
+  /// No description provided for @remindersSwitch.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind me'**
+  String get remindersSwitch;
+
+  /// No description provided for @remindersNeedArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your collection area first.'**
+  String get remindersNeedArea;
+
+  /// No description provided for @remindersCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'Rubbish types to remind'**
+  String get remindersCategories;
+
+  /// No description provided for @remindersCategoriesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose which types you want reminders for.'**
+  String get remindersCategoriesHint;
+
+  /// No description provided for @remindersTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder times'**
+  String get remindersTimes;
+
+  /// No description provided for @remindersEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening before'**
+  String get remindersEvening;
+
+  /// No description provided for @remindersEveningHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The day before collection'**
+  String get remindersEveningHint;
+
+  /// No description provided for @remindersMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning of'**
+  String get remindersMorning;
+
+  /// No description provided for @remindersMorningHint.
+  ///
+  /// In en, this message translates to:
+  /// **'On the collection day'**
+  String get remindersMorningHint;
+
+  /// No description provided for @remindersMorningLate.
+  ///
+  /// In en, this message translates to:
+  /// **'Rubbish has to be out by {time}. A reminder after that is too late.'**
+  String remindersMorningLate(String time);
+
+  /// No description provided for @remindersDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are off for BinPal. Turn them on in your phone\'s settings to get reminders.'**
+  String get remindersDenied;
+
+  /// No description provided for @remindersScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No reminders in the next few weeks} =1{1 reminder scheduled} other{{count} reminders scheduled}}'**
+  String remindersScheduled(int count);
+
+  /// No description provided for @remindersSummaryEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening before · {time}'**
+  String remindersSummaryEvening(String time);
+
+  /// No description provided for @remindersSummaryMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning of · {time}'**
+  String remindersSummaryMorning(String time);
+
+  /// No description provided for @reminderChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Collection reminders'**
+  String get reminderChannel;
+
+  /// No description provided for @reminderEveningTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow: {categories}'**
+  String reminderEveningTitle(String categories);
+
+  /// No description provided for @reminderMorningTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Today: {categories}'**
+  String reminderMorningTitle(String categories);
+
+  /// No description provided for @reminderEveningBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Put it out by {time} tomorrow morning.'**
+  String reminderEveningBody(String time);
+
+  /// No description provided for @reminderMorningBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Put it out by {time}.'**
+  String reminderMorningBody(String time);
+
+  /// No description provided for @reminderBodyNoTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the time at your collection point.'**
+  String get reminderBodyNoTime;
+
+  /// No description provided for @reminderListSeparator.
+  ///
+  /// In en, this message translates to:
+  /// **', '**
+  String get reminderListSeparator;
 }
 
 class _AppLocalizationsDelegate
