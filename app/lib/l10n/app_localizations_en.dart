@@ -60,6 +60,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsRemindersOff => 'Off';
 
   @override
+  String get settingsData => 'Area data';
+
+  @override
+  String settingsDataVersion(String name, int version) {
+    return '$name · version $version';
+  }
+
+  @override
+  String get settingsDataNone => 'Not downloaded yet';
+
+  @override
+  String get settingsDataDownloading => 'Downloading…';
+
+  @override
+  String get settingsDataFailed => 'Couldn\'t download. Tap to try again.';
+
+  @override
+  String get settingsDataStale =>
+      'Couldn\'t check for updates. Using the saved data.';
+
+  @override
   String get settingsAbout => 'About BinPal';
 
   @override
