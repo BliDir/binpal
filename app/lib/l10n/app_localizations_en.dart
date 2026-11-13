@@ -41,11 +41,86 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchHint => 'How do I sort this item?';
 
   @override
-  String get searchExamples => 'Try umbrella, batteries or 傘';
-
-  @override
   String get searchNoAreaBody =>
       'Item search works offline once your area\'s data is downloaded.';
+
+  @override
+  String get searchTitle => 'Search';
+
+  @override
+  String get searchSubtitle => 'Find how to sort and put out an item.';
+
+  @override
+  String get searchExamplesTitle => 'Search examples';
+
+  @override
+  String get searchOfflineTitle => 'Available offline';
+
+  @override
+  String get searchOfflineBody =>
+      'Search and sorting rules work without internet once your area\'s data is downloaded.';
+
+  @override
+  String get searchDownloading => 'Downloading your area\'s data…';
+
+  @override
+  String get searchDownloadFailed =>
+      'Couldn\'t download your area\'s data. Check your connection and try again.';
+
+  @override
+  String get searchRetry => 'Try again';
+
+  @override
+  String get searchClear => 'Clear';
+
+  @override
+  String searchResultCount(int count, String query) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count results for “$query”',
+      one: '1 result for “$query”',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String searchNoResults(String query) {
+    return 'No results for “$query”';
+  }
+
+  @override
+  String get searchNoResultsBody =>
+      'Try another word, in English or Japanese, or a more general one: “bag” rather than “handbag”.';
+
+  @override
+  String get itemHowTo => 'How to put it out';
+
+  @override
+  String get itemInJapanese => 'In Japanese';
+
+  @override
+  String get itemTranslationNote =>
+      'The English is BinPal\'s translation. The Japanese is the city\'s own.';
+
+  @override
+  String itemAboutCategory(String category) {
+    return 'About $category';
+  }
+
+  @override
+  String get itemSource => 'Official source';
+
+  @override
+  String itemSourceSubtitle(String name) {
+    return '$name website';
+  }
+
+  @override
+  String get itemVerified => 'Checked against the source';
+
+  @override
+  String get itemOpenFailed => 'Couldn\'t open the link.';
 
   @override
   String get settingsArea => 'Area';
