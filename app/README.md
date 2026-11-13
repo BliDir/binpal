@@ -9,6 +9,7 @@ lib/
   main.dart
   app/            app widget, services, theme (design tokens), tab shell, shared top bar
   data/           local database (drift) and bundle sync from the CDN
+  calendar/       collection calendar engine (pure Dart)
   features/
     today/        today's and tomorrow's collections
     search/       offline item search
@@ -20,6 +21,17 @@ lib/
 Each feature owns its screens and, later, its state and data access. Shared code lives in `app/` until a second feature needs it.
 
 Core packages only: `drift` (SQLite with FTS5), `http` and `crypto` (bundle download and checksum), `url_launcher` (official source links), `geolocator`, `flutter_local_notifications` and `intl`. Camera arrives in v2. Text uses the platform's system font, so no Japanese font is bundled.
+
+## Collection calendar
+
+`lib/calendar/collection_schedule.dart` answers "what goes out on date X in area Y" with no database or Flutter in it. `ScheduleRepository.forArea` builds one from the stored bundle; `on(date)` and `days(from, count)` do the rest.
+
+* Patterns: `weekly` (one or more weekdays) and `monthly_nth_weekday` (for example the 2nd and 4th Wednesday; days 1–7 hold the 1st occurrence). A pattern type the app does not know never matches, so a newer bundle cannot break the calendar.
+* A calendar applies only inside its inclusive `valid_from`–`valid_to` range, so an announced change switches over on the right day.
+* `no_collection` exceptions cancel categories (all of them when none are listed) and are reported in `cancelled`, so the app can say "no collection today" rather than show nothing. `extra_collection` adds them, using the category's usual put-out time.
+* Dates are `JapanDate`s: the calendar date in Japan whatever the phone's time zone.
+
+The next 60 days for one Aoba-ku area take about 2 ms (15 ms the first time) on an Android 16 emulator and an iPhone 17 simulator, including reading from the database (`integration_test/schedule_test.dart`).
 
 ## Data and sync
 
@@ -58,6 +70,7 @@ flutter run                       # debug on a connected device
 flutter test
 flutter test integration_test/sync_test.dart -d <device-id>   # first-launch sync against the real CDN
 flutter test integration_test/search_test.dart -d <device-id> # search speed with the full Yokohama bundle
+flutter test integration_test/schedule_test.dart -d <device-id> # calendar speed with the full Yokohama bundle
 ```
 
 ## Integration tests
