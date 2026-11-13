@@ -355,4 +355,91 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get calendarNext => '次の月';
+
+  @override
+  String get setupTitle => '収集地域を設定';
+
+  @override
+  String get setupBody => '地域を選ぶと、その地域の収集日と分け方が表示されます。';
+
+  @override
+  String get setupUseLocation => '現在地を使う';
+
+  @override
+  String get setupChooseManually => '一覧から選ぶ';
+
+  @override
+  String get setupPrivacyTitle => 'プライバシーについて';
+
+  @override
+  String get setupPrivacyBody => '現在地は収集地域を探すために、この端末内で一度だけ使います。保存や送信はしません。';
+
+  @override
+  String get setupLocating => '地域を探しています…';
+
+  @override
+  String get setupDownloadingMap => '地域の地図をダウンロードしています(約2MB、初回のみ)…';
+
+  @override
+  String get setupDenied => '位置情報の利用が許可されませんでした。一覧から地域を選べます。';
+
+  @override
+  String get setupDeniedForever =>
+      'BinPalの位置情報がオフになっています。設定でオンにするか、一覧から地域を選んでください。';
+
+  @override
+  String get setupServiceOff => '端末の位置情報サービスがオフです。オンにするか、一覧から地域を選んでください。';
+
+  @override
+  String get setupUnavailable =>
+      '現在地を取得できませんでした。窓の近くや屋外でもう一度試すか、一覧から地域を選んでください。';
+
+  @override
+  String get setupMapFailed =>
+      '地域の地図をダウンロードできませんでした。接続を確認してもう一度試すか、一覧から地域を選んでください。';
+
+  @override
+  String get setupDataFailed => '地域のデータがまだダウンロードされていません。接続を確認して、もう一度お試しください。';
+
+  @override
+  String setupNotCovered(String place) {
+    return '$placeの収集日はまだBinPalにありません。';
+  }
+
+  @override
+  String get setupOutside => '現在地はまだBinPalの対象外です。';
+
+  @override
+  String get setupOpenSettings => '設定を開く';
+
+  @override
+  String get setupTryAgain => 'もう一度試す';
+
+  @override
+  String get confirmTitle => '地域の確認';
+
+  @override
+  String get confirmHeading => 'この地域でよろしいですか?';
+
+  @override
+  String confirmBody(String area) {
+    return '現在地は$areaのようです。ここにごみを出していますか?';
+  }
+
+  @override
+  String confirmWardCity(String ward, String city) {
+    return '$city$ward';
+  }
+
+  @override
+  String get confirmNearby => '近くの地域';
+
+  @override
+  String get confirmNearbyHint => '境界の近くにいるため、どちら側か確認してください。';
+
+  @override
+  String get confirmButton => 'この地域にする';
+
+  @override
+  String get confirmOther => '別の地域を選ぶ';
 }

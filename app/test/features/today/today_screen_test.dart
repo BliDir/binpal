@@ -56,12 +56,10 @@ void main() {
 
   setUp(() => now = JapanDate(2026, 11, 17).atJapanTime(10, 0));
 
-  testWidgets('no area yet: asks the user to choose one', (tester) async {
+  testWidgets('no area yet: area setup comes first', (tester) async {
     await start(tester, area: null);
-    expect(find.text('No area yet'), findsOneWidget);
-    await tester.tap(find.text('No area yet'));
-    await settle(tester);
-    expect(find.text('Choose your ward'), findsOneWidget);
+    expect(find.text('Set your collection area'), findsOneWidget);
+    expect(find.text('No area yet'), findsNothing);
   });
 
   testWidgets("today's and tomorrow's collections", (tester) async {

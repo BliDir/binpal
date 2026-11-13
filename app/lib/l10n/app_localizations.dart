@@ -685,6 +685,162 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Next month'**
   String get calendarNext;
+
+  /// No description provided for @setupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set your collection area'**
+  String get setupTitle;
+
+  /// No description provided for @setupBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your area to see the right collection days and sorting rules.'**
+  String get setupBody;
+
+  /// No description provided for @setupUseLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Use my location'**
+  String get setupUseLocation;
+
+  /// No description provided for @setupChooseManually.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose manually'**
+  String get setupChooseManually;
+
+  /// No description provided for @setupPrivacyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your privacy is protected'**
+  String get setupPrivacyTitle;
+
+  /// No description provided for @setupPrivacyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your location is used once, on this phone, to find your collection area. It is not saved or sent anywhere.'**
+  String get setupPrivacyBody;
+
+  /// No description provided for @setupLocating.
+  ///
+  /// In en, this message translates to:
+  /// **'Finding your area…'**
+  String get setupLocating;
+
+  /// No description provided for @setupDownloadingMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading the area map (about 2 MB, only the first time)…'**
+  String get setupDownloadingMap;
+
+  /// No description provided for @setupDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Location access wasn\'t allowed. You can choose your area from the list instead.'**
+  String get setupDenied;
+
+  /// No description provided for @setupDeniedForever.
+  ///
+  /// In en, this message translates to:
+  /// **'Location access is off for BinPal. Turn it on in Settings, or choose your area from the list.'**
+  String get setupDeniedForever;
+
+  /// No description provided for @setupServiceOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Location services are off on this phone. Turn them on, or choose your area from the list.'**
+  String get setupServiceOff;
+
+  /// No description provided for @setupUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t get your location. Try again near a window or outside, or choose your area from the list.'**
+  String get setupUnavailable;
+
+  /// No description provided for @setupMapFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t download the area map. Check your connection and try again, or choose your area from the list.'**
+  String get setupMapFailed;
+
+  /// No description provided for @setupDataFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Your area\'s data hasn\'t downloaded yet. Check your connection and try again.'**
+  String get setupDataFailed;
+
+  /// No description provided for @setupNotCovered.
+  ///
+  /// In en, this message translates to:
+  /// **'BinPal doesn\'t have collection days for {place} yet.'**
+  String setupNotCovered(String place);
+
+  /// No description provided for @setupOutside.
+  ///
+  /// In en, this message translates to:
+  /// **'BinPal doesn\'t cover where you are yet.'**
+  String get setupOutside;
+
+  /// No description provided for @setupOpenSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings'**
+  String get setupOpenSettings;
+
+  /// No description provided for @setupTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get setupTryAgain;
+
+  /// No description provided for @confirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm area'**
+  String get confirmTitle;
+
+  /// No description provided for @confirmHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Is this your area?'**
+  String get confirmHeading;
+
+  /// No description provided for @confirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Looks like you\'re in {area}. Is this where you put out your rubbish?'**
+  String confirmBody(String area);
+
+  /// No description provided for @confirmWardCity.
+  ///
+  /// In en, this message translates to:
+  /// **'{ward}, {city}'**
+  String confirmWardCity(String ward, String city);
+
+  /// No description provided for @confirmNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'Also near you'**
+  String get confirmNearby;
+
+  /// No description provided for @confirmNearbyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re close to a boundary, so check which side you\'re on.'**
+  String get confirmNearbyHint;
+
+  /// No description provided for @confirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm area'**
+  String get confirmButton;
+
+  /// No description provided for @confirmOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose another area'**
+  String get confirmOther;
 }
 
 class _AppLocalizationsDelegate

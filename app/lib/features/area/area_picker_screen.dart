@@ -9,9 +9,9 @@ import '../../l10n/app_localizations.dart';
 
 /// Choose the collection area by hand: ward, then town, then chōme.
 ///
-/// This is the fallback DAI-569's GPS detection will sit on top of. Steps
-/// with only one choice (a city with one ward downloaded, a town with no
-/// chōme) are skipped.
+/// The fallback when location is refused or wrong. Steps with only one
+/// choice (a city with one ward downloaded, a town with no chōme) are
+/// skipped. Pops with the chosen [Area] once it is saved.
 class AreaPickerScreen extends StatefulWidget {
   const AreaPickerScreen({super.key});
 
@@ -75,9 +75,7 @@ class _AreaPickerScreenState extends State<AreaPickerScreen> {
 
   Future<void> _choose(Area area) async {
     setState(() => _saving = true);
-    final services = AppServices.of(context);
-    await services.area.select(area);
-    await services.reminders.reschedule();
+    await AppServices.of(context).chooseArea(area);
     if (mounted) Navigator.of(context).pop(area);
   }
 

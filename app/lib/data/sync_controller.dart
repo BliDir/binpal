@@ -37,6 +37,7 @@ class SyncController extends ChangeNotifier with WidgetsBindingObserver {
   DateTime? lastChecked;
   bool syncing = false;
   bool _started = false;
+  Future<void>? _running;
 
   void start() {
     if (_started) return;
@@ -51,8 +52,13 @@ class SyncController extends ChangeNotifier with WidgetsBindingObserver {
   }
 
   /// Loads what is stored, then checks the CDN if a check is due (or [force]).
-  Future<void> refresh({bool force = false}) async {
-    if (syncing) return;
+  /// While a refresh is running, another call waits for that one instead of
+  /// starting a second.
+  Future<void> refresh({bool force = false}) {
+    return _running ??= _refresh(force).whenComplete(() => _running = null);
+  }
+
+  Future<void> _refresh(bool force) async {
     syncing = true;
     try {
       final municipalityId =

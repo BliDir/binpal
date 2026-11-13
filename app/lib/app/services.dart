@@ -1,5 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+
+import '../area/boundary_store.dart';
+import '../area/location_source.dart';
 
 import '../data/area_controller.dart';
 import '../data/bundle_sync.dart';
@@ -9,16 +13,26 @@ import '../reminders/reminder_notifications.dart';
 import '../reminders/reminder_service.dart';
 
 /// The app's long-lived objects: the local database, the bundle sync, the
-/// chosen area and the reminders.
+/// chosen area, the reminders, and what finds the area from the phone's
+/// location.
 class AppServices {
   AppServices({
     required this.db,
     required this.sync,
     required this.area,
     required this.reminders,
+    LocationSource? location,
+    BoundaryStore? boundaries,
     this.syncOnLaunch = true,
     DateTime Function()? clock,
-  }) : clock = clock ?? DateTime.now {
+  }) : clock = clock ?? DateTime.now,
+       location = location ?? const GeolocatorLocationSource(),
+       boundaries =
+           boundaries ??
+           BoundaryStore(
+             client: http.Client(),
+             directory: getApplicationSupportDirectory,
+           ) {
     // After every refresh (launch, foreground, bundle update): re-read the
     // area, which a new bundle can change, and top up reminders.
     sync.afterRefresh ??= () async {
@@ -48,9 +62,18 @@ class AppServices {
   final SyncController sync;
   final AreaController area;
   final ReminderService reminders;
+  final LocationSource location;
+  final BoundaryStore boundaries;
 
   /// Off in widget tests, which must not touch the database or the network.
   final bool syncOnLaunch;
+
+  /// Saves [chosen] as the user's area and moves reminders to its days. Only
+  /// the area's id is stored, never where the phone was.
+  Future<void> chooseArea(Area chosen) async {
+    await area.select(chosen);
+    await reminders.reschedule();
+  }
 
   /// The current time. Tests set it to a fixed day.
   final DateTime Function() clock;

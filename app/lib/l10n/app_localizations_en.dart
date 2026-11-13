@@ -372,4 +372,98 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get calendarNext => 'Next month';
+
+  @override
+  String get setupTitle => 'Set your collection area';
+
+  @override
+  String get setupBody =>
+      'Choose your area to see the right collection days and sorting rules.';
+
+  @override
+  String get setupUseLocation => 'Use my location';
+
+  @override
+  String get setupChooseManually => 'Choose manually';
+
+  @override
+  String get setupPrivacyTitle => 'Your privacy is protected';
+
+  @override
+  String get setupPrivacyBody =>
+      'Your location is used once, on this phone, to find your collection area. It is not saved or sent anywhere.';
+
+  @override
+  String get setupLocating => 'Finding your area…';
+
+  @override
+  String get setupDownloadingMap =>
+      'Downloading the area map (about 2 MB, only the first time)…';
+
+  @override
+  String get setupDenied =>
+      'Location access wasn\'t allowed. You can choose your area from the list instead.';
+
+  @override
+  String get setupDeniedForever =>
+      'Location access is off for BinPal. Turn it on in Settings, or choose your area from the list.';
+
+  @override
+  String get setupServiceOff =>
+      'Location services are off on this phone. Turn them on, or choose your area from the list.';
+
+  @override
+  String get setupUnavailable =>
+      'Couldn\'t get your location. Try again near a window or outside, or choose your area from the list.';
+
+  @override
+  String get setupMapFailed =>
+      'Couldn\'t download the area map. Check your connection and try again, or choose your area from the list.';
+
+  @override
+  String get setupDataFailed =>
+      'Your area\'s data hasn\'t downloaded yet. Check your connection and try again.';
+
+  @override
+  String setupNotCovered(String place) {
+    return 'BinPal doesn\'t have collection days for $place yet.';
+  }
+
+  @override
+  String get setupOutside => 'BinPal doesn\'t cover where you are yet.';
+
+  @override
+  String get setupOpenSettings => 'Open Settings';
+
+  @override
+  String get setupTryAgain => 'Try again';
+
+  @override
+  String get confirmTitle => 'Confirm area';
+
+  @override
+  String get confirmHeading => 'Is this your area?';
+
+  @override
+  String confirmBody(String area) {
+    return 'Looks like you\'re in $area. Is this where you put out your rubbish?';
+  }
+
+  @override
+  String confirmWardCity(String ward, String city) {
+    return '$ward, $city';
+  }
+
+  @override
+  String get confirmNearby => 'Also near you';
+
+  @override
+  String get confirmNearbyHint =>
+      'You\'re close to a boundary, so check which side you\'re on.';
+
+  @override
+  String get confirmButton => 'Confirm area';
+
+  @override
+  String get confirmOther => 'Choose another area';
 }

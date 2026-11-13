@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import '../features/area/area_setup_screen.dart';
 import '../l10n/app_localizations.dart';
 import 'home_shell.dart';
 import 'services.dart';
@@ -20,11 +21,8 @@ class _BinPalAppState extends State<BinPalApp> {
   void initState() {
     super.initState();
     // Starts in the background; the first screen never waits for it. The
-    // area is read from the database straight away, not after the network.
-    if (widget.services.syncOnLaunch) {
-      widget.services.area.load();
-      widget.services.sync.start();
-    }
+    // area was read from the database before launch (see main.dart).
+    if (widget.services.syncOnLaunch) widget.services.sync.start();
   }
 
   @override
@@ -41,7 +39,17 @@ class _BinPalAppState extends State<BinPalApp> {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: AppLocalizations.supportedLocales,
-        home: const HomeShell(),
+        // Until an area is chosen, setting it is the whole app. A new bundle
+        // that drops the chosen area brings the user back here too.
+        home: ListenableBuilder(
+          listenable: widget.services.area,
+          builder: (context, _) {
+            final area = widget.services.area;
+            return area.loaded && area.area == null
+                ? const AreaSetupScreen()
+                : const HomeShell();
+          },
+        ),
       ),
     );
   }
