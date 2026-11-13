@@ -40,10 +40,77 @@ class AppLocalizationsJa extends AppLocalizations {
   String get searchHint => 'この品目の分け方は？';
 
   @override
-  String get searchExamples => '例：傘、電池、umbrella';
+  String get searchNoAreaBody => '地域のデータをダウンロードすると、オフラインで品目を検索できます。';
 
   @override
-  String get searchNoAreaBody => '地域のデータをダウンロードすると、オフラインで品目を検索できます。';
+  String get searchTitle => '検索';
+
+  @override
+  String get searchSubtitle => '品目の分け方と出し方を調べます。';
+
+  @override
+  String get searchExamplesTitle => '検索の例';
+
+  @override
+  String get searchOfflineTitle => 'オフラインで使えます';
+
+  @override
+  String get searchOfflineBody => '地域のデータをダウンロードすれば、インターネットがなくても検索と分け方を確認できます。';
+
+  @override
+  String get searchDownloading => '地域のデータをダウンロード中…';
+
+  @override
+  String get searchDownloadFailed =>
+      '地域のデータをダウンロードできませんでした。接続を確認して、もう一度お試しください。';
+
+  @override
+  String get searchRetry => '再試行';
+
+  @override
+  String get searchClear => 'クリア';
+
+  @override
+  String searchResultCount(int count, String query) {
+    return '「$query」の検索結果 $count件';
+  }
+
+  @override
+  String searchNoResults(String query) {
+    return '「$query」は見つかりませんでした';
+  }
+
+  @override
+  String get searchNoResultsBody =>
+      '別の言葉や、より一般的な言葉（「ハンドバッグ」ではなく「かばん」など）で検索してください。';
+
+  @override
+  String get itemHowTo => '出し方';
+
+  @override
+  String get itemInJapanese => '日本語';
+
+  @override
+  String get itemTranslationNote => '英語は BinPal による翻訳です。日本語は市の原文です。';
+
+  @override
+  String itemAboutCategory(String category) {
+    return '$categoryについて';
+  }
+
+  @override
+  String get itemSource => '公式の情報源';
+
+  @override
+  String itemSourceSubtitle(String name) {
+    return '$nameのウェブサイト';
+  }
+
+  @override
+  String get itemVerified => '情報源と照合した日';
+
+  @override
+  String get itemOpenFailed => 'リンクを開けませんでした。';
 
   @override
   String get settingsArea => '地域';
