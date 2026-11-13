@@ -3,6 +3,36 @@ import 'package:flutter/material.dart';
 import '../../app/theme.dart';
 import '../../data/database.dart';
 
+/// A stronger version of each card colour, for calendar dots and legends.
+final _dots = {
+  AppColors.peach: Color(0xFFE0782F),
+  AppColors.lavender: Color(0xFF9C6CC6),
+  AppColors.sage: Color(0xFF7C8F3A),
+  AppColors.outline: Color(0xFF8C7A6E),
+};
+
+/// The dot colour for [category] in the calendar.
+Color categoryDot(WasteCategory category) =>
+    _dots[categoryStyle(category).color] ?? AppColors.secondaryInk;
+
+/// The illustration for [category] from `assets/illustrations/`, if one fits.
+/// Bundles only say which shared type a category is, so batteries are told
+/// apart from other hazardous waste (spray cans) by name.
+String? categoryIllustration(WasteCategory category) {
+  final name = switch (category.common) {
+    'burnable' => 'burnable',
+    'non_burnable' => 'non-burnable',
+    'plastic' => 'plastic-packaging',
+    'pet_bottles' => 'pet-bottle',
+    'cans_bottles' => 'aluminum-can',
+    'paper' => 'paper-cardboard',
+    'hazardous' when category.nameEn.toLowerCase().contains('batter') =>
+      'batteries',
+    _ => null,
+  };
+  return name == null ? null : 'assets/illustrations/$name.png';
+}
+
 /// Icon and colour for a category, from its shared `common` type.
 ({IconData icon, Color color}) categoryStyle(
   WasteCategory category,

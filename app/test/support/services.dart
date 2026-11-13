@@ -38,5 +38,6 @@ AppServices testServices({
       now: now,
     ),
     syncOnLaunch: false,
+    clock: now,
   );
 }

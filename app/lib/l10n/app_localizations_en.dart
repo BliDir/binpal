@@ -289,4 +289,87 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reminderListSeparator => ', ';
+
+  @override
+  String todayPutOutBy(String time) {
+    return 'Put out by $time';
+  }
+
+  @override
+  String todayAlso(String categories) {
+    return 'Also: $categories';
+  }
+
+  @override
+  String get todayNoCollection => 'No collection today';
+
+  @override
+  String get todayNoCollectionBody =>
+      'There is no rubbish collection in your area today.';
+
+  @override
+  String todayTomorrow(String date) {
+    return 'Tomorrow · $date';
+  }
+
+  @override
+  String get todayNoCollectionTomorrow => 'No collection tomorrow';
+
+  @override
+  String get todaySearchHint => 'How do I sort this item?';
+
+  @override
+  String get todayReminders => 'Reminders';
+
+  @override
+  String get todayViewCalendar => 'View calendar';
+
+  @override
+  String get todayStaleTitle => 'Schedule may be out of date';
+
+  @override
+  String todayStaleBody(String date) {
+    return 'BinPal hasn\'t been able to check for updates since $date. Collection days can change for holidays or ward updates.';
+  }
+
+  @override
+  String get todayStaleLink => 'Check ward information';
+
+  @override
+  String todayChecked(String date, String source) {
+    return 'Checked $date · $source';
+  }
+
+  @override
+  String get todayOffline => 'Available offline';
+
+  @override
+  String get todayNoData => 'Your area\'s data hasn\'t downloaded yet.';
+
+  @override
+  String get calendarTitle => 'Calendar';
+
+  @override
+  String calendarDetails(String date) {
+    return 'Collection details: $date';
+  }
+
+  @override
+  String get calendarNone => 'No collection';
+
+  @override
+  String calendarArea(String area) {
+    return 'Area: $area';
+  }
+
+  @override
+  String calendarSource(String source) {
+    return 'Source: $source';
+  }
+
+  @override
+  String get calendarPrevious => 'Previous month';
+
+  @override
+  String get calendarNext => 'Next month';
 }

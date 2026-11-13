@@ -32,6 +32,9 @@ class SyncController extends ChangeNotifier with WidgetsBindingObserver {
 
   /// Result of the most recent check that actually ran.
   SyncResult? lastResult;
+
+  /// When the stored bundle was last confirmed current against the CDN.
+  DateTime? lastChecked;
   bool syncing = false;
   bool _started = false;
 
@@ -55,6 +58,9 @@ class SyncController extends ChangeNotifier with WidgetsBindingObserver {
       final municipalityId =
           await db.setting(municipalitySettingKey) ?? launchMunicipalityId;
       bundle = await db.bundleFor(municipalityId);
+      lastChecked = DateTime.tryParse(
+        await db.setting(lastCheckedSettingKey) ?? '',
+      );
       notifyListeners();
 
       final result = force
@@ -62,6 +68,9 @@ class SyncController extends ChangeNotifier with WidgetsBindingObserver {
           : await sync.syncIfDue(municipalityId);
       if (result != null) {
         lastResult = result;
+        lastChecked = DateTime.tryParse(
+          await db.setting(lastCheckedSettingKey) ?? '',
+        );
         if (result.outcome == SyncOutcome.updated) {
           bundle = await db.bundleFor(municipalityId);
         }

@@ -52,6 +52,7 @@ class ScheduleRepository {
               validFrom: JapanDate.parse(c.validFrom),
               validTo: c.validTo == null ? null : JapanDate.parse(c.validTo!),
               putOutBy: c.putOutBy,
+              sourceUrl: c.sourceUrl,
             ),
       ],
       exceptions: [

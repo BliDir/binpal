@@ -17,7 +17,8 @@ const cdnBaseUrl = String.fromEnvironment(
 /// Bundle schema versions this app can read.
 const supportedBundleSchemas = {1};
 
-const _lastCheckedKey = 'sync.last_checked_at';
+/// When the stored bundle was last confirmed current against the CDN.
+const lastCheckedSettingKey = 'sync.last_checked_at';
 
 enum SyncOutcome {
   /// The stored bundle is already the one the manifest lists.
@@ -83,7 +84,10 @@ class BundleSync {
   Future<SyncResult> sync(String municipalityId) async {
     try {
       final result = await _sync(municipalityId);
-      await db.setSetting(_lastCheckedKey, _now().toUtc().toIso8601String());
+      await db.setSetting(
+        lastCheckedSettingKey,
+        _now().toUtc().toIso8601String(),
+      );
       return result;
     } on _SyncFailure catch (e) {
       return SyncResult(SyncOutcome.failed, error: e.message);
@@ -103,7 +107,9 @@ class BundleSync {
     String municipalityId, {
     Duration every = const Duration(hours: 6),
   }) async {
-    final last = DateTime.tryParse(await db.setting(_lastCheckedKey) ?? '');
+    final last = DateTime.tryParse(
+      await db.setting(lastCheckedSettingKey) ?? '',
+    );
     final stored = await db.bundleFor(municipalityId);
     if (stored != null && last != null && _now().difference(last) < every) {
       return null;
