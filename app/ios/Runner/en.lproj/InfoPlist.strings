@@ -1,0 +1,2 @@
+/* Shown when BinPal asks for location access during area setup. */
+"NSLocationWhenInUseUsageDescription" = "BinPal uses your location once to find your area's collection days. Your location is not stored or sent.";

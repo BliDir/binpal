@@ -10,6 +10,7 @@ import 'package:binpal/app/services.dart';
 import 'package:binpal/data/area_controller.dart';
 import 'package:binpal/data/bundle_sync.dart';
 import 'package:binpal/data/database.dart';
+import 'package:binpal/data/language_controller.dart';
 import 'package:binpal/data/sync_controller.dart';
 import 'package:binpal/reminders/reminder_notifications.dart';
 import 'package:binpal/reminders/reminder_service.dart';
@@ -53,6 +54,7 @@ void main() {
         db: db,
         sync: sync,
         area: AreaController(db: db),
+        language: LanguageController(db: db),
         reminders: ReminderService(
           db: db,
           notifications: LocalReminderNotifications(),

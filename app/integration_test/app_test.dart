@@ -10,8 +10,17 @@ import 'dart:io';
 
 import 'package:binpal/app/app.dart';
 import 'package:binpal/app/services.dart';
+import 'package:binpal/data/area_controller.dart';
+import 'package:binpal/data/bundle_sync.dart';
+import 'package:binpal/data/database.dart';
+import 'package:binpal/data/language_controller.dart';
+import 'package:binpal/data/sync_controller.dart';
+import 'package:binpal/reminders/reminder_notifications.dart';
+import 'package:binpal/reminders/reminder_service.dart';
+import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart' as http;
 import 'package:integration_test/integration_test.dart';
 
 void main() {
@@ -47,9 +56,35 @@ void main() {
         await useLocale(tester, locale);
         final ja = locale.languageCode == 'ja';
 
-        await tester.pumpWidget(BinPalApp(services: AppServices.live()));
+        // The live bundle, and an area already chosen (area setup has its
+        // own test in screens_test.dart).
+        final db = AppDatabase(NativeDatabase.memory());
+        addTearDown(db.close);
+        final sync = SyncController(
+          db: db,
+          sync: BundleSync(db: db, client: http.Client()),
+        );
+        final services = AppServices(
+          db: db,
+          sync: sync,
+          area: AreaController(db: db),
+          language: LanguageController(db: db),
+          reminders: ReminderService(
+            db: db,
+            notifications: LocalReminderNotifications(),
+          ),
+          syncOnLaunch: false,
+        );
+        await sync.refresh(force: true);
+        await db.setSetting(areaSettingKey, '14117-100001');
+        await services.area.load();
+
+        await tester.pumpWidget(BinPalApp(services: services));
         await tester.pumpAndSettle();
-        expect(find.text(ja ? '地域が未設定です' : 'No area yet'), findsOneWidget);
+        expect(
+          find.text(ja ? '青葉区青葉台一丁目' : 'Aobadai 1-chome, Aoba Ward'),
+          findsWidgets,
+        );
         await screenshot(tester, '${locale.languageCode}_today');
 
         await tester.tap(find.text(ja ? '検索' : 'Search'));
@@ -61,7 +96,7 @@ void main() {
 
         await tester.tap(find.byTooltip(ja ? '設定' : 'Settings').last);
         await tester.pumpAndSettle();
-        expect(find.text(ja ? 'リマインダー' : 'Reminders'), findsOneWidget);
+        expect(find.text(ja ? 'お知らせ' : 'Reminders'), findsOneWidget);
         await screenshot(tester, '${locale.languageCode}_settings');
 
         await tester.tap(find.text(ja ? 'BinPalについて' : 'About BinPal'));

@@ -6,6 +6,7 @@ import 'package:binpal/app/services.dart';
 import 'package:binpal/data/area_controller.dart';
 import 'package:binpal/data/bundle_sync.dart';
 import 'package:binpal/data/database.dart';
+import 'package:binpal/data/language_controller.dart';
 import 'package:binpal/data/sync_controller.dart';
 import 'package:binpal/reminders/reminder_notifications.dart';
 import 'package:binpal/reminders/reminder_service.dart';
@@ -30,6 +31,7 @@ void main() {
         sync: BundleSync(db: db, client: http.Client()),
       ),
       area: AreaController(db: db),
+      language: LanguageController(db: db),
       reminders: ReminderService(
         db: db,
         notifications: LocalReminderNotifications(),
@@ -58,12 +60,14 @@ void main() {
     expect(rules.length, greaterThan(3000));
     expect(areas.length, greaterThanOrEqualTo(85));
 
-    await tester.tap(find.byTooltip('Settings').first);
+    // No area is chosen yet, so area setup follows, and the downloaded
+    // areas are there to choose from.
     await tester.pumpAndSettle();
-    expect(
-      find.text('Yokohama City · version ${bundle.bundleVersion}'),
-      findsOneWidget,
-    );
+    expect(find.text('Set your collection area'), findsOneWidget);
+    await tester.tap(find.text('Choose manually'));
+    await tester.pumpAndSettle();
+    expect(find.text('Choose your town'), findsOneWidget);
+    expect(find.text('Aobadai'), findsOneWidget);
 
     // With the network gone, the stored data is still served.
     final offline = SyncController(

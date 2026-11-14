@@ -8,7 +8,7 @@
   "areaNotSet": "Set your area",
   "todayTitle": "Today",
   "todayNoAreaTitle": "No area yet",
-  "todayNoAreaBody": "Choose your area to see which garbage goes out today and tomorrow.",
+  "todayNoAreaBody": "Choose your area to see which rubbish goes out today and tomorrow.",
   "searchHint": "How do I sort this item?",
   "searchNoAreaBody": "Item search works offline once your area's data is downloaded.",
   "searchTitle": "Search",
@@ -83,7 +83,7 @@
   "settingsDataFailed": "Couldn't download. Tap to try again.",
   "settingsDataStale": "Couldn't check for updates. Using the saved data.",
   "settingsAbout": "About BinPal",
-  "aboutTagline": "Garbage sorting and collection days in Japan, in plain English.",
+  "aboutTagline": "Rubbish sorting and collection days in Japan, in plain English.",
   "aboutLicenses": "Open-source licences",
   "logoLabel": "BinPal logo",
   "areaLabel": "{area}, {ward}",
@@ -103,7 +103,6 @@
   "areaPickerChome": "Choose your chōme",
   "areaPickerNoData": "Area data hasn't downloaded yet. Check your connection, then try again.",
   "areaPickerHint": "Pick the town where you put out your rubbish.",
-  "todayAreaBody": "Today's and tomorrow's collections for your area will show here.",
   "remindersTitle": "Collection reminders",
   "remindersSubtitle": "Get a reminder before collection time.",
   "remindersSwitch": "Remind me",
@@ -235,7 +234,6 @@
     }
   },
   "todayOffline": "Available offline",
-  "todayNoData": "Your area's data hasn't downloaded yet.",
   "calendarTitle": "Calendar",
   "calendarDetails": "Collection details: {date}",
   "@calendarDetails": {
@@ -271,7 +269,7 @@
   "setupPrivacyTitle": "Your privacy is protected",
   "setupPrivacyBody": "Your location is used once, on this phone, to find your collection area. It is not saved or sent anywhere.",
   "setupLocating": "Finding your area…",
-  "setupDownloadingMap": "Downloading the area map (about 2 MB, only the first time)…",
+  "setupDownloadingMap": "Downloading the area map (under 1 MB, only the first time)…",
   "setupDenied": "Location access wasn't allowed. You can choose your area from the list instead.",
   "setupDeniedForever": "Location access is off for BinPal. Turn it on in Settings, or choose your area from the list.",
   "setupServiceOff": "Location services are off on this phone. Turn them on, or choose your area from the list.",
@@ -313,5 +311,19 @@
   "confirmNearby": "Also near you",
   "confirmNearbyHint": "You're close to a boundary, so check which side you're on.",
   "confirmButton": "Confirm area",
-  "confirmOther": "Choose another area"
+  "confirmOther": "Choose another area",
+  "settingsLanguage": "Language",
+  "languagePhone": "Same as phone",
+  "languagePhoneSummary": "Same as phone ({language})",
+  "@languagePhoneSummary": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "languageName": "English",
+  "@languageName": {
+    "description": "This language's own name, written in this language. Shown in the language list whatever the interface language is."
+  }
 }

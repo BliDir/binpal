@@ -9,8 +9,9 @@ import '../area/area_label.dart';
 import '../area/area_setup_screen.dart';
 import '../reminders/reminder_settings_screen.dart';
 import 'about_screen.dart';
+import 'language_screen.dart';
 
-/// Area, reminders, downloaded data and about.
+/// Area, reminders, language, downloaded data and about.
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
@@ -72,6 +73,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
               trailing: const Icon(Icons.chevron_right),
               onTap: () => _open(const ReminderSettingsScreen()),
             ),
+          ),
+          ListenableBuilder(
+            listenable: services.language,
+            builder: (context, _) {
+              final chosen = services.language.chosen;
+              return ListTile(
+                leading: const Icon(Icons.translate),
+                title: Text(l10n.settingsLanguage),
+                subtitle: Text(
+                  chosen == null
+                      ? l10n.languagePhoneSummary(
+                          languageName(services.language.phone),
+                        )
+                      : languageName(chosen),
+                ),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => _open(const LanguageScreen()),
+              );
+            },
           ),
           _DataTile(sync: services.sync),
           ListTile(

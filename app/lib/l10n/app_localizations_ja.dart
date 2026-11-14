@@ -65,7 +65,7 @@ class AppLocalizationsJa extends AppLocalizations {
       '地域のデータをダウンロードできませんでした。接続を確認して、もう一度お試しください。';
 
   @override
-  String get searchRetry => '再試行';
+  String get searchRetry => 'もう一度試す';
 
   @override
   String get searchClear => 'クリア';
@@ -119,7 +119,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settingsAreaNotSet => '未設定';
 
   @override
-  String get settingsReminders => 'リマインダー';
+  String get settingsReminders => 'お知らせ';
 
   @override
   String get settingsRemindersOff => 'オフ';
@@ -178,9 +178,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get areaPickerHint => 'ごみを出す場所の町名を選んでください。';
-
-  @override
-  String get todayAreaBody => 'この地域の今日と明日の収集がここに表示されます。';
 
   @override
   String get remindersTitle => '収集日のお知らせ';
@@ -327,9 +324,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get todayOffline => 'オフラインで使えます';
 
   @override
-  String get todayNoData => '地域のデータがまだダウンロードされていません。';
-
-  @override
   String get calendarTitle => 'カレンダー';
 
   @override
@@ -369,7 +363,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get setupChooseManually => '一覧から選ぶ';
 
   @override
-  String get setupPrivacyTitle => 'プライバシーについて';
+  String get setupPrivacyTitle => 'プライバシーを守ります';
 
   @override
   String get setupPrivacyBody => '現在地は収集地域を探すために、この端末内で一度だけ使います。保存や送信はしません。';
@@ -378,7 +372,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get setupLocating => '地域を探しています…';
 
   @override
-  String get setupDownloadingMap => '地域の地図をダウンロードしています(約2MB、初回のみ)…';
+  String get setupDownloadingMap => '地域の地図をダウンロードしています（1MB未満、初回のみ）…';
 
   @override
   String get setupDenied => '位置情報の利用が許可されませんでした。一覧から地域を選べます。';
@@ -419,11 +413,11 @@ class AppLocalizationsJa extends AppLocalizations {
   String get confirmTitle => '地域の確認';
 
   @override
-  String get confirmHeading => 'この地域でよろしいですか?';
+  String get confirmHeading => 'この地域でよろしいですか？';
 
   @override
   String confirmBody(String area) {
-    return '現在地は$areaのようです。ここにごみを出していますか?';
+    return '現在地は$areaのようです。ここにごみを出していますか？';
   }
 
   @override
@@ -442,4 +436,18 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get confirmOther => '別の地域を選ぶ';
+
+  @override
+  String get settingsLanguage => '言語 / Language';
+
+  @override
+  String get languagePhone => '端末の設定に合わせる';
+
+  @override
+  String languagePhoneSummary(String language) {
+    return '端末の設定に合わせる（$language）';
+  }
+
+  @override
+  String get languageName => '日本語';
 }
