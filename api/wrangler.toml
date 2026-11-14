@@ -1,0 +1,49 @@
+name = "binpal-api"
+main = "worker/build/index.js"
+compatibility_date = "2026-11-01"
+
+[build]
+command = "cd worker && worker-build --release"
+
+[vars]
+# A small, fast vision model. Escalate only if the photo test set shows it
+# can't reach the accuracy target (DAI-579).
+ANTHROPIC_MODEL = "claude-haiku-5-5"
+ANTHROPIC_BASE_URL = "https://api.anthropic.com"
+CDN_BASE_URL = "https://data.blidir.fun"
+# AI spend per Japan day across all installs. Once reached, /v1/status says
+# "paused" and the app stays on-device until midnight in Japan.
+DAILY_BUDGET_USD = "5"
+AI_CALLS_PER_INSTALL_PER_DAY = "20"
+REPORTS_PER_INSTALL_PER_DAY = "10"
+# The ANTHROPIC_API_KEY secret is set with `wrangler secret put`, never here.
+
+# Usage counters, daily spend, tuning log and reports. Replace the id with
+# the one `wrangler d1 create binpal-api` prints (see README).
+[[d1_databases]]
+binding = "DB"
+database_name = "binpal-api"
+database_id = "00000000-0000-0000-0000-000000000000"
+migrations_dir = "migrations"
+
+# Cached answers, area lookups and category guides. Replace the id with the
+# one `wrangler kv namespace create CACHE` prints.
+[[kv_namespaces]]
+binding = "CACHE"
+id = "00000000000000000000000000000000"
+
+# Per-install burst limit: 10 requests a minute, before any other work.
+[[ratelimits]]
+name = "BURST"
+namespace_id = "1001"
+
+  [ratelimits.simple]
+  limit = 10
+  period = 60
+
+# Daily cleanup at 03:00 in Japan: counters after 2 days, log after 90.
+[triggers]
+crons = ["0 18 * * *"]
+
+[observability]
+enabled = true
