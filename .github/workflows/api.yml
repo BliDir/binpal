@@ -1,0 +1,55 @@
+name: API
+
+on:
+  pull_request:
+    paths:
+      - "api/**"
+      - "data/municipalities/14100/bundle.json"
+      - ".github/workflows/api.yml"
+  push:
+    branches: [main]
+    paths:
+      - "api/**"
+      - "data/municipalities/14100/bundle.json"
+      - ".github/workflows/api.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: api-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  WORKER_BUILD_VERSION: "0.9.0"
+
+defaults:
+  run:
+    working-directory: api
+
+jobs:
+  check:
+    name: Lint, test and run locally
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - run: rustup target add wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: api
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: api/package-lock.json
+      - uses: astral-sh/setup-uv@v6
+      - run: uvx ruff@0.17.4 check --config ../data/ruff.toml tests
+      - run: uvx ruff@0.17.4 format --config ../data/ruff.toml --check tests
+      - run: cargo fmt --all --check
+      - run: cargo clippy -p binpal-api-core --all-targets -- -D warnings
+      - run: cargo clippy -p binpal-api --target wasm32-unknown-unknown -- -D warnings
+      - run: cargo test -p binpal-api-core
+      - run: cargo install worker-build@${{ env.WORKER_BUILD_VERSION }} --locked
+      - run: npm ci
+      # The Worker under wrangler dev with local D1 and KV, against a mock
+      # Anthropic API and CDN: no secrets, no spend.
+      - run: python3 tests/e2e.py

@@ -1,0 +1,12 @@
+{
+  "name": "binpal-api",
+  "private": true,
+  "description": "Wrangler for building, running and deploying the BinPal API Worker.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "4.156.2"
+  }
+}
