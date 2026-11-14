@@ -35,7 +35,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get todayNoAreaBody =>
-      'Choose your area to see which garbage goes out today and tomorrow.';
+      'Choose your area to see which rubbish goes out today and tomorrow.';
 
   @override
   String get searchHint => 'How do I sort this item?';
@@ -160,7 +160,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aboutTagline =>
-      'Garbage sorting and collection days in Japan, in plain English.';
+      'Rubbish sorting and collection days in Japan, in plain English.';
 
   @override
   String get aboutLicenses => 'Open-source licences';
@@ -191,10 +191,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get areaPickerHint => 'Pick the town where you put out your rubbish.';
-
-  @override
-  String get todayAreaBody =>
-      'Today\'s and tomorrow\'s collections for your area will show here.';
 
   @override
   String get remindersTitle => 'Collection reminders';
@@ -344,9 +340,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get todayOffline => 'Available offline';
 
   @override
-  String get todayNoData => 'Your area\'s data hasn\'t downloaded yet.';
-
-  @override
   String get calendarTitle => 'Calendar';
 
   @override
@@ -398,7 +391,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get setupDownloadingMap =>
-      'Downloading the area map (about 2 MB, only the first time)…';
+      'Downloading the area map (under 1 MB, only the first time)…';
 
   @override
   String get setupDenied =>
@@ -466,4 +459,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirmOther => 'Choose another area';
+
+  @override
+  String get settingsLanguage => 'Language';
+
+  @override
+  String get languagePhone => 'Same as phone';
+
+  @override
+  String languagePhoneSummary(String language) {
+    return 'Same as phone ($language)';
+  }
+
+  @override
+  String get languageName => 'English';
 }

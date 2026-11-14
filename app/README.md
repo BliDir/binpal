@@ -117,7 +117,16 @@ flutter drive --driver=test_driver/integration_test.dart \
 
 `flutter test integration_test -d <device-id> --dart-define=SCREENSHOTS=false` runs the same flows without screenshots. They don't run in CI yet (that needs an emulator on the runner).
 
+`integration_test/screens_test.dart` visits every MVP screen in both languages, with the live bundle and boundary package, for reviewing translations side by side.
+
+## Languages
+
 Strings are in `lib/l10n/app_en.arb` and `app_ja.arb`. `flutter pub get` or any build regenerates `app_localizations*.dart`.
+
+* The app follows the phone's language (English when the phone's isn't one the app has). Settings → Language overrides it; the choice is stored as the `language` setting and also sets the language of scheduled reminders.
+* Item, category and area names come from the bundle. In English they show the English name with the Japanese alongside, so they can be matched to official guides and stickers.
+* Each ARB file's `languageName` is that language's own name; the language list is built from it.
+* Adding a language: add `app_<code>.arb`, then add the code to `CFBundleLocalizations` in `ios/Runner/Info.plist`, `android/app/src/main/res/xml/locales_config.xml`, and a `<code>.lproj/InfoPlist.strings` for the iOS location prompt.
 
 ## App icon and logo
 

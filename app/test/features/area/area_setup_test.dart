@@ -201,7 +201,7 @@ void main() {
     expect(find.text('収集地域を設定'), findsOneWidget);
 
     await tap(tester, '現在地を使う');
-    expect(find.text('現在地は青葉区青葉台一丁目のようです。ここにごみを出していますか?'), findsOne);
+    expect(find.text('現在地は青葉区青葉台一丁目のようです。ここにごみを出していますか？'), findsOne);
     expect(find.text('横浜市青葉区'), findsOneWidget);
   });
 }

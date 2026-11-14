@@ -7,6 +7,7 @@ import 'package:binpal/area/location_source.dart';
 import 'package:binpal/data/area_controller.dart';
 import 'package:binpal/data/bundle_sync.dart';
 import 'package:binpal/data/database.dart';
+import 'package:binpal/data/language_controller.dart';
 import 'package:binpal/data/sync_controller.dart';
 import 'package:binpal/reminders/reminder_service.dart';
 import 'package:drift/drift.dart' show driftRuntimeOptions;
@@ -29,6 +30,7 @@ AppServices testServices({
   // Each test makes its own in-memory database; they never share a file.
   driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
   final database = db ?? AppDatabase(NativeDatabase.memory());
+  final language = LanguageController(db: database);
   return AppServices(
     db: database,
     sync: SyncController(
@@ -39,10 +41,12 @@ AppServices testServices({
       ),
     ),
     area: AreaController(db: database),
+    language: language,
     reminders: ReminderService(
       db: database,
       notifications: notifications ?? FakeReminderNotifications(),
       now: now,
+      locale: () => language.current,
     ),
     location: location ?? FakeLocationSource.denied(),
     boundaries:

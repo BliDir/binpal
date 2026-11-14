@@ -29,26 +29,31 @@ class _BinPalAppState extends State<BinPalApp> {
   Widget build(BuildContext context) {
     return AppServicesScope(
       services: widget.services,
-      child: MaterialApp(
-        onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
-        theme: buildTheme(),
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: AppLocalizations.supportedLocales,
-        // Until an area is chosen, setting it is the whole app. A new bundle
-        // that drops the chosen area brings the user back here too.
-        home: ListenableBuilder(
-          listenable: widget.services.area,
-          builder: (context, _) {
-            final area = widget.services.area;
-            return area.loaded && area.area == null
-                ? const AreaSetupScreen()
-                : const HomeShell();
-          },
+      child: ListenableBuilder(
+        listenable: widget.services.language,
+        builder: (context, _) => MaterialApp(
+          onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
+          theme: buildTheme(),
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          // Null follows the phone.
+          locale: widget.services.language.chosen,
+          // Until an area is chosen, setting it is the whole app. A new
+          // bundle that drops the chosen area brings the user back here too.
+          home: ListenableBuilder(
+            listenable: widget.services.area,
+            builder: (context, _) {
+              final area = widget.services.area;
+              return area.loaded && area.area == null
+                  ? const AreaSetupScreen()
+                  : const HomeShell();
+            },
+          ),
         ),
       ),
     );

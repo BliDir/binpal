@@ -149,7 +149,7 @@ abstract class AppLocalizations {
   /// No description provided for @todayNoAreaBody.
   ///
   /// In en, this message translates to:
-  /// **'Choose your area to see which garbage goes out today and tomorrow.'**
+  /// **'Choose your area to see which rubbish goes out today and tomorrow.'**
   String get todayNoAreaBody;
 
   /// No description provided for @searchHint.
@@ -353,7 +353,7 @@ abstract class AppLocalizations {
   /// No description provided for @aboutTagline.
   ///
   /// In en, this message translates to:
-  /// **'Garbage sorting and collection days in Japan, in plain English.'**
+  /// **'Rubbish sorting and collection days in Japan, in plain English.'**
   String get aboutTagline;
 
   /// No description provided for @aboutLicenses.
@@ -409,12 +409,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pick the town where you put out your rubbish.'**
   String get areaPickerHint;
-
-  /// No description provided for @todayAreaBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Today\'s and tomorrow\'s collections for your area will show here.'**
-  String get todayAreaBody;
 
   /// No description provided for @remindersTitle.
   ///
@@ -638,12 +632,6 @@ abstract class AppLocalizations {
   /// **'Available offline'**
   String get todayOffline;
 
-  /// No description provided for @todayNoData.
-  ///
-  /// In en, this message translates to:
-  /// **'Your area\'s data hasn\'t downloaded yet.'**
-  String get todayNoData;
-
   /// No description provided for @calendarTitle.
   ///
   /// In en, this message translates to:
@@ -731,7 +719,7 @@ abstract class AppLocalizations {
   /// No description provided for @setupDownloadingMap.
   ///
   /// In en, this message translates to:
-  /// **'Downloading the area map (about 2 MB, only the first time)…'**
+  /// **'Downloading the area map (under 1 MB, only the first time)…'**
   String get setupDownloadingMap;
 
   /// No description provided for @setupDenied.
@@ -841,6 +829,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose another area'**
   String get confirmOther;
+
+  /// No description provided for @settingsLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguage;
+
+  /// No description provided for @languagePhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Same as phone'**
+  String get languagePhone;
+
+  /// No description provided for @languagePhoneSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Same as phone ({language})'**
+  String languagePhoneSummary(String language);
+
+  /// This language's own name, written in this language. Shown in the language list whatever the interface language is.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get languageName;
 }
 
 class _AppLocalizationsDelegate
