@@ -180,7 +180,7 @@ pub fn parse_report(body: &[u8]) -> Result<Report, ApiError> {
 }
 
 /// A UUID: 8-4-4-4-12 hex digits.
-fn check_install_id(id: &str) -> Result<(), ApiError> {
+pub(crate) fn check_install_id(id: &str) -> Result<(), ApiError> {
     let groups: Vec<&str> = id.split('-').collect();
     let ok = groups.iter().map(|g| g.len()).eq([8, 4, 4, 4, 12])
         && groups
@@ -191,7 +191,7 @@ fn check_install_id(id: &str) -> Result<(), ApiError> {
 }
 
 /// Ward or municipality code, a hyphen, and the 6-digit e-Stat small area.
-fn check_area_id(id: &str) -> Result<(), ApiError> {
+pub(crate) fn check_area_id(id: &str) -> Result<(), ApiError> {
     let ok = id.len() == 12
         && id.bytes().enumerate().all(|(i, b)| {
             if i == 5 {
@@ -205,7 +205,7 @@ fn check_area_id(id: &str) -> Result<(), ApiError> {
 }
 
 /// Bundle ids: lowercase letters, digits and hyphens.
-fn check_slug(field: &str, id: &str) -> Result<(), ApiError> {
+pub(crate) fn check_slug(field: &str, id: &str) -> Result<(), ApiError> {
     let ok = (1..=64).contains(&id.len())
         && id
             .bytes()
@@ -241,7 +241,7 @@ fn check_date(date: &str) -> Result<(), ApiError> {
     Ok(())
 }
 
-fn check_text(field: &str, text: &str, max_chars: usize) -> Result<(), ApiError> {
+pub(crate) fn check_text(field: &str, text: &str, max_chars: usize) -> Result<(), ApiError> {
     if text.chars().count() > max_chars {
         return Err(ApiError::invalid(format!(
             "{field} may be at most {max_chars} characters"

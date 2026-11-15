@@ -47,7 +47,11 @@ ROWS = [
 
 
 def schedule_page(
-    rows=ROWS, notes=NOTES, time="収集日の朝８時までに出してください。", updated="2026年1月23日"
+    rows=ROWS,
+    notes=NOTES,
+    time="収集日の朝８時までに出してください。",
+    updated="2026年1月23日",
+    contact="電話：０４５－９７５－００２５",
 ) -> bytes:
     body = "".join(
         f"<tr><td>{kana}</td><td>{town}</td>{''.join(f'<td>{c}</td>' for c in cells)}</tr>"
@@ -55,7 +59,8 @@ def schedule_page(
     )
     return f"""<html><body><p>最終更新日 {updated}</p>
 <table><tr><th>五十音</th><th>町名</th><th>月曜日</th><th>火曜日</th><th>水曜日</th><th>木曜日</th><th>金曜日</th><th>土曜日</th></tr>
-{body}</table><ul><li>{notes}</li><li>{time}</li></ul></body></html>""".encode()
+{body}</table><ul><li>{notes}</li><li>{time}</li></ul>
+<div id="tmp_inquiry"><p>このページへのお問合せ</p><p>{contact}</p></div></body></html>""".encode()
 
 
 def new_year_page(last="令和9年1月3日(日)") -> bytes:
@@ -386,3 +391,10 @@ def guide(**fields) -> dict:
 def test_bad_bulky_guides_are_rejected(config, guides, message):
     bundle = make(config) | {"bulky_guides": guides}
     assert any(message in e for e in validate.validate_bundle(bundle)), validate.validate_bundle(bundle)
+
+
+def test_the_ward_contact_is_checked_against_its_pages(config):
+    bundle = make(config)
+    assert bundle["wards"][0]["contact"]["phone"] == "045-975-0025"
+    with pytest.raises(build.BuildError, match="contact number 045-975-0025 is no longer"):
+        make(config, **{PAGE_URL: schedule_page(contact="電話：045-975-9999")})

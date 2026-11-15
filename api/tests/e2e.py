@@ -15,6 +15,7 @@ in core/.
 import base64
 import hashlib
 import json
+import re
 import socket
 import subprocess
 import sys
@@ -110,13 +111,30 @@ class Mock:
         # "allowance" (Cloudflare's free allocation is used up).
         self.workers_ai_mode = "answer"
         self.fail_next = 0  # answer this many Anthropic calls with 529 first
+        # Questions: "answer" (cite the first candidate), "wrong_category" (cite it
+        # but name another category), "invented" (cite an id that isn't a
+        # candidate) or "not_covered".
+        self.ask_mode = "answer"
         self.issues = {}  # number -> {"title", "body", "labels", "state", "comments"}
         self.github_calls = []  # (method, path, authorization header)
 
+    def ask_output(self, user):
+        first = re.search(r"^- ([a-z0-9-]+): ", user, re.MULTILINE).group(1)
+        return {
+            "answer": {"covered": True, "item_ids": [first], "answer": "Yes. Put it out as Bulky waste."},
+            "wrong_category": {"covered": True, "item_ids": [first], "answer": "Put it out as Burnable."},
+            "invented": {"covered": True, "item_ids": ["yokohama-999999"], "answer": "Burnable."},
+            "not_covered": {"covered": False, "item_ids": [], "answer": ""},
+        }[self.ask_mode]
+
     def workers_ai_output(self, body):
-        candidates = body["messages"][1]["content"][1]["text"]
-        item = first_candidate(candidates) if self.workers_ai_mode == "answer" else None
-        content = json.dumps({"item_id": item, "category": None, "confidence": 0.74})
+        user = body["messages"][1]["content"]
+        if isinstance(user, str):  # a question, not a photo
+            content = json.dumps(self.ask_output(user))
+        else:
+            candidates = user[1]["text"]
+            item = first_candidate(candidates) if self.workers_ai_mode == "answer" else None
+            content = json.dumps({"item_id": item, "category": None, "confidence": 0.74})
         return {
             "id": "chatcmpl-mock",
             "object": "chat.completion",
@@ -275,6 +293,30 @@ class Api:
     def file_reports(self):
         """Runs the five-minute cron that files reports in the review queue."""
         urllib.request.urlopen(self.base + "/__scheduled?cron=*/5+*+*+*+*", timeout=60).read()
+
+    def ask(self, install, question="Can I throw out an old antenna?", area="14117-068001", candidates=None):
+        return self.call(
+            "POST",
+            "/v1/ask",
+            {
+                "install_id": install,
+                "area_id": area,
+                "question": question,
+                "candidates": candidates
+                if candidates is not None
+                else [
+                    {
+                        "item_id": "yokohama-11",
+                        "name_ja": "アンテナ",
+                        "name_en": "Antenna",
+                        "category": "sodai",
+                        "instructions_en": "Put out as Bulky waste.",
+                    },
+                    {"item_id": "yokohama-1", "name_ja": "アイスピック", "name_en": "Ice pick", "category": "kinzoku"},
+                ],
+                "app_version": "1.1.0",
+            },
+        )
 
     def report(self, install, kind="wrong_category"):
         return self.call(
@@ -630,6 +672,84 @@ def without_key(mock, upstream):
         dev.stop()
 
 
+def questions(mock, upstream):
+    """Plain-language questions, answered only from the candidates."""
+    print("\nQuestions")
+    mock.workers_ai_mode = "answer"
+    dev = Dev(upstream, {"QUESTIONS_PER_INSTALL_PER_DAY": "4"})
+    api = dev.api
+    try:
+        one, two = str(uuid.uuid4()), str(uuid.uuid4())
+        calls = len(mock.workers_ai)
+        status, body = api.ask(one)
+        check(
+            "a question is answered from the cited candidate",
+            status == 200
+            and body["answer"]
+            == {"covered": True, "item_ids": ["yokohama-11"], "text": "Yes. Put it out as Bulky waste."}
+            and body["cached"] is False,
+            body,
+        )
+        sent = mock.workers_ai[-1]["messages"][1]["content"]
+        check(
+            "the model gets the question and the candidates' rules",
+            "Question: Can I throw out an old antenna?" in sent and "Put out as Bulky waste." in sent,
+            sent,
+        )
+        status, body = api.ask(two, question="can I throw out an OLD  antenna?")
+        check(
+            "the same question again is answered from the cache",
+            status == 200 and body["cached"] is True and len(mock.workers_ai) == calls + 1,
+            body,
+        )
+
+        mock.ask_mode = "wrong_category"
+        status, body = api.ask(one, question="Is an antenna burnable?")
+        check(
+            "a sentence naming another category is dropped; the citation stays",
+            status == 200 and body["answer"] == {"covered": True, "item_ids": ["yokohama-11"], "text": None},
+            body,
+        )
+        mock.ask_mode = "invented"
+        status, body = api.ask(one, question="What about a tent?")
+        check(
+            "a rule the app didn't send can't be cited",
+            status == 200 and body["answer"] == {"covered": False, "item_ids": [], "text": None},
+            body,
+        )
+        mock.ask_mode = "not_covered"
+        status, body = api.ask(one, question="When does the recycling centre open?")
+        check("not covered says so", status == 200 and body["answer"]["covered"] is False, body)
+        status, body = api.ask(one, question="One more question?")
+        check("the install's daily questions are capped", status == 429 and body["error"] == "daily_limit", body)
+        mock.ask_mode = "answer"
+
+        status, body = api.ask(two, candidates=[])
+        check("a question needs candidates", status == 400, body)
+        status, body = api.ask(two, area="13112-001001")
+        check("an area BinPal doesn't cover is refused", status == 400 and body["error"] == "unknown_area", body)
+
+        logged = dev.d1("SELECT kind, source, outcome, item_id, category FROM ai_log ORDER BY id")
+        check(
+            "questions are logged as questions, with the cited rule",
+            [(r["kind"], r["source"], r["outcome"]) for r in logged]
+            == [
+                ("question", "workers_ai", "answered"),
+                ("question", "cache", "answered"),
+                ("question", "workers_ai", "cited"),
+                ("question", "workers_ai", "not_covered"),
+                ("question", "workers_ai", "not_covered"),
+            ]
+            and logged[0]["item_id"] == "yokohama-11"
+            and logged[0]["category"] == "sodai",
+            logged,
+        )
+        stored = json.dumps(dev.d1("SELECT * FROM ai_log"), ensure_ascii=False)
+        check("the question itself is never stored", "antenna" not in stored.lower() and "tent" not in stored)
+    finally:
+        dev.stop()
+
+
 def review_queue(mock, upstream):
     """Reports filed as GitHub issues, grouped, with priority."""
     print("\nReports in the review queue")
@@ -750,6 +870,7 @@ def run():
     upstream = f"http://127.0.0.1:{port}"
     with_fallback(mock, upstream)
     without_key(mock, upstream)
+    questions(mock, upstream)
     review_queue(mock, upstream)
     print()
     print(f"{len(failures)} failed" if failures else "all checks passed")

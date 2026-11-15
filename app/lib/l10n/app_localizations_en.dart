@@ -729,4 +729,110 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get movePrivacy =>
       'BinPal checked on your phone that you seem to be away from this area. Your location isn\'t stored or sent.';
+
+  @override
+  String get askEntryTitle => 'Ask a question';
+
+  @override
+  String get askEntryBody => 'Can\'t find it? Ask in plain English.';
+
+  @override
+  String get askTitle => 'Ask a question';
+
+  @override
+  String get askSubtitle =>
+      'Not sure how to put something out? Ask in plain English.';
+
+  @override
+  String get askHint =>
+      'e.g. Can I throw out a broken umbrella with a metal frame?';
+
+  @override
+  String get askExamplesTitle => 'Example questions';
+
+  @override
+  String get askExample1 => 'Can I throw out a sofa?';
+
+  @override
+  String get askExample2 => 'How do I dispose of a frying pan?';
+
+  @override
+  String get askExample3 => 'Is plastic packaging recyclable?';
+
+  @override
+  String get askButton => 'Ask';
+
+  @override
+  String get askNote =>
+      'Answers come only from your area\'s rules, and show the rule they rely on.';
+
+  @override
+  String get askChecking => 'Checking your area\'s rules…';
+
+  @override
+  String get answerTitle => 'Answer';
+
+  @override
+  String answerVerdict(String category) {
+    return 'Put it out as $category.';
+  }
+
+  @override
+  String get answerRule => 'Local disposal rule';
+
+  @override
+  String get answerRulesTitle => 'Based on these rules';
+
+  @override
+  String get answerHowTo => 'How to put it out';
+
+  @override
+  String answerNext(String date) {
+    return 'Next collection: $date';
+  }
+
+  @override
+  String answerNextBy(String date, String time) {
+    return 'Next collection: $date, by $time';
+  }
+
+  @override
+  String get answerAiNote =>
+      'The summary is written by AI. The rules above are the city\'s and come first.';
+
+  @override
+  String get answerNotCovered =>
+      'We can\'t answer this reliably from your area\'s rules.';
+
+  @override
+  String get answerNotCoveredBody =>
+      'Please check with the city\'s official contact for your ward.';
+
+  @override
+  String get answerOffline =>
+      'You\'re offline, so this question can\'t be checked right now.';
+
+  @override
+  String get answerPaused =>
+      'Questions are paused for today. Please try again tomorrow.';
+
+  @override
+  String get answerFailed => 'Couldn\'t get an answer right now.';
+
+  @override
+  String get answerContactTitle => 'Official contact';
+
+  @override
+  String answerCall(String number) {
+    return 'Call $number';
+  }
+
+  @override
+  String get answerContactPage => 'Official page';
+
+  @override
+  String get answerSearch => 'Search by name';
+
+  @override
+  String get searchAskQuestion => 'Ask a question';
 }

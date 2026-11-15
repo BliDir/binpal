@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "bundle_version": 1,
-  "generated_at": "2026-11-15T20:42:19+09:00",
+  "generated_at": "2026-11-15T21:31:30+09:00",
   "municipality": {"id": "14100", "prefecture_code": "14", "names": {"ja": "横浜市", "kana": "よこはまし", "en": "Yokohama City"}, "website_url": "https://www.city.yokohama.lg.jp/"},
   "attribution": [
     {"text": {"ja": "この資料は、以下の著作物を改変して利用しています。ごみと資源物の出し方一覧表、神奈川県横浜市、クリエイティブ・コモンズ・ライセンス 表示4.0 国際。英語と読みがなは BinPal による翻訳・追加です。", "en": "This data is adapted from \"ごみと資源物の出し方一覧表\" (list of how to put out waste and resources) by the City of Yokohama, Kanagawa, licensed under Creative Commons Attribution 4.0 International. English text and kana readings were added by BinPal and are not the city's."}, "license": "CC-BY-4.0", "url": "https://creativecommons.org/licenses/by/4.0/deed.ja"},
@@ -9,7 +9,7 @@
     {"text": {"ja": "町丁目の名称とコードは「政府統計の総合窓口(e-Stat)」の令和2年国勢調査 町丁・字等別境界データを加工して作成。", "en": "Town and chome names and codes are derived from the 2020 Population Census small-area boundary data on e-Stat, the portal site of official statistics of Japan."}, "license": "LicenseRef-e-Stat-Terms-of-Use", "url": "https://www.e-stat.go.jp/terms-of-use"}
   ],
   "wards": [
-    {"id": "14117", "names": {"ja": "青葉区", "kana": "あおばく", "en": "Aoba Ward"}}
+    {"id": "14117", "names": {"ja": "青葉区", "kana": "あおばく", "en": "Aoba Ward"}, "contact": {"name": {"ja": "資源循環局 青葉事務所", "en": "Aoba Office, Resources and Waste Recycling Bureau"}, "phone": "045-975-0025", "url": "https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/a-u.html"}}
   ],
   "areas": [
     {"id": "14117-068001", "ward_id": "14117", "names": {"ja": "桂台一丁目", "kana": "かつらだいいっちょうめ", "en": "Katsuradai 1-chome"}, "town": {"ja": "桂台", "kana": "かつらだい", "en": "Katsuradai"}, "chome": 1},

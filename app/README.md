@@ -22,6 +22,7 @@ lib/
     photo/        photo check: on-device labels and marks first, AI fallback
     report/       "this looks wrong" reports to the review queue
     bulky/        bulky waste (粗大ごみ) guide
+    ask/          plain-language questions, answered from the area's rules
   l10n/           English and Japanese strings (ARB); Dart files are generated
 ```
 
@@ -141,6 +142,21 @@ When the app opens or comes back to the foreground, `MoveCheck` (`lib/area/move_
 * **Not for travel or commuting**: it asks only after the phone was more than 3 km from the saved area on 3 different days within 14, with no day near home in between; a day near home starts the count again.
 * **"Not now"** (or backing out of area setup) mutes it for 30 days. Choosing an area starts the count again.
 * **Stored**: only dates (`move.far` with the area id and the days away, `move.last_check`, `move.snoozed_until` in settings); never a position.
+
+## Ask a question
+
+Search → Ask a question, or **Ask a question** when a search finds nothing (the search words come along), answers questions such as "Can I throw out a broken umbrella with a metal frame?" from the user's area rules only (`lib/features/ask/`).
+
+1. **On the phone** (`question_search.dart`): the question is cut into search words (English words that name the item, without "can", "throw", "broken"; in Japanese, runs of kanji and katakana), each searched like a typed query. Up to 20 rules, best first, become the candidates. With none, nothing is sent and the ward's official contact is shown.
+2. **The API** (`/v1/ask`, see `../api/README.md`) gets the question, the area id and the candidates' names, categories and English instructions, and may only cite candidates. It drops the AI's sentence if it names another category.
+3. **The answer** leads with what the cited rule says ("Put it out as Small metal items / 小さな金属類."), from the bundle; then the AI's summary, marked as AI; the cited rules (each opens its item); the official source; how to put it out and the area's next collection of that category.
+4. **Not covered**, offline, paused or failed: no guess; the ward's official contact from the bundle (name, tap to call, official page) and search by name.
+
+`integration_test/qa_test_set_test.dart` runs a question set against the full Yokohama bundle and the live API and fails on any answer that cites a rule in the wrong category:
+
+```sh
+flutter test integration_test/qa_test_set_test.dart -d <device>
+```
 
 ## Bulky item guide
 

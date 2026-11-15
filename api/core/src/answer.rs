@@ -66,28 +66,34 @@ pub fn parse_response(
     candidates: &[Candidate],
     guide: &CategoryGuide,
 ) -> Result<(Outcome, Usage), String> {
-    let message: Message = serde_json::from_slice(body).map_err(|e| format!("response: {e}"))?;
-    let usage = message.usage;
-    match message.stop_reason.as_deref() {
-        Some("refusal") => return Ok((Outcome::NoAnswer("refusal"), usage)),
-        Some("max_tokens") => return Ok((Outcome::NoAnswer("max_tokens"), usage)),
-        _ => {}
-    }
-    // Content may start with thinking blocks; the answer is the text block.
-    let Some(text) = message
-        .content
-        .iter()
-        .find(|b| b.kind == "text")
-        .and_then(|b| b.text.as_deref())
-    else {
-        return Ok((Outcome::NoAnswer("no_text"), usage));
-    };
-    Ok((check(text, candidates, guide), usage))
+    let (text, usage) = message_text(body)?;
+    Ok((
+        match text {
+            Ok(text) => check(&text, candidates, guide),
+            Err(reason) => Outcome::NoAnswer(reason),
+        },
+        usage,
+    ))
 }
 
-/// The checked answer in a model's text: the item must be one of the
-/// candidates and the category one the bundle has. Takes the outermost JSON
-/// object, in case a model wraps it in prose or a code fence.
+/// The text of a Messages API response, or why there is none (a refusal,
+/// a cut-off answer, no text block), with its token usage.
+pub(crate) fn message_text(body: &[u8]) -> Result<(Result<String, &'static str>, Usage), String> {
+    let message: Message = serde_json::from_slice(body).map_err(|e| format!("response: {e}"))?;
+    let usage = message.usage;
+    let text = match message.stop_reason.as_deref() {
+        Some("refusal") => Err("refusal"),
+        Some("max_tokens") => Err("max_tokens"),
+        _ => message
+            .content
+            .iter()
+            .find(|b| b.kind == "text")
+            .and_then(|b| b.text.clone())
+            .ok_or("no_text"),
+    };
+    Ok((text, usage))
+}
+
 fn check(text: &str, candidates: &[Candidate], guide: &CategoryGuide) -> Outcome {
     let json = match (text.find('{'), text.rfind('}')) {
         (Some(start), Some(end)) if start < end => &text[start..=end],
@@ -149,26 +155,35 @@ pub fn parse_workers_ai(
     candidates: &[Candidate],
     guide: &CategoryGuide,
 ) -> Result<(Outcome, WorkersAiUsage), String> {
+    let (text, usage) = chat_text(output)?;
+    Ok((
+        match text {
+            Ok(text) => check(&text, candidates, guide),
+            Err(reason) => Outcome::NoAnswer(reason),
+        },
+        usage,
+    ))
+}
+
+/// The text of a Workers AI chat output, or why there is none, with its
+/// token usage.
+pub(crate) fn chat_text(
+    output: &serde_json::Value,
+) -> Result<(Result<String, &'static str>, WorkersAiUsage), String> {
     let output = ChatOutput::deserialize(output).map_err(|e| format!("Workers AI output: {e}"))?;
     let usage = output.usage;
     let text = match (output.choices.first(), output.response) {
-        (Some(choice), _) => {
-            match choice.finish_reason.as_deref() {
-                Some("length") => return Ok((Outcome::NoAnswer("max_tokens"), usage)),
-                Some("content_filter") => return Ok((Outcome::NoAnswer("refusal"), usage)),
-                _ => {}
-            }
-            choice.message.content.clone()
-        }
+        (Some(choice), _) => match choice.finish_reason.as_deref() {
+            Some("length") => Err("max_tokens"),
+            Some("content_filter") => Err("refusal"),
+            _ => choice.message.content.clone().ok_or("no_text"),
+        },
         // JSON mode may hand back the object itself rather than its text.
-        (None, Some(serde_json::Value::String(text))) => Some(text),
-        (None, Some(object @ serde_json::Value::Object(_))) => Some(object.to_string()),
-        _ => None,
+        (None, Some(serde_json::Value::String(text))) => Ok(text),
+        (None, Some(object @ serde_json::Value::Object(_))) => Ok(object.to_string()),
+        _ => Err("no_text"),
     };
-    let Some(text) = text else {
-        return Ok((Outcome::NoAnswer("no_text"), usage));
-    };
-    Ok((check(&text, candidates, guide), usage))
+    Ok((text, usage))
 }
 
 #[cfg(test)]

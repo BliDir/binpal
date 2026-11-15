@@ -1309,6 +1309,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'BinPal checked on your phone that you seem to be away from this area. Your location isn\'t stored or sent.'**
   String get movePrivacy;
+
+  /// No description provided for @askEntryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask a question'**
+  String get askEntryTitle;
+
+  /// No description provided for @askEntryBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t find it? Ask in plain English.'**
+  String get askEntryBody;
+
+  /// No description provided for @askTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask a question'**
+  String get askTitle;
+
+  /// No description provided for @askSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not sure how to put something out? Ask in plain English.'**
+  String get askSubtitle;
+
+  /// No description provided for @askHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Can I throw out a broken umbrella with a metal frame?'**
+  String get askHint;
+
+  /// No description provided for @askExamplesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Example questions'**
+  String get askExamplesTitle;
+
+  /// No description provided for @askExample1.
+  ///
+  /// In en, this message translates to:
+  /// **'Can I throw out a sofa?'**
+  String get askExample1;
+
+  /// No description provided for @askExample2.
+  ///
+  /// In en, this message translates to:
+  /// **'How do I dispose of a frying pan?'**
+  String get askExample2;
+
+  /// No description provided for @askExample3.
+  ///
+  /// In en, this message translates to:
+  /// **'Is plastic packaging recyclable?'**
+  String get askExample3;
+
+  /// No description provided for @askButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask'**
+  String get askButton;
+
+  /// No description provided for @askNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Answers come only from your area\'s rules, and show the rule they rely on.'**
+  String get askNote;
+
+  /// No description provided for @askChecking.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking your area\'s rules…'**
+  String get askChecking;
+
+  /// No description provided for @answerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer'**
+  String get answerTitle;
+
+  /// No description provided for @answerVerdict.
+  ///
+  /// In en, this message translates to:
+  /// **'Put it out as {category}.'**
+  String answerVerdict(String category);
+
+  /// No description provided for @answerRule.
+  ///
+  /// In en, this message translates to:
+  /// **'Local disposal rule'**
+  String get answerRule;
+
+  /// No description provided for @answerRulesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Based on these rules'**
+  String get answerRulesTitle;
+
+  /// No description provided for @answerHowTo.
+  ///
+  /// In en, this message translates to:
+  /// **'How to put it out'**
+  String get answerHowTo;
+
+  /// No description provided for @answerNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next collection: {date}'**
+  String answerNext(String date);
+
+  /// No description provided for @answerNextBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Next collection: {date}, by {time}'**
+  String answerNextBy(String date, String time);
+
+  /// No description provided for @answerAiNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The summary is written by AI. The rules above are the city\'s and come first.'**
+  String get answerAiNote;
+
+  /// No description provided for @answerNotCovered.
+  ///
+  /// In en, this message translates to:
+  /// **'We can\'t answer this reliably from your area\'s rules.'**
+  String get answerNotCovered;
+
+  /// No description provided for @answerNotCoveredBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check with the city\'s official contact for your ward.'**
+  String get answerNotCoveredBody;
+
+  /// No description provided for @answerOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline, so this question can\'t be checked right now.'**
+  String get answerOffline;
+
+  /// No description provided for @answerPaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions are paused for today. Please try again tomorrow.'**
+  String get answerPaused;
+
+  /// No description provided for @answerFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t get an answer right now.'**
+  String get answerFailed;
+
+  /// No description provided for @answerContactTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Official contact'**
+  String get answerContactTitle;
+
+  /// No description provided for @answerCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Call {number}'**
+  String answerCall(String number);
+
+  /// No description provided for @answerContactPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Official page'**
+  String get answerContactPage;
+
+  /// No description provided for @answerSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by name'**
+  String get answerSearch;
+
+  /// No description provided for @searchAskQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask a question'**
+  String get searchAskQuestion;
 }
 
 class _AppLocalizationsDelegate

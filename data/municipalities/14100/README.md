@@ -21,6 +21,7 @@ The bundle for Yokohama, built by `data/scripts/build_yokohama.py`. Aoba-ku (141
 | Area codes and names | e-Stat 2020 census small-area boundary data | `areas.tsv` |
 | Category descriptions | The city's page for each category | Summarised by hand in `config.yaml` |
 | Bulky waste guide | The city's [粗大ごみ pages](https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/sodaigomi/index.html): the flow, booking, collection and application notes | Written by hand in `config.yaml` (`bulky_guides`), checked against those pages on the `verified_at` date |
+| Ward contact | The ward's collection-day pages (このページへのお問合せ) | Written by hand in `config.yaml` (`wards[].contact`); the build stops if the phone number is no longer on those pages |
 | English names, kana readings, English notes | Not published by the city in a form that can be joined to the list | Translated with an LLM into `items.tsv` and `notes.tsv` |
 
 All of these pages are in `data/sources.yaml`, so the rule monitor opens an issue when one changes. A changed `yokohama-item-list` usually means a new CSV.

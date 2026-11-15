@@ -640,6 +640,17 @@ class $WardsTable extends Wards with TableInfo<$WardsTable, Ward> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _contactMeta = const VerificationMeta(
+    'contact',
+  );
+  @override
+  late final GeneratedColumn<String> contact = GeneratedColumn<String>(
+    'contact',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -647,6 +658,7 @@ class $WardsTable extends Wards with TableInfo<$WardsTable, Ward> {
     nameJa,
     nameKana,
     nameEn,
+    contact,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -700,6 +712,12 @@ class $WardsTable extends Wards with TableInfo<$WardsTable, Ward> {
     } else if (isInserting) {
       context.missing(_nameEnMeta);
     }
+    if (data.containsKey('contact')) {
+      context.handle(
+        _contactMeta,
+        contact.isAcceptableOrUnknown(data['contact']!, _contactMeta),
+      );
+    }
     return context;
   }
 
@@ -729,6 +747,10 @@ class $WardsTable extends Wards with TableInfo<$WardsTable, Ward> {
         DriftSqlType.string,
         data['${effectivePrefix}name_en'],
       )!,
+      contact: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}contact'],
+      ),
     );
   }
 
@@ -744,12 +766,17 @@ class Ward extends DataClass implements Insertable<Ward> {
   final String nameJa;
   final String nameKana;
   final String nameEn;
+
+  /// The ward's official office for rubbish questions, as the bundle's JSON
+  /// (`name`, `phone`, `url`); null when the bundle has none.
+  final String? contact;
   const Ward({
     required this.id,
     required this.municipalityId,
     required this.nameJa,
     required this.nameKana,
     required this.nameEn,
+    this.contact,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -759,6 +786,9 @@ class Ward extends DataClass implements Insertable<Ward> {
     map['name_ja'] = Variable<String>(nameJa);
     map['name_kana'] = Variable<String>(nameKana);
     map['name_en'] = Variable<String>(nameEn);
+    if (!nullToAbsent || contact != null) {
+      map['contact'] = Variable<String>(contact);
+    }
     return map;
   }
 
@@ -769,6 +799,9 @@ class Ward extends DataClass implements Insertable<Ward> {
       nameJa: Value(nameJa),
       nameKana: Value(nameKana),
       nameEn: Value(nameEn),
+      contact: contact == null && nullToAbsent
+          ? const Value.absent()
+          : Value(contact),
     );
   }
 
@@ -783,6 +816,7 @@ class Ward extends DataClass implements Insertable<Ward> {
       nameJa: serializer.fromJson<String>(json['nameJa']),
       nameKana: serializer.fromJson<String>(json['nameKana']),
       nameEn: serializer.fromJson<String>(json['nameEn']),
+      contact: serializer.fromJson<String?>(json['contact']),
     );
   }
   @override
@@ -794,6 +828,7 @@ class Ward extends DataClass implements Insertable<Ward> {
       'nameJa': serializer.toJson<String>(nameJa),
       'nameKana': serializer.toJson<String>(nameKana),
       'nameEn': serializer.toJson<String>(nameEn),
+      'contact': serializer.toJson<String?>(contact),
     };
   }
 
@@ -803,12 +838,14 @@ class Ward extends DataClass implements Insertable<Ward> {
     String? nameJa,
     String? nameKana,
     String? nameEn,
+    Value<String?> contact = const Value.absent(),
   }) => Ward(
     id: id ?? this.id,
     municipalityId: municipalityId ?? this.municipalityId,
     nameJa: nameJa ?? this.nameJa,
     nameKana: nameKana ?? this.nameKana,
     nameEn: nameEn ?? this.nameEn,
+    contact: contact.present ? contact.value : this.contact,
   );
   Ward copyWithCompanion(WardsCompanion data) {
     return Ward(
@@ -819,6 +856,7 @@ class Ward extends DataClass implements Insertable<Ward> {
       nameJa: data.nameJa.present ? data.nameJa.value : this.nameJa,
       nameKana: data.nameKana.present ? data.nameKana.value : this.nameKana,
       nameEn: data.nameEn.present ? data.nameEn.value : this.nameEn,
+      contact: data.contact.present ? data.contact.value : this.contact,
     );
   }
 
@@ -829,13 +867,15 @@ class Ward extends DataClass implements Insertable<Ward> {
           ..write('municipalityId: $municipalityId, ')
           ..write('nameJa: $nameJa, ')
           ..write('nameKana: $nameKana, ')
-          ..write('nameEn: $nameEn')
+          ..write('nameEn: $nameEn, ')
+          ..write('contact: $contact')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, municipalityId, nameJa, nameKana, nameEn);
+  int get hashCode =>
+      Object.hash(id, municipalityId, nameJa, nameKana, nameEn, contact);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -844,7 +884,8 @@ class Ward extends DataClass implements Insertable<Ward> {
           other.municipalityId == this.municipalityId &&
           other.nameJa == this.nameJa &&
           other.nameKana == this.nameKana &&
-          other.nameEn == this.nameEn);
+          other.nameEn == this.nameEn &&
+          other.contact == this.contact);
 }
 
 class WardsCompanion extends UpdateCompanion<Ward> {
@@ -853,6 +894,7 @@ class WardsCompanion extends UpdateCompanion<Ward> {
   final Value<String> nameJa;
   final Value<String> nameKana;
   final Value<String> nameEn;
+  final Value<String?> contact;
   final Value<int> rowid;
   const WardsCompanion({
     this.id = const Value.absent(),
@@ -860,6 +902,7 @@ class WardsCompanion extends UpdateCompanion<Ward> {
     this.nameJa = const Value.absent(),
     this.nameKana = const Value.absent(),
     this.nameEn = const Value.absent(),
+    this.contact = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   WardsCompanion.insert({
@@ -868,6 +911,7 @@ class WardsCompanion extends UpdateCompanion<Ward> {
     required String nameJa,
     required String nameKana,
     required String nameEn,
+    this.contact = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        municipalityId = Value(municipalityId),
@@ -880,6 +924,7 @@ class WardsCompanion extends UpdateCompanion<Ward> {
     Expression<String>? nameJa,
     Expression<String>? nameKana,
     Expression<String>? nameEn,
+    Expression<String>? contact,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -888,6 +933,7 @@ class WardsCompanion extends UpdateCompanion<Ward> {
       if (nameJa != null) 'name_ja': nameJa,
       if (nameKana != null) 'name_kana': nameKana,
       if (nameEn != null) 'name_en': nameEn,
+      if (contact != null) 'contact': contact,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -898,6 +944,7 @@ class WardsCompanion extends UpdateCompanion<Ward> {
     Value<String>? nameJa,
     Value<String>? nameKana,
     Value<String>? nameEn,
+    Value<String?>? contact,
     Value<int>? rowid,
   }) {
     return WardsCompanion(
@@ -906,6 +953,7 @@ class WardsCompanion extends UpdateCompanion<Ward> {
       nameJa: nameJa ?? this.nameJa,
       nameKana: nameKana ?? this.nameKana,
       nameEn: nameEn ?? this.nameEn,
+      contact: contact ?? this.contact,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -928,6 +976,9 @@ class WardsCompanion extends UpdateCompanion<Ward> {
     if (nameEn.present) {
       map['name_en'] = Variable<String>(nameEn.value);
     }
+    if (contact.present) {
+      map['contact'] = Variable<String>(contact.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -942,6 +993,7 @@ class WardsCompanion extends UpdateCompanion<Ward> {
           ..write('nameJa: $nameJa, ')
           ..write('nameKana: $nameKana, ')
           ..write('nameEn: $nameEn, ')
+          ..write('contact: $contact, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -5917,6 +5969,7 @@ typedef $$WardsTableCreateCompanionBuilder = WardsCompanion Function({
   required String nameJa,
   required String nameKana,
   required String nameEn,
+  Value<String?> contact,
   Value<int> rowid,
 });
 typedef $$WardsTableUpdateCompanionBuilder = WardsCompanion Function({
@@ -5925,6 +5978,7 @@ typedef $$WardsTableUpdateCompanionBuilder = WardsCompanion Function({
   Value<String> nameJa,
   Value<String> nameKana,
   Value<String> nameEn,
+  Value<String?> contact,
   Value<int> rowid,
 });
 
@@ -5958,6 +6012,11 @@ class $$WardsTableFilterComposer extends Composer<_$AppDatabase, $WardsTable> {
 
   ColumnFilters<String> get nameEn => $composableBuilder(
     column: $table.nameEn,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get contact => $composableBuilder(
+    column: $table.contact,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -5995,6 +6054,11 @@ class $$WardsTableOrderingComposer
     column: $table.nameEn,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get contact => $composableBuilder(
+    column: $table.contact,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$WardsTableAnnotationComposer
@@ -6022,6 +6086,9 @@ class $$WardsTableAnnotationComposer
 
   GeneratedColumn<String> get nameEn =>
       $composableBuilder(column: $table.nameEn, builder: (column) => column);
+
+  GeneratedColumn<String> get contact =>
+      $composableBuilder(column: $table.contact, builder: (column) => column);
 }
 
 class $$WardsTableTableManager
@@ -6057,6 +6124,7 @@ class $$WardsTableTableManager
                 Value<String> nameJa = const Value.absent(),
                 Value<String> nameKana = const Value.absent(),
                 Value<String> nameEn = const Value.absent(),
+                Value<String?> contact = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => WardsCompanion(
                 id: id,
@@ -6064,6 +6132,7 @@ class $$WardsTableTableManager
                 nameJa: nameJa,
                 nameKana: nameKana,
                 nameEn: nameEn,
+                contact: contact,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -6073,6 +6142,7 @@ class $$WardsTableTableManager
                 required String nameJa,
                 required String nameKana,
                 required String nameEn,
+                Value<String?> contact = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => WardsCompanion.insert(
                 id: id,
@@ -6080,6 +6150,7 @@ class $$WardsTableTableManager
                 nameJa: nameJa,
                 nameKana: nameKana,
                 nameEn: nameEn,
+                contact: contact,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

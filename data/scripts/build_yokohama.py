@@ -345,6 +345,21 @@ def build_rules(raw: bytes, config: dict, items: list[dict], notes: list[dict], 
 # --- Bundle ------------------------------------------------------------------
 
 
+def ward_entry(ward: dict, sources: dict) -> dict:
+    """The ward with its contact, after checking the contact's number is still on its pages."""
+    entry = {"id": ward["id"], "names": ward["names"]}
+    contact = ward.get("contact")
+    if contact:
+        pages = [nfkc(sources[url].decode("utf-8", "replace")) for url in ward["pages"]]
+        if not any(contact["phone"] in page for page in pages):
+            raise BuildError(
+                f"{ward['names']['ja']}: contact number {contact['phone']} is no longer on the "
+                "collection-day pages; check the ward's contact in config.yaml"
+            )
+        entry["contact"] = contact
+    return entry
+
+
 def build(config: dict, areas, towns, items, notes, sources: dict, generated_at: str) -> dict:
     """Assemble the bundle. `sources` holds the downloaded bytes by name."""
     groups = config["schedule_groups"]
@@ -367,7 +382,7 @@ def build(config: dict, areas, towns, items, notes, sources: dict, generated_at:
         "generated_at": generated_at,
         "municipality": config["municipality"],
         "attribution": config["attribution"],
-        "wards": [{"id": w["id"], "names": w["names"]} for w in config["wards"]],
+        "wards": [ward_entry(w, sources) for w in config["wards"]],
         "areas": all_areas,
         "categories": [{k: v for k, v in c.items() if k != "default"} for c in config["categories"]],
         "rules": rules,
