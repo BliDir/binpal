@@ -32,3 +32,6 @@ Runner/GeneratedPluginRegistrant.*
 !default.mode2v3
 !default.pbxuser
 !default.perspectivev3
+
+# ML Kit model bundles, downloaded at build time by mlkit_bundles.sh.
+mlkit_bundles/

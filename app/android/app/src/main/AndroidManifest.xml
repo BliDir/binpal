@@ -1,4 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <!-- Downloading the manifest and the area's data bundle. -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Collection-day reminders: show them, and reschedule them after a reboot. -->
@@ -7,11 +8,23 @@
     <!-- Area detection only, while the app is open (geolocator). -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- Photo check: still photos only. The camera plugin also asks for the
+         microphone, which photo check never uses. Phones without a camera can
+         still choose a photo from the gallery. -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" tools:node="remove" />
+    <uses-feature android:name="android.hardware.camera.any" android:required="false" />
     <application
         android:label="BinPal"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:localeConfig="@xml/locales_config">
+        <!-- Photo check: Play Services downloads the ML Kit image labeling and
+             Japanese text recognition models with the app, so they are ready
+             before the first photo, even offline. -->
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="ica,ocr_japanese" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

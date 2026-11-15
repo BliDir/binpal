@@ -19,12 +19,13 @@ lib/
     settings/     area, reminders, about
     area/         choosing the collection area by ward, town and chōme
     reminders/    reminder preferences screen
+    photo/        photo check: on-device labels and marks first, AI fallback
   l10n/           English and Japanese strings (ARB); Dart files are generated
 ```
 
 Each feature owns its screens and, later, its state and data access. Shared code lives in `app/` until a second feature needs it.
 
-Core packages only: `drift` (SQLite with FTS5), `http` and `crypto` (bundle download and checksum), `url_launcher` (official source links), `geolocator`, `flutter_local_notifications` and `intl`. Camera arrives in v2. Text uses the platform's system font, so no Japanese font is bundled.
+Core packages only: `drift` (SQLite with FTS5), `http` and `crypto` (bundle download and checksum), `url_launcher` (official source links), `geolocator`, `flutter_local_notifications` and `intl`. Photo check (v2) adds `camera`, `image_picker`, `image` (resizing) and Google ML Kit's image labeling and text recognition. Text uses the platform's system font, so no Japanese font is bundled.
 
 ## Collection calendar
 
@@ -91,6 +92,43 @@ The CDN defaults to `https://data.blidir.fun`; override with `--dart-define=CDN_
 * A query that still has no results two seconds after typing stops is counted in `missed_searches`, once per session: the normalised text and a count, kept on the device and never sent. It is there to find missing aliases.
 
 On the full Yokohama bundle (3,413 items), every prefix of seven typical words took a median of 1.1 ms and at most 26 ms on an Android 16 emulator, and 0.6 ms / 17 ms on an iPhone 17 simulator (`integration_test/search_test.dart`).
+
+## Photo check
+
+Search → Photo check identifies an item from a photo. The phone tries first; the thin API (`../api/`) is asked only when it isn't sure.
+
+1. **Capture**: tap to take a photo (no live frame analysis), review it (Retake / Use this photo), or choose one from the gallery.
+2. **On the phone** (`photo_analyzer.dart`): Google ML Kit image labeling ("Umbrella", "Bottle"), and the text printed on the item: ML Kit's Japanese recognizer on Android, Apple's Vision on iOS (a small channel in `ios/Runner/AppDelegate.swift`), because the ML Kit plugin reads only Latin text on iOS. Japanese text on iOS needs iOS 16; on iOS 15 only PET is read.
+3. **Recycling marks** (`recycling_marks.dart`): プラ, PET, アルミ, スチール and 紙 as words of their own. A mark decides the category: PET wins over プラ (that's for the cap and label), and metal marks don't count on a spray can.
+4. **Candidates** (`photo_matcher.dart`): each label is searched like a typed query, so it reaches rules through their names and the bundle's aliases (the alias table). Candidates are weighted by the label's confidence and how well it matched.
+5. **Confident** (no network): a remembered choice for the same labels and marks, a mark, one candidate clearly ahead, or likely candidates that all share a category. The result shows the item, its category and how to put it out, from the bundle.
+6. **Not sure**: the top on-device candidates appear at once; meanwhile the photo is resized to 512 px (about 30–60 KB, metadata dropped) and sent with the area and the top 20 candidates to `/v1/identify`. Its pick appears at the top as "AI suggestion". Offline, paused for the day, or no answer: the candidates and search by name still work.
+7. **Remembered**: the item the user taps is stored for the same labels and marks (`photo_choices`, on the phone only), so the next such photo needs no AI.
+
+Photos are deleted when the result screen closes. The API gets the resized photo, the area id, a random install id, the candidates and the label names; never the recognised text, location or anything else. Android drops the camera plugin's microphone permission.
+
+The API defaults to `https://api.blidir.fun`; override with `--dart-define=API_BASE_URL=…`. In debug builds each AI call prints `Photo check AI: <ms> ms`.
+
+### Test set
+
+`integration_test/photo_test_set_test.dart` runs a folder of photos through the real pipeline, one subfolder per expected Yokohama item id, and reports how many are answered on the phone vs by AI, accuracy for each path, and on-device and AI times (p50/p95):
+
+```sh
+flutter test integration_test/photo_test_set_test.dart -d <device> \
+  --dart-define=PHOTO_DIR=/path/to/photos        # iOS Simulator: a folder on the Mac
+```
+
+On Android, run once with `--no-uninstall`, copy the folder into the app's files (`adb push`, then `run-as com.blidir.binpal` to unpack it into `app_flutter/photos`), and run again with `--no-uninstall` and without `PHOTO_DIR`. `--dart-define=ASK_AI=false` measures the on-device path alone. The report is also written to `report.md` in the folder.
+
+### ML Kit on Android
+
+ML Kit comes from Google Play Services, not bundled in the APK: the plugins' bundled models and pipelines would add about 34 MB (arm64 APK 52.8 MB instead of 25.8 MB). `android/app/build.gradle.kts` swaps the plugins' bundled ML Kit for the Play Services libraries, `proguard-rules.pro` covers the recognizers and custom models that are left out on purpose, and `AndroidManifest.xml` asks Play to download the models (`ica`, `ocr_japanese`) with the app.
+
+Until the models are on the phone (right after a non-Play install, or on a phone without Google Play), labeling and text recognition fail and photo check says it is still getting ready. An emulator needs a signed-in Google account to download them.
+
+### ML Kit on iOS
+
+ML Kit comes through Swift Package Manager, which can't copy its model files into the app. The Runner target's "ML Kit Models" build phase runs `ios/mlkit_bundles.sh`, which downloads `MLKitImageLabelingResources.bundle` and `MLKitObjectDetectionCommonResources.bundle` once into `ios/mlkit_bundles/` (ignored by git) and copies them into the app. Runner links with `-ObjC -all_load`, as ML Kit's static frameworks need.
 
 ## Run
 

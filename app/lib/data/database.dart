@@ -154,6 +154,20 @@ class MissedSearches extends Table {
   Set<Column> get primaryKey => {query};
 }
 
+/// The item the user picked after a photo check, by what the phone saw
+/// (image labels and recycling marks, see `PhotoSignals.key`). The next photo
+/// with the same signals answers from here with no AI call. Kept on the
+/// device; never sent.
+class PhotoChoices extends Table {
+  TextColumn get municipalityId => text()();
+  TextColumn get signals => text()();
+  TextColumn get itemId => text()();
+  DateTimeColumn get chosenAt => dateTime()();
+
+  @override
+  Set<Column> get primaryKey => {municipalityId, signals};
+}
+
 /// Small key-value store: the chosen municipality and area, last sync time.
 class Settings extends Table {
   TextColumn get key => text()();
@@ -175,6 +189,7 @@ class Settings extends Table {
     CalendarAreas,
     CollectionExceptions,
     MissedSearches,
+    PhotoChoices,
     Settings,
   ],
 )
@@ -183,7 +198,7 @@ class AppDatabase extends _$AppDatabase {
     : super(executor ?? driftDatabase(name: 'binpal'));
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -199,6 +214,7 @@ class AppDatabase extends _$AppDatabase {
           await _indexMunicipality(b.municipalityId);
         }
       }
+      if (from < 3) await m.createTable(photoChoices);
     },
     beforeOpen: (details) => customStatement('PRAGMA foreign_keys = ON'),
   );

@@ -325,5 +325,49 @@
   "languageName": "English",
   "@languageName": {
     "description": "This language's own name, written in this language. Shown in the language list whatever the interface language is."
-  }
+  },
+  "searchPhotoCheckTitle": "Photo check",
+  "searchPhotoCheckBody": "Take a photo to find an item's rubbish category.",
+  "photoTitle": "Photo check",
+  "photoSubtitle": "Take a photo of the item to check how to sort it.",
+  "photoGalleryHint": "You can also choose a photo from your device.",
+  "photoCancel": "Cancel",
+  "photoTake": "Take photo",
+  "photoGallery": "Choose a photo",
+  "photoRetake": "Retake",
+  "photoUse": "Use this photo",
+  "photoPrivacy": "The photo is checked on your phone first. Only if it's unsure is it sent to BinPal's server to identify, and it isn't kept.",
+  "photoCameraDenied": "Camera access is off. Turn it on for BinPal in Settings, or choose a photo instead.",
+  "photoCameraUnavailable": "The camera isn't available. You can choose a photo instead.",
+  "photoChecking": "Checking the photo…",
+  "photoCheckFailed": "Couldn't read this photo. Try another one.",
+  "photoResultTitle": "Match result",
+  "photoLikelyMatch": "Likely match",
+  "photoFromMark": "From the recycling mark",
+  "photoRemembered": "You chose this before",
+  "photoAiMatch": "AI suggestion",
+  "photoGuidance": "How to put it out",
+  "photoViewRule": "View sorting rule",
+  "photoNotRight": "Not right? Choose another item",
+  "photoWhichTitle": "Which item is this?",
+  "photoWhichBody": "We're not very sure from the photo. Please choose the item that best matches.",
+  "photoWhichInCategory": "Which item is it?",
+  "photoAsking": "Asking AI…",
+  "photoAiOffline": "You're offline, so AI can't check this photo. Choose below or search by name.",
+  "photoAiPaused": "AI checks are paused for today. Choose below or search by name.",
+  "photoAiFailed": "AI couldn't check this photo right now. Choose below or search by name.",
+  "photoAiNoAnswer": "AI couldn't tell either. Choose below or search by name.",
+  "photoNothingTitle": "Couldn't recognise this item",
+  "photoNothingBody": "Try another photo, closer and in good light, or search by name.",
+  "photoSearchByName": "Search by name",
+  "photoTryAgain": "Take another photo",
+  "photoCategoryOnly": "This goes in {category}.",
+  "@photoCategoryOnly": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "photoModelsMissing": "Photo check is still getting ready on this phone. Try again in a minute, or search by name."
 }

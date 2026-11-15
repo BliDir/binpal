@@ -450,4 +450,120 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get languageName => '日本語';
+
+  @override
+  String get searchPhotoCheckTitle => '写真で調べる';
+
+  @override
+  String get searchPhotoCheckBody => '写真を撮って、ごみの分別を調べます。';
+
+  @override
+  String get photoTitle => '写真で調べる';
+
+  @override
+  String get photoSubtitle => '品目の写真を撮って、分け方を調べます。';
+
+  @override
+  String get photoGalleryHint => '端末内の写真を選ぶこともできます。';
+
+  @override
+  String get photoCancel => 'キャンセル';
+
+  @override
+  String get photoTake => '撮影';
+
+  @override
+  String get photoGallery => '写真を選ぶ';
+
+  @override
+  String get photoRetake => '撮り直す';
+
+  @override
+  String get photoUse => 'この写真を使う';
+
+  @override
+  String get photoPrivacy =>
+      '写真はまずスマートフォンの中で調べます。判断できないときだけ、識別のためにBinPalのサーバーへ送ります。写真は保存しません。';
+
+  @override
+  String get photoCameraDenied =>
+      'カメラへのアクセスがオフです。設定でBinPalのカメラをオンにするか、写真を選んでください。';
+
+  @override
+  String get photoCameraUnavailable => 'カメラを使えません。写真を選ぶことはできます。';
+
+  @override
+  String get photoChecking => '写真を調べています…';
+
+  @override
+  String get photoCheckFailed => 'この写真を読み取れませんでした。別の写真をお試しください。';
+
+  @override
+  String get photoResultTitle => '調べた結果';
+
+  @override
+  String get photoLikelyMatch => 'おそらくこれ';
+
+  @override
+  String get photoFromMark => '識別マークから判断';
+
+  @override
+  String get photoRemembered => '前回選んだ品目';
+
+  @override
+  String get photoAiMatch => 'AIの候補';
+
+  @override
+  String get photoGuidance => '出し方';
+
+  @override
+  String get photoViewRule => '分け方を見る';
+
+  @override
+  String get photoNotRight => '違う場合はほかの品目を選ぶ';
+
+  @override
+  String get photoWhichTitle => 'どの品目ですか?';
+
+  @override
+  String get photoWhichBody => '写真だけでは判断できませんでした。いちばん近い品目を選んでください。';
+
+  @override
+  String get photoWhichInCategory => 'どの品目ですか?';
+
+  @override
+  String get photoAsking => 'AIに確認しています…';
+
+  @override
+  String get photoAiOffline => 'オフラインのため、AIでは確認できません。下から選ぶか、名前で検索してください。';
+
+  @override
+  String get photoAiPaused => '今日はAIでの確認を停止しています。下から選ぶか、名前で検索してください。';
+
+  @override
+  String get photoAiFailed => '今はAIで確認できませんでした。下から選ぶか、名前で検索してください。';
+
+  @override
+  String get photoAiNoAnswer => 'AIでも判断できませんでした。下から選ぶか、名前で検索してください。';
+
+  @override
+  String get photoNothingTitle => '品目がわかりませんでした';
+
+  @override
+  String get photoNothingBody => '明るい場所で近づいて撮り直すか、名前で検索してください。';
+
+  @override
+  String get photoSearchByName => '名前で検索';
+
+  @override
+  String get photoTryAgain => 'もう一度撮る';
+
+  @override
+  String photoCategoryOnly(String category) {
+    return '$categoryに出します。';
+  }
+
+  @override
+  String get photoModelsMissing =>
+      'この端末で写真で調べるの準備をしています。少し待ってからもう一度試すか、名前で検索してください。';
 }

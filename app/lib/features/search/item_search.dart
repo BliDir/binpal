@@ -5,10 +5,15 @@ import '../../data/normalize.dart';
 
 /// One search result: the rule and the category it goes in.
 class SearchHit {
-  const SearchHit(this.rule, this.category);
+  const SearchHit(this.rule, this.category, {this.score = 0});
 
   final Rule rule;
   final WasteCategory category;
+
+  /// How well the rule matched, summed over the query's words: per word 0 for
+  /// an exact alias, 1 an exact name, 2 the start of a term, 3 the start of a
+  /// word, 4 anywhere. Lower is better.
+  final int score;
 }
 
 /// Offline item search over the stored bundle.
@@ -54,7 +59,7 @@ class ItemSearch {
       if (scores.isEmpty) return const [];
     }
 
-    final today = _japanDate(now ?? DateTime.now());
+    final today = japanDate(now ?? DateTime.now());
     final rules =
         await (db.select(db.rules)..where(
               (r) =>
@@ -78,7 +83,8 @@ class ItemSearch {
     };
     return [
       for (final r in rules.take(limit))
-        if (categories[r.category] case final category?) SearchHit(r, category),
+        if (categories[r.category] case final category?)
+          SearchHit(r, category, score: scores![r.id]!),
     ];
   }
 
@@ -123,7 +129,7 @@ int _score(String term, String word, bool isAlias) {
 }
 
 /// Today's date in Japan, `YYYY-MM-DD`, which is how bundles write dates.
-String _japanDate(DateTime moment) {
+String japanDate(DateTime moment) {
   final japan = moment.toUtc().add(const Duration(hours: 9));
   String two(int n) => n.toString().padLeft(2, '0');
   return '${japan.year}-${two(japan.month)}-${two(japan.day)}';
