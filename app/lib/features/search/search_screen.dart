@@ -11,6 +11,7 @@ import '../../l10n/app_localizations.dart';
 import '../item/category_style.dart';
 import '../item/item_screen.dart';
 import '../photo/photo_check_screen.dart';
+import '../report/report_sheet.dart';
 import 'item_search.dart';
 
 /// Offline item search over the downloaded bundle, in English or Japanese.
@@ -339,6 +340,16 @@ class _NoResults extends StatelessWidget {
           style: text.bodyMedium,
           textAlign: TextAlign.center,
         ),
+        if (AppServices.of(context).area.area != null) ...[
+          const SizedBox(height: AppSpacing.md),
+          Center(
+            child: OutlinedButton.icon(
+              onPressed: () => showReportSheet(context, MissingTopic(query)),
+              icon: const Icon(Icons.flag_outlined),
+              label: Text(l10n.searchReportMissing),
+            ),
+          ),
+        ],
       ],
     );
   }
@@ -367,7 +378,7 @@ class _Results extends StatelessWidget {
         AppSpacing.md,
         AppSpacing.md,
       ),
-      itemCount: results.length + 1,
+      itemCount: results.length + 2,
       separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
       itemBuilder: (context, i) {
         if (i == 0) {
@@ -375,6 +386,18 @@ class _Results extends StatelessWidget {
             l10n.searchResultCount(results.length, query),
             style: text.bodyMedium,
           );
+        }
+        if (i == results.length + 1) {
+          return AppServices.of(context).area.area == null
+              ? const SizedBox.shrink()
+              : Center(
+                  child: TextButton.icon(
+                    onPressed: () =>
+                        showReportSheet(context, MissingTopic(query)),
+                    icon: const Icon(Icons.flag_outlined),
+                    label: Text(l10n.searchReportFooter),
+                  ),
+                );
         }
         final hit = results[i - 1];
         return Card(

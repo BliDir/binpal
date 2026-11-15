@@ -1075,6 +1075,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Photo check is still getting ready on this phone. Try again in a minute, or search by name.'**
   String get photoModelsMissing;
+
+  /// No description provided for @reportLink.
+  ///
+  /// In en, this message translates to:
+  /// **'This looks wrong'**
+  String get reportLink;
+
+  /// No description provided for @reportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This looks wrong'**
+  String get reportTitle;
+
+  /// No description provided for @reportSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a problem with the collection day, category or rules.'**
+  String get reportSubtitle;
+
+  /// No description provided for @reportClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get reportClose;
+
+  /// No description provided for @reportArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Area'**
+  String get reportArea;
+
+  /// No description provided for @reportItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Item'**
+  String get reportItem;
+
+  /// No description provided for @reportDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Collection date'**
+  String get reportDate;
+
+  /// No description provided for @reportWhatsWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s wrong?'**
+  String get reportWhatsWrong;
+
+  /// No description provided for @reportKindCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get reportKindCategory;
+
+  /// No description provided for @reportKindInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'How to put it out'**
+  String get reportKindInstructions;
+
+  /// No description provided for @reportKindOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Something else'**
+  String get reportKindOther;
+
+  /// No description provided for @reportComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Comment (optional)'**
+  String get reportComment;
+
+  /// No description provided for @reportCommentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. The category seems incorrect.'**
+  String get reportCommentHint;
+
+  /// No description provided for @reportMissingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'What were you looking for?'**
+  String get reportMissingLabel;
+
+  /// No description provided for @reportMissingHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Clothes hanger'**
+  String get reportMissingHint;
+
+  /// No description provided for @reportPublic.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports are checked in BinPal\'s public review queue, where comments are shown. Please don\'t include personal details.'**
+  String get reportPublic;
+
+  /// No description provided for @reportSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send report'**
+  String get reportSend;
+
+  /// No description provided for @reportSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks. We\'ll check it against the city\'s information.'**
+  String get reportSent;
+
+  /// No description provided for @reportOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline. Connect and try again.'**
+  String get reportOffline;
+
+  /// No description provided for @reportLimited.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve sent a lot of reports today. Please try again tomorrow.'**
+  String get reportLimited;
+
+  /// No description provided for @reportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t send the report. Please try again.'**
+  String get reportFailed;
+
+  /// No description provided for @searchReportMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t find it? Tell us'**
+  String get searchReportMissing;
+
+  /// No description provided for @searchReportFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'Something wrong or missing? Tell us'**
+  String get searchReportFooter;
 }
 
 class _AppLocalizationsDelegate

@@ -133,6 +133,119 @@ pub fn category_guide(bundle_json: &[u8]) -> Result<CategoryGuide, String> {
     })
 }
 
+/// A name in Japanese and English.
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
+pub struct Name {
+    pub ja: String,
+    pub en: String,
+}
+
+/// What a report is about, in words a reviewer can check against the
+/// official source.
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
+pub struct ReportSubject {
+    pub municipality_id: String,
+    pub municipality: Name,
+    pub bundle_version: u64,
+    pub ward: Option<Name>,
+    /// None when the bundle no longer has the area.
+    pub area: Option<Name>,
+    pub item: Option<ReportedItem>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
+pub struct ReportedItem {
+    pub name: Name,
+    pub category: Name,
+    pub source_url: String,
+}
+
+#[derive(Deserialize)]
+struct SubjectBundle {
+    bundle_version: u64,
+    municipality: BundleMunicipality,
+    #[serde(default)]
+    wards: Vec<SubjectWard>,
+    areas: Vec<SubjectArea>,
+    categories: Vec<BundleCategory>,
+    rules: Vec<SubjectRule>,
+}
+
+#[derive(Deserialize)]
+struct SubjectWard {
+    id: String,
+    names: Names,
+}
+
+#[derive(Deserialize)]
+struct SubjectArea {
+    id: String,
+    #[serde(default)]
+    ward_id: Option<String>,
+    names: Names,
+}
+
+#[derive(Deserialize)]
+struct SubjectRule {
+    item_id: String,
+    names: Names,
+    category: String,
+    valid_from: String,
+    #[serde(default)]
+    valid_to: Option<String>,
+    source_url: String,
+}
+
+fn name(n: &Names) -> Name {
+    Name {
+        ja: n.ja.clone(),
+        en: n.en.clone(),
+    }
+}
+
+/// The area, its ward and the item a report names, from the bundle. The
+/// item is the rule valid on `on` (`YYYY-MM-DD`), or its latest version.
+pub fn report_subject(
+    bundle_json: &[u8],
+    area_id: &str,
+    item_id: Option<&str>,
+    on: &str,
+) -> Result<ReportSubject, String> {
+    let bundle: SubjectBundle =
+        serde_json::from_slice(bundle_json).map_err(|e| format!("bundle: {e}"))?;
+    let area = bundle.areas.iter().find(|a| a.id == area_id);
+    let ward = area
+        .and_then(|a| a.ward_id.as_deref())
+        .and_then(|w| bundle.wards.iter().find(|ward| ward.id == w));
+    let item = item_id.and_then(|id| {
+        let versions: Vec<&SubjectRule> = bundle.rules.iter().filter(|r| r.item_id == id).collect();
+        let rule = versions
+            .iter()
+            .find(|r| {
+                r.valid_from.as_str() <= on && r.valid_to.as_deref().is_none_or(|to| to >= on)
+            })
+            .or_else(|| {
+                versions
+                    .iter()
+                    .max_by(|a, b| a.valid_from.cmp(&b.valid_from))
+            })?;
+        let category = bundle.categories.iter().find(|c| c.id == rule.category)?;
+        Some(ReportedItem {
+            name: name(&rule.names),
+            category: name(&category.names),
+            source_url: rule.source_url.clone(),
+        })
+    });
+    Ok(ReportSubject {
+        municipality_id: bundle.municipality.id.clone(),
+        municipality: name(&bundle.municipality.names),
+        bundle_version: bundle.bundle_version,
+        ward: ward.map(|w| name(&w.names)),
+        area: area.map(|a| name(&a.names)),
+        item,
+    })
+}
+
 #[cfg(test)]
 pub(crate) mod tests {
     use super::*;
@@ -163,6 +276,23 @@ pub(crate) mod tests {
             None
         );
         assert!(find_area(b"{}", "14117-123002").is_err());
+    }
+
+    #[test]
+    fn names_what_a_report_is_about() {
+        let bytes = std::fs::read("../../data/municipalities/14100/bundle.json").unwrap();
+        let subject =
+            report_subject(&bytes, "14117-068001", Some("yokohama-11"), "2026-11-15").unwrap();
+        assert_eq!(subject.municipality.en, "Yokohama City");
+        assert_eq!(subject.ward.unwrap().ja, "青葉区");
+        assert_eq!(subject.area.unwrap().en, "Katsuradai 1-chome");
+        let item = subject.item.unwrap();
+        assert_eq!(item.name.en, "Antenna");
+        assert_eq!(item.category.en, "Bulky waste");
+        assert!(item.source_url.starts_with("https://"));
+
+        let unknown = report_subject(&bytes, "14117-999999", Some("nope"), "2026-11-15").unwrap();
+        assert_eq!((unknown.area, unknown.item), (None, None));
     }
 
     #[test]

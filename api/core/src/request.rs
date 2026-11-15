@@ -127,13 +127,18 @@ impl ReportKind {
     }
 }
 
-/// "This looks wrong" from the app.
+/// "This looks wrong" from the app: about an item (wrong category or
+/// instructions), a collection date in the area (wrong day), or the area in
+/// general (missing item, other).
 #[derive(Debug, Clone, Deserialize)]
 pub struct Report {
     pub install_id: String,
     pub area_id: String,
     #[serde(default)]
     pub item_id: Option<String>,
+    /// `YYYY-MM-DD` in Japan, for a wrong collection day.
+    #[serde(default)]
+    pub date: Option<String>,
     pub kind: ReportKind,
     #[serde(default)]
     pub note: Option<String>,
@@ -151,6 +156,18 @@ pub fn parse_report(body: &[u8]) -> Result<Report, ApiError> {
     check_area_id(&report.area_id)?;
     if let Some(item) = &report.item_id {
         check_slug("item_id", item)?;
+    }
+    if let Some(date) = &report.date {
+        check_date(date)?;
+    }
+    match report.kind {
+        ReportKind::WrongCategory | ReportKind::WrongInstructions if report.item_id.is_none() => {
+            return Err(ApiError::invalid("this kind of report needs an item_id"));
+        }
+        ReportKind::WrongDay if report.date.is_none() => {
+            return Err(ApiError::invalid("wrong_day needs a date"));
+        }
+        _ => {}
     }
     if let Some(note) = &report.note {
         check_text("note", note, MAX_NOTE_CHARS)?;
@@ -195,6 +212,33 @@ fn check_slug(field: &str, id: &str) -> Result<(), ApiError> {
             .all(|b| b.is_ascii_lowercase() || b.is_ascii_digit() || b == b'-');
     ok.then_some(())
         .ok_or_else(|| ApiError::invalid(format!("{field} must be a bundle id")))
+}
+
+/// A real calendar date, `YYYY-MM-DD`.
+fn check_date(date: &str) -> Result<(), ApiError> {
+    let invalid = || ApiError::invalid("date must be YYYY-MM-DD");
+    let parts: Vec<&str> = date.split('-').collect();
+    let [y, m, d] = parts.as_slice() else {
+        return Err(invalid());
+    };
+    if y.len() != 4 || m.len() != 2 || d.len() != 2 {
+        return Err(invalid());
+    }
+    let (Ok(y), Ok(m), Ok(d)) = (y.parse::<u32>(), m.parse::<u32>(), d.parse::<u32>()) else {
+        return Err(invalid());
+    };
+    let leap = (y % 4 == 0 && y % 100 != 0) || y % 400 == 0;
+    let days = match m {
+        1 | 3 | 5 | 7 | 8 | 10 | 12 => 31,
+        4 | 6 | 9 | 11 => 30,
+        2 if leap => 29,
+        2 => 28,
+        _ => return Err(invalid()),
+    };
+    if !(2000..=2100).contains(&y) || d == 0 || d > days {
+        return Err(invalid());
+    }
+    Ok(())
 }
 
 fn check_text(field: &str, text: &str, max_chars: usize) -> Result<(), ApiError> {
@@ -306,5 +350,37 @@ pub(crate) mod tests {
             br#"{"install_id":"7d0b6f0e-3b9a-4c2e-9f57-2b6f2a1c9e10","area_id":"14117-001001","kind":"spam"}"#,
         );
         assert!(unknown_kind.is_err());
+    }
+
+    fn report_with(fields: &str) -> Result<Report, ApiError> {
+        parse_report(
+            format!(r#"{{"install_id":"{INSTALL}","area_id":"14117-001001",{fields}}}"#).as_bytes(),
+        )
+    }
+
+    #[test]
+    fn each_kind_needs_its_subject() {
+        assert!(report_with(r#""kind":"wrong_category""#).is_err());
+        assert!(report_with(r#""kind":"wrong_instructions""#).is_err());
+        assert!(report_with(r#""kind":"wrong_day""#).is_err());
+        let day = report_with(r#""kind":"wrong_day","date":"2026-11-11""#).unwrap();
+        assert_eq!(day.date.as_deref(), Some("2026-11-11"));
+        assert!(report_with(r#""kind":"missing_item","note":"ハンガー""#).is_ok());
+        assert!(report_with(r#""kind":"other""#).is_ok());
+    }
+
+    #[test]
+    fn dates_must_be_real() {
+        assert!(check_date("2028-02-29").is_ok());
+        for bad in [
+            "2026-02-29",
+            "2026-13-01",
+            "2026-1-01",
+            "26-11-11",
+            "2026-11-11T00:00",
+            "x",
+        ] {
+            assert!(check_date(bad).is_err(), "{bad}");
+        }
     }
 }

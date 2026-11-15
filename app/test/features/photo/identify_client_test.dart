@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:binpal/data/database.dart';
+import 'package:binpal/data/thin_api.dart';
 import 'package:binpal/features/photo/identify_client.dart';
 import 'package:binpal/features/search/item_search.dart';
 import 'package:drift/native.dart';

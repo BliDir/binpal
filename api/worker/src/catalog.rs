@@ -63,6 +63,12 @@ pub async fn area_home(
     Ok(found)
 }
 
+/// An area's whole bundle, for naming what a report is about. Published
+/// bundles never change, so the edge keeps them a day.
+pub async fn bundle(config: &Config, home: &AreaHome) -> Result<Vec<u8>, ApiError> {
+    get(config, &home.bundle_path, 86_400).await
+}
+
 /// The category guide for a bundle. Bundles are immutable, so it is kept for
 /// 30 days; only the first request after a publish reads the bundle.
 pub async fn guide(

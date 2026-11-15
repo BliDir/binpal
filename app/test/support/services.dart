@@ -12,6 +12,7 @@ import 'package:binpal/data/sync_controller.dart';
 import 'package:binpal/features/photo/identify_client.dart';
 import 'package:binpal/features/photo/photo_analyzer.dart';
 import 'package:binpal/features/photo/photo_matcher.dart';
+import 'package:binpal/features/report/report_client.dart';
 import 'package:binpal/reminders/reminder_service.dart';
 import 'package:drift/drift.dart' show driftRuntimeOptions;
 import 'package:drift/native.dart';
@@ -65,6 +66,11 @@ AppServices testServices({
     identify: IdentifyClient(
       db: database,
       client: apiClient ?? MockClient((_) async => http.Response('', 404)),
+    ),
+    reports: ReportClient(
+      db: database,
+      client: apiClient ?? MockClient((_) async => http.Response('', 404)),
+      appVersion: () async => '1.1.0',
     ),
     syncOnLaunch: false,
     clock: now,

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../app/services.dart';
 import '../../app/theme.dart';
 import '../../data/database.dart';
 import '../../l10n/app_localizations.dart';
+import '../report/report_sheet.dart';
 import 'category_style.dart';
 
 /// How to put out one item: its category, the city's instructions, where
@@ -117,6 +119,11 @@ class ItemScreen extends StatelessWidget {
               ),
             ),
           ),
+          // Reports go to the review queue for the user's area.
+          if (AppServices.of(context).area.area != null) ...[
+            const SizedBox(height: AppSpacing.sm),
+            Center(child: ReportLink(topic: ItemTopic(rule))),
+          ],
         ],
       ),
     );

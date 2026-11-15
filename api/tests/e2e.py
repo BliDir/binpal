@@ -71,8 +71,12 @@ def first_candidate(text: str) -> str:
     return text.splitlines()[1][2:].split(":")[0]
 
 
+REPO = "BliDir/binpal"
+GITHUB_TOKEN = "test-github-token"
+
+
 class Mock:
-    """Workers AI, the Anthropic API and the CDN."""
+    """Workers AI, the Anthropic API, the CDN and GitHub's issues API."""
 
     def __init__(self):
         bundle_bytes = BUNDLE.read_bytes()
@@ -106,6 +110,8 @@ class Mock:
         # "allowance" (Cloudflare's free allocation is used up).
         self.workers_ai_mode = "answer"
         self.fail_next = 0  # answer this many Anthropic calls with 529 first
+        self.issues = {}  # number -> {"title", "body", "labels", "state", "comments"}
+        self.github_calls = []  # (method, path, authorization header)
 
     def workers_ai_output(self, body):
         candidates = body["messages"][1]["content"][1]["text"]
@@ -143,6 +149,32 @@ class Mock:
             "usage": ANTHROPIC_USAGE,
         }
 
+    def github(self, method, path, headers, body):
+        """Returns (status, response) for a GitHub issues API call, or None."""
+        prefix = f"/repos/{REPO}/issues"
+        if not path.startswith(prefix):
+            return None
+        self.github_calls.append((method, path, headers.get("authorization")))
+        if headers.get("authorization") != f"Bearer {GITHUB_TOKEN}" or not headers.get("user-agent"):
+            return 401, {"message": "Bad credentials"}
+        parts = path[len(prefix) :].strip("/").split("/")
+        if method == "POST" and parts == [""]:
+            number = 101 + len(self.issues)
+            self.issues[number] = {**body, "state": "open", "comments": []}
+            return 201, {"number": number}
+        issue = self.issues.get(int(parts[0])) if parts[0].isdigit() else None
+        if issue is None:
+            return 404, {"message": "Not Found"}
+        if method == "GET" and len(parts) == 1:
+            return 200, {"number": int(parts[0]), "state": issue["state"]}
+        if method == "POST" and parts[1:] == ["comments"]:
+            issue["comments"].append(body["body"])
+            return 201, {"id": 1}
+        if method == "POST" and parts[1:] == ["labels"]:
+            issue["labels"] = issue["labels"] + body["labels"]
+            return 200, [{"name": n} for n in issue["labels"]]
+        return 404, {"message": "Not Found"}
+
     def serve(self, port):
         mock = self
 
@@ -158,11 +190,17 @@ class Mock:
                 self.wfile.write(body)
 
             def do_GET(self):
+                handled = mock.github("GET", self.path, self.headers, None)
+                if handled:
+                    return self.send(handled[0], json.dumps(handled[1]).encode())
                 found = mock.files.get(self.path)
                 self.send(200 if found else 404, found or b"{}")
 
             def do_POST(self):
                 body = json.loads(self.rfile.read(int(self.headers["content-length"])))
+                handled = mock.github("POST", self.path, self.headers, body)
+                if handled:
+                    return self.send(handled[0], json.dumps(handled[1]).encode())
                 if self.path == f"/ai/run/{WORKERS_AI_MODEL}":
                     mock.workers_ai.append(body)
                     if mock.workers_ai_mode == "error":
@@ -230,6 +268,13 @@ class Api:
                 "app_version": "1.1.0",
             },
         )
+
+    def send_report(self, install, **fields):
+        return self.call("POST", "/v1/reports", {"install_id": install, "app_version": "1.1.0", **fields})
+
+    def file_reports(self):
+        """Runs the five-minute cron that files reports in the review queue."""
+        urllib.request.urlopen(self.base + "/__scheduled?cron=*/5+*+*+*+*", timeout=60).read()
 
     def report(self, install, kind="wrong_category"):
         return self.call(
@@ -572,6 +617,113 @@ def without_key(mock, upstream):
 
         status, body = api.report(install)
         check("reports work without a key", status == 201, body)
+
+        github_calls = len(mock.github_calls)
+        api.file_reports()
+        unfiled = dev.d1("SELECT count(*) AS n FROM reports WHERE issue_number IS NULL")
+        check(
+            "without a GitHub token, reports are kept unfiled and GitHub isn't called",
+            len(mock.github_calls) == github_calls and unfiled[0]["n"] > 0,
+            unfiled,
+        )
+    finally:
+        dev.stop()
+
+
+def review_queue(mock, upstream):
+    """Reports filed as GitHub issues, grouped, with priority."""
+    print("\nReports in the review queue")
+    dev = Dev(upstream, {"GITHUB_TOKEN": GITHUB_TOKEN, "GITHUB_API_URL": upstream})
+    api = dev.api
+    try:
+        installs = [str(uuid.uuid4()) for _ in range(8)]
+        area = "14117-068001"  # Katsuradai 1-chome, Aoba Ward
+        item = {"area_id": area, "item_id": "yokohama-11"}  # Antenna
+        sent = [
+            api.send_report(installs[0], kind="wrong_category", note="Antennas go out as metal", **item),
+            api.send_report(installs[1], kind="wrong_instructions", **{**item, "area_id": "14117-071003"}),
+            api.send_report(installs[2], kind="wrong_day", area_id=area, date="2026-11-11"),
+            api.send_report(
+                installs[3],
+                kind="missing_item",
+                area_id="14117-071003",
+                note="ハンガー @octocat https://spam.example | <b>x</b>",
+            ),
+        ]
+        check("reports are accepted", [s[0] for s in sent] == [201] * 4, sent)
+        status, body = api.send_report(installs[4], kind="wrong_day", area_id=area)
+        check("a wrong-day report needs a date", status == 400, body)
+        status, body = api.send_report(installs[4], kind="wrong_category", area_id=area)
+        check("a wrong-category report needs an item", status == 400, body)
+        check("nothing reaches GitHub before the cron runs", not mock.github_calls)
+
+        api.file_reports()
+        by_title = {i["title"]: (n, i) for n, i in mock.issues.items()}
+        item_title = "User report: アンテナ / Antenna (yokohama-11)"
+        day_title = "User report: collection day 2026-11-11 in 桂台一丁目, 青葉区 (14117-068001)"
+        check(
+            "one issue per item, collection day and area report, all labelled",
+            set(by_title)
+            == {item_title, day_title, "User report: missing item in 美しが丘三丁目, 青葉区 (14117-071003)"}
+            and all(i["labels"] == ["user-report"] for i in mock.issues.values()),
+            list(by_title),
+        )
+        number, issue = by_title.get(item_title, (None, {"body": ""}))
+        check(
+            "reports about one item from two areas share its issue",
+            issue["body"].count("| Wrong category |") == 1
+            and issue["body"].count("| Wrong instructions |") == 1
+            and "now in 粗大ごみ / Bulky waste" in issue["body"],
+            issue["body"],
+        )
+        missing = next((i["body"] for i in mock.issues.values() if "missing item" in i["title"]), "")
+        check(
+            "comments are published without mentions, links or HTML",
+            "ハンガー" in missing
+            and "@octocat" not in missing
+            and "https://spam" not in missing
+            and "<b>" not in missing,
+            missing,
+        )
+        public = json.dumps(mock.issues, ensure_ascii=False)
+        check("no install id reaches GitHub", not any(i in public for i in installs))
+        filed = dev.d1("SELECT count(*) AS n FROM reports WHERE issue_number IS NULL")
+        check("every report is marked as filed", filed[0]["n"] == 0, filed)
+
+        calls = len(mock.github_calls)
+        api.file_reports()
+        check("a run with nothing new doesn't call GitHub", len(mock.github_calls) == calls)
+
+        api.send_report(installs[5], kind="wrong_category", **item)
+        api.file_reports()
+        issue = mock.issues.get(number, {"comments": [], "labels": []})
+        check(
+            "a third report comments on the open issue and makes it a priority",
+            len(mock.issues) == 3
+            and issue["comments"][-1:] != []
+            and issue["comments"][-1].startswith("1 more report, 3 in total")
+            and "priority" in issue["labels"],
+            issue,
+        )
+
+        issue["state"] = "closed"
+        api.send_report(installs[6], kind="wrong_category", **item)
+        api.file_reports()
+        check(
+            "after a reviewer closes it, the next report opens a new issue",
+            len(mock.issues) == 4 and mock.issues.get(104, {}).get("title") == item_title,
+            [i["title"] for i in mock.issues.values()],
+        )
+
+        api.send_report(installs[7], kind="other", area_id=area, note="Third report from this area")
+        api.file_reports()
+        newest = mock.issues.get(max(mock.issues), {})
+        check(
+            "three reports from one area in 30 days make its new issues a priority",
+            newest.get("title", "").startswith("User report: other in 桂台一丁目")
+            and "priority" in newest.get("labels", []),
+            newest,
+        )
     finally:
         dev.stop()
 
@@ -598,6 +750,7 @@ def run():
     upstream = f"http://127.0.0.1:{port}"
     with_fallback(mock, upstream)
     without_key(mock, upstream)
+    review_queue(mock, upstream)
     print()
     print(f"{len(failures)} failed" if failures else "all checks passed")
     sys.exit(1 if failures else 0)

@@ -33,6 +33,12 @@ ANTHROPIC_MODEL = "claude-haiku-5-5"
 ANTHROPIC_BASE_URL = "https://api.anthropic.com"
 DAILY_BUDGET_USD = "1"
 
+# "This looks wrong" reports are filed every five minutes as issues in this
+# repository, the review queue the rule monitor also uses. Needs the
+# GITHUB_TOKEN secret (a fine-grained token with Issues: read and write on
+# this repository only); without it reports are stored and wait.
+GITHUB_REPO = "BliDir/binpal"
+
 [ai]
 binding = "AI"
 
@@ -58,8 +64,9 @@ namespace_id = "1001"
   period = 60
 
 # Daily cleanup at 03:00 in Japan: counters after 2 days, log after 90.
+# Every five minutes: file new reports in the review queue.
 [triggers]
-crons = ["0 18 * * *"]
+crons = ["0 18 * * *", "*/5 * * * *"]
 
 [observability]
 enabled = true

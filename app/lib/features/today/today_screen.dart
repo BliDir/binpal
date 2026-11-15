@@ -14,6 +14,7 @@ import '../area/area_setup_screen.dart';
 import '../calendar/calendar_screen.dart';
 import '../item/category_style.dart';
 import '../reminders/reminder_settings_screen.dart';
+import '../report/report_sheet.dart';
 import 'area_schedule.dart';
 
 /// Without a successful check for this long, Today says the schedule may be
@@ -192,6 +193,10 @@ class _TodayScreenState extends State<TodayScreen> with WidgetsBindingObserver {
             ? null
             : (isJapanese(context) ? data.ward!.nameJa : data.ward!.nameEn),
         sourceUrl: data.sourceUrl,
+      ),
+      Align(
+        alignment: AlignmentDirectional.centerStart,
+        child: ReportLink(topic: DayTopic(today)),
       ),
     ];
   }
