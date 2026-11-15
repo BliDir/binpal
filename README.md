@@ -6,7 +6,7 @@ Fast, light Flutter app that tells people in Japan how to sort garbage and when 
 | -- | -- |
 | `app/` | Flutter app |
 | `data/` | sources.yaml, JSON Schemas, snapshots, extraction and publisher scripts |
-| `api/` | Thin API (v2) |
+| `api/` | Thin API (v2): Rust on Cloudflare Workers |
 | `.github/workflows/` | CI, rule monitor, publisher |
 
 ## CI
@@ -19,6 +19,7 @@ Each folder has its own workflow, run on pull requests that touch it:
 | `data.yml` | `data/**` | ruff, shellcheck, schema and example validation, script tests |
 | `rule-monitor.yml` | daily schedule | watches the sources for rule changes ([details](data/README.md#rule-monitor)) |
 | `publish.yml` | a changed `bundle.json` on `main`, or by hand | uploads changed bundles and the manifest to the CDN ([details](data/README.md#publishing)) |
+| `api.yml` | `api/**` | rustfmt, clippy, unit tests, and the Worker under `wrangler dev` against mocks ([details](api/README.md)) |
 
 ## License
 

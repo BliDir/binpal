@@ -1,0 +1,6 @@
+node_modules/
+target/
+worker/build/
+.wrangler/
+.dev.vars
+.wrangler-e2e.toml
