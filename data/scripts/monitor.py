@@ -96,7 +96,7 @@ class Issue:
     body: str
 
 
-def load_sources(path: Path) -> list[Source]:
+def load_sources(path: Path, include_paused: bool = False) -> list[Source]:
     doc = yaml.safe_load(path.read_text()) or {}
     sources, seen = [], set()
     for i, raw in enumerate(doc.get("sources") or []):
@@ -116,9 +116,26 @@ def load_sources(path: Path) -> list[Source]:
             raise SourceError(f"{where}: url must be http(s)")
         if raw["type"] in {"html", "news"} and not raw.get("selector"):
             raise SourceError(f"{where}: html/news sources need a selector")
-        unknown = set(raw) - {"id", "type", "url", "title", "municipality", "selector", "strip", "ignore", "formats"}
+        unknown = set(raw) - {
+            "id",
+            "type",
+            "url",
+            "title",
+            "municipality",
+            "selector",
+            "strip",
+            "ignore",
+            "formats",
+            "paused",
+        }
         if unknown:
             raise SourceError(f"{where}: unknown keys {sorted(unknown)}")
+        if "paused" in raw and (not isinstance(raw["paused"], str) or not raw["paused"].strip()):
+            raise SourceError(f"{where}: paused must say why")
+        if "paused" in raw and not include_paused:
+            # Listed and checked, but not fetched or snapshotted until the
+            # reason (usually unconfirmed reuse terms) is resolved.
+            continue
         sources.append(
             Source(
                 id=raw["id"],

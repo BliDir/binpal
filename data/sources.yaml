@@ -9,6 +9,8 @@
 #   strip         html/news: CSS selectors removed from the content first
 #   ignore        regexes; matching lines are dropped before comparing
 #   formats       ckan only: file formats to watch (default: all)
+#   paused        why the source isn't fetched yet (for example, reuse terms
+#                 unconfirmed); it is validated but has no snapshot
 sources:
   - id: yokohama-aoba-days-a-u
     municipality: "14100"
@@ -1816,3 +1818,123 @@ sources:
     type: ckan
     url: https://data.city.yokohama.lg.jp/api/3/action/package_show?id=shigen_dashikata
     formats: [CSV]
+
+  # Kawasaki City (14130), Takatsu-ku first (DAI-588). All paused until the
+  # city's reuse terms are confirmed (DAI-589): its site policy reserves all
+  # rights, and an unpaused source commits a snapshot of the page's text.
+  # Article pages keep their body in #mol_contents; category listings in
+  # ul.category_end.
+  - id: kawasaki-categories
+    municipality: "14130"
+    title: 川崎市のごみの分類
+    type: html
+    url: https://www.city.kawasaki.jp/kurashi/category/261-1-10-3-0-0-0-0-0-0.html
+    selector: "#mol_contents"
+    strip:
+      - ".kiji_aside"
+      - ".syosai_id_wrap"
+    paused: "DAI-589: Kawasaki reserves all rights to its site; confirm reuse terms before snapshots are stored"
+  - id: kawasaki-item-list
+    municipality: "14130"
+    title: ごみの分別に迷ったら(品目一覧)
+    type: html
+    url: https://www.city.kawasaki.jp/kurashi/category/261-1-10-2-0-0-0-0-0-0.html
+    selector: "#mol_contents"
+    strip:
+      - ".kiji_aside"
+      - ".syosai_id_wrap"
+    paused: "DAI-589: Kawasaki reserves all rights to its site; confirm reuse terms before snapshots are stored"
+  - id: kawasaki-days-kawasakiku
+    municipality: "14130"
+    title: 収集日一覧(川崎区)
+    type: html
+    url: https://www.city.kawasaki.jp/300/page/0000012570.html
+    selector: "#mol_contents"
+    strip:
+      - ".kiji_aside"
+      - ".syosai_id_wrap"
+    paused: "DAI-589: Kawasaki reserves all rights to its site; confirm reuse terms before snapshots are stored"
+  - id: kawasaki-days-saiwai-nakahara
+    municipality: "14130"
+    title: 収集日一覧(幸区・中原区)
+    type: html
+    url: https://www.city.kawasaki.jp/300/page/0000012568.html
+    selector: "#mol_contents"
+    strip:
+      - ".kiji_aside"
+      - ".syosai_id_wrap"
+    paused: "DAI-589: Kawasaki reserves all rights to its site; confirm reuse terms before snapshots are stored"
+  - id: kawasaki-days-takatsu-miyamae
+    municipality: "14130"
+    title: 収集日一覧(高津区・宮前区)
+    type: html
+    url: https://www.city.kawasaki.jp/300/page/0000012561.html
+    selector: "#mol_contents"
+    strip:
+      - ".kiji_aside"
+      - ".syosai_id_wrap"
+    paused: "DAI-589: Kawasaki reserves all rights to its site; confirm reuse terms before snapshots are stored"
+  - id: kawasaki-days-tama-asao
+    municipality: "14130"
+    title: 収集日一覧(多摩区・麻生区)
+    type: html
+    url: https://www.city.kawasaki.jp/300/page/0000012577.html
+    selector: "#mol_contents"
+    strip:
+      - ".kiji_aside"
+      - ".syosai_id_wrap"
+    paused: "DAI-589: Kawasaki reserves all rights to its site; confirm reuse terms before snapshots are stored"
+  - id: kawasaki-plastic
+    municipality: "14130"
+    title: 「プラスチック資源」の収集を全市に拡大
+    type: html
+    url: https://www.city.kawasaki.jp/300/page/0000154533.html
+    selector: "#mol_contents"
+    strip:
+      - ".kiji_aside"
+      - ".syosai_id_wrap"
+    paused: "DAI-589: Kawasaki reserves all rights to its site; confirm reuse terms before snapshots are stored"
+  - id: kawasaki-batteries
+    municipality: "14130"
+    title: 充電式電池の出し方(令和7年11月から)
+    type: html
+    url: https://www.city.kawasaki.jp/300/page/0000176397.html
+    selector: "#mol_contents"
+    strip:
+      - ".kiji_aside"
+      - ".syosai_id_wrap"
+    paused: "DAI-589: Kawasaki reserves all rights to its site; confirm reuse terms before snapshots are stored"
+  - id: kawasaki-not-collected
+    municipality: "14130"
+    title: 市で収集しないもの
+    type: html
+    url: https://www.city.kawasaki.jp/kurashi/category/261-1-10-8-0-0-0-0-0-0.html
+    selector: "#mol_contents"
+    strip:
+      - ".kiji_aside"
+      - ".syosai_id_wrap"
+    paused: "DAI-589: Kawasaki reserves all rights to its site; confirm reuse terms before snapshots are stored"
+  - id: kawasaki-sodai
+    municipality: "14130"
+    title: 粗大ごみ
+    type: html
+    url: https://www.city.kawasaki.jp/kurashi/category/261-1-10-11-0-0-0-0-0-0.html
+    selector: "ul.category_end"
+    paused: "DAI-589: Kawasaki reserves all rights to its site; confirm reuse terms before snapshots are stored"
+  - id: kawasaki-offices
+    municipality: "14130"
+    title: 生活環境事業所一覧
+    type: html
+    url: https://www.city.kawasaki.jp/300/page/0000005226.html
+    selector: "#mol_contents"
+    strip:
+      - ".kiji_aside"
+      - ".syosai_id_wrap"
+    paused: "DAI-589: Kawasaki reserves all rights to its site; confirm reuse terms before snapshots are stored"
+  - id: kawasaki-news
+    municipality: "14130"
+    title: 家庭から出る「資源物とごみ」の収集状況について
+    type: news
+    url: https://www.city.kawasaki.jp/kurashi/category/261-1-7-0-0-0-0-0-0-0.html
+    selector: "ul.category_end"
+    paused: "DAI-589: Kawasaki reserves all rights to its site; confirm reuse terms before snapshots are stored"

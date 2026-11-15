@@ -16,7 +16,7 @@ Everything that turns municipal pages and files into the bundles the app downloa
 
 ## Launch area, sources and licences
 
-**Launch area: Yokohama City, all 18 wards.** One city means one set of sorting rules and one item list; only the collection-day pages differ per ward. Aoba-ku is built and published. The state of the other 17 is in the [Yokohama README](municipalities/14100/README.md#the-other-17-wards). Arakawa (Tokyo) exists as an unpublished pilot of the standard open-data importer.
+**Launch area: Yokohama City, all 18 wards; Kawasaki City next (below).** One city means one set of sorting rules and one item list; only the collection-day pages differ per ward. Aoba-ku is built and published. The state of the other 17 is in the [Yokohama README](municipalities/14100/README.md#the-other-17-wards). Arakawa (Tokyo) exists as an unpublished pilot of the standard open-data importer.
 
 Every source below is in `sources.yaml` with its type, URL and content selector, and is checked daily by the rule monitor.
 
@@ -43,6 +43,41 @@ Licence and terms, as read on 12 November 2026:
 The terms are the same for every Yokohama ward, because all 18 wards' pages are on the city's site under the one policy.
 
 BinPal's English names, kana readings and English notes are its own additions and are not covered by the city's licence; the attribution says so.
+
+### Kawasaki (next: Takatsu-ku first)
+
+**Scope (DAI-588, 15 November 2026): Kawasaki City (14130), Takatsu-ku first for Kajigaya (梶ヶ谷), then the other six wards.** As in Yokohama, one city means one set of sorting rules; only collection days differ by area. Ward codes, checked against the Kanagawa boundary package: 川崎区 14131, 幸区 14132, 中原区 14133, **高津区 14134**, 多摩区 14135, **宮前区 14136**, 麻生区 14137 (670 e-Stat areas; 73 in Takatsu, 88 in Miyamae). Takatsu and Miyamae share one collection office (宮前生活環境事業所, 044-866-9131) and one calendar.
+
+What the city's pages say:
+
+* **Categories**: 普通ごみ (twice a week); weekly 空き缶・ペットボトル (one bag), 空きびん, 使用済み乾電池 (collected with cans), ミックスペーパー and プラスチック資源; 小物金属 (twice a month); 粗大ごみ (booked, fee). プラスチック資源 (products and packaging in one bag) has been citywide since April 2026, on the old プラスチック製容器包装 day. Rechargeable batteries go out with 小物金属, insulated in a clear bag with a note, **since November 2025** (令和7年11月).
+* **Days**: public holidays are collection days. **New Year**: collection every day but Sunday up to 31 December, again from 4 January, so none on 1–3 January. 小物金属 and 粗大ごみ run on the 1st and 3rd (or 2nd and 4th) **occurrence of a weekday** in the month, not week: the bundle's `monthly_nth_weekday`.
+* **Kajigaya is two places.** 梶ヶ谷 is a town in both Takatsu-ku (e-Stat 梶ケ谷一丁目 to 六丁目, 14134-415001 to 006) and Miyamae-ku (梶ケ谷, 14136-509000), with different days: Takatsu has 普通ごみ Tue/Fri, cans and bottles Wed, ミックスペーパー Mon, プラスチック資源 Thu, 小物金属 1st/3rd Mon; Miyamae has Mon/Thu, Tue, Wed, Sat, 1st/3rd Fri. The area picker and GPS lookup must keep the ward. e-Stat writes ケ where the city writes ヶ, so the build needs a town alias, as Yokohama has.
+* **Item list**: no open data. The web page ごみの分別に迷ったら lists 248 items (Yokohama's CSV has 3,413), many as "A or B" by size or material (小物金属または粗大ごみ for 49 items), which the bundle needs as separate rules. The city's app has over 10,000 items but publishes them nowhere else.
+
+| What | Source | Applies to | Type | Granularity |
+| -- | -- | -- | -- | -- |
+| Categories | [川崎市のごみの分類](https://www.city.kawasaki.jp/kurashi/category/261-1-10-3-0-0-0-0-0-0.html) | All wards | HTML | City-wide |
+| Sorting rules by item | [ごみの分別に迷ったら](https://www.city.kawasaki.jp/kurashi/category/261-1-10-2-0-0-0-0-0-0.html) | All wards | HTML tables by kana | 248 items |
+| Collection days | 収集日一覧 per pair of wards: [川崎区](https://www.city.kawasaki.jp/300/page/0000012570.html), [幸区・中原区](https://www.city.kawasaki.jp/300/page/0000012568.html), [**高津区・宮前区**](https://www.city.kawasaki.jp/300/page/0000012561.html), [多摩区・麻生区](https://www.city.kawasaki.jp/300/page/0000012577.html) | Per ward | HTML tables | Town (255 rows across 7 wards) |
+| Calendar booklet, New Year rule | Each 収集日一覧 page links a one-page PDF (for 高津区・宮前区, `takatsumiyamae(R8).pdf`; a Filipino edition exists) | Per pair of wards | PDF, **images only** | Same days as the HTML, grouped by schedule |
+| プラスチック資源, rechargeable batteries | [プラスチック資源](https://www.city.kawasaki.jp/300/page/0000154533.html), [充電式電池](https://www.city.kawasaki.jp/300/page/0000176397.html) | All wards | HTML | City-wide |
+| Not collected | [市で収集しないもの](https://www.city.kawasaki.jp/kurashi/category/261-1-10-8-0-0-0-0-0-0.html) | All wards | HTML | City-wide |
+| Bulky items | [粗大ごみ](https://www.city.kawasaki.jp/kurashi/category/261-1-10-11-0-0-0-0-0-0.html); 粗大ごみ受付センター 0570-044-530 / 044-930-5300, online any time, phone Mon–Sat 8:00–16:45, book 3 days ahead | All wards | HTML | Booked, on the 小物金属 days |
+| Offices | [生活環境事業所一覧](https://www.city.kawasaki.jp/300/page/0000005226.html) | Per ward | HTML | One office per ward or pair |
+| Announcements | [収集状況について](https://www.city.kawasaki.jp/kurashi/category/261-1-7-0-0-0-0-0-0-0.html) | City | HTML list | |
+| Area codes, names and boundaries | e-Stat 2020 census small-area boundary data, already in `boundaries/14.json` | Kanagawa | Shapefile | Town and chōme |
+
+All the HTML sources are in `sources.yaml` (article pages under `#mol_contents`, category listings under `ul.category_end`), **paused** until the terms below are confirmed: an unpaused source commits a snapshot of the page's text to this public repository every day. The calendar PDF is not listed: it has no text layer, so the monitor can't compare it; the HTML tables carry the same days, and the New Year rule is read from it by hand.
+
+Terms, as read on 15 November 2026:
+
+| Source | Terms | What that means for BinPal |
+| -- | -- | -- |
+| Every page and PDF on www.city.kawasaki.jp | The [site policy](https://www.city.kawasaki.jp/main/site_policy/0000000027.html) reserves all rights to the city, forbids copying or reuse without permission beyond private copying and quotation, and asks anyone who wants to republish to contact the page's office first, on condition the content is not altered. There is no open-data licence and no exemption for simple tables, unlike Yokohama | **Nothing from Kawasaki ships until the city agrees (DAI-589).** Collection weekdays per town are facts, but the item list's wording and BinPal's translations of it would be reproduction and alteration. Ask 環境局生活環境部収集計画課 (044-200-2583, 30syusyu@city.kawasaki.jp) for permission to use the collection days and item list, translated, with credit. Linking is free and needs no request |
+| e-Stat boundary data | As for Yokohama: compatible with CC BY 4.0 | Already in the Kanagawa boundary package |
+
+**Towns with split schedules.** Kawasaki publishes collection days per town, so most of its areas need no decision: a town row applies to every e-Stat area of that town in that ward, and the two chōme-range rows in Saiwai-ku (小倉1～5丁目, 古市場1・2丁目) to those chōme. The one split inside an area is 河原町団地 in Saiwai-ku, by building number; it waits for the decision on split areas in DAI-559, as Yokohama's do. **Takatsu-ku and Miyamae-ku have no splits**, so Kajigaya does not depend on that decision.
 
 ## Rule monitor
 
@@ -92,6 +127,8 @@ cat data/snapshots/<id>.txt
 ```
 
 Commit the entry and the snapshot together. If the snapshot contains lines that will change on their own (dates, counters, "related pages" lists), remove them with `strip` or `ignore` and delete the snapshot to regenerate it.
+
+A source whose terms don't yet allow storing its text gets `paused: "<why>"`. It is validated with the others but not fetched and has no snapshot. Remove `paused` once the terms allow it, then create the baseline as above.
 
 ### Running by hand
 
