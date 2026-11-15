@@ -20,6 +20,7 @@ The bundle for Yokohama, built by `data/scripts/build_yokohama.py`. Aoba-ku (141
 | New Year closure | [年末年始の収集日程](https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/nenmatsunenshi.html) | Parsed from the page |
 | Area codes and names | e-Stat 2020 census small-area boundary data | `areas.tsv` |
 | Category descriptions | The city's page for each category | Summarised by hand in `config.yaml` |
+| Bulky waste guide | The city's [粗大ごみ pages](https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/sodaigomi/index.html): the flow, booking, collection and application notes | Written by hand in `config.yaml` (`bulky_guides`), checked against those pages on the `verified_at` date |
 | English names, kana readings, English notes | Not published by the city in a form that can be joined to the list | Translated with an LLM into `items.tsv` and `notes.tsv` |
 
 All of these pages are in `data/sources.yaml`, so the rule monitor opens an issue when one changes. A changed `yokohama-item-list` usually means a new CSV.
@@ -39,7 +40,7 @@ Without `--refresh` the build reuses the downloads in `data/.cache/14100/`. The 
 * a town's reading in `towns.tsv` does not start with the 五十音 heading the page lists it under;
 * a page no longer has the sentences the build relies on (the 8 a.m. deadline, which categories share a day, the New Year date range).
 
-After a rebuild from a fresh download, set `items.verified_at` in `config.yaml` to that day. Merging the changed `bundle.json` to `main` publishes it; the publisher assigns the real `bundle_version` and `generated_at`, so the values in the committed file are placeholders.
+After a rebuild from a fresh download, set `items.verified_at` in `config.yaml` to that day. When the rule monitor reports a change to a `yokohama-sodai*` page, check the bulky waste guide against it, update `bulky_guides` if needed and set its `verified_at`. Merging the changed `bundle.json` to `main` publishes it; the publisher assigns the real `bundle_version` and `generated_at`, so the values in the committed file are placeholders.
 
 ## Adding a ward
 

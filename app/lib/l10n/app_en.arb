@@ -392,5 +392,29 @@
   "reportLimited": "You've sent a lot of reports today. Please try again tomorrow.",
   "reportFailed": "Couldn't send the report. Please try again.",
   "searchReportMissing": "Can't find it? Tell us",
-  "searchReportFooter": "Something wrong or missing? Tell us"
+  "searchReportFooter": "Something wrong or missing? Tell us",
+  "bulkyTitle": "Bulky item guide",
+  "bulkySearchTitle": "Bulky item guide",
+  "bulkySearchBody": "How to put out large items, such as furniture and bedding.",
+  "bulkyPhone": "Phone",
+  "bulkyCall": "Call {number}",
+  "@bulkyCall": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "bulkyOtherLinks": "More from the city",
+  "bulkyNoBooking": "BinPal doesn't book for you: booking and payment happen on the city's own pages.",
+  "bulkyChecked": "Checked against the official pages on {date}",
+  "@bulkyChecked": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "bulkyNone": "There's no bulky item guide for your area yet. Check your city's website.",
+  "itemBulkyGuide": "How to put out bulky items"
 }

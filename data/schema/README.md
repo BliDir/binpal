@@ -5,7 +5,7 @@ The data contract between the back office and the app. The publisher writes thes
 | File | Describes |
 | -- | -- |
 | `manifest.v1.schema.json` | `/manifest.json`: covered areas and the latest bundle per municipality, and the latest boundary package per prefecture |
-| `bundle.v1.schema.json` | `/bundles/{municipality_id}/{bundle_version}.json`: wards, areas, categories, rules, calendars, exceptions |
+| `bundle.v1.schema.json` | `/bundles/{municipality_id}/{bundle_version}.json`: wards, areas, categories, rules, calendars, exceptions, bulky waste guides |
 | `boundaries.v1.schema.json` | `/boundaries/{prefecture_code}/{version}.json`: town and chōme boundaries for on-device lookup ([details](../boundaries/README.md)) |
 | `common.v1.schema.json` | Shared types (IDs, dates, localised text, the common category set) |
 | `examples/` | A hand-written manifest and Yokohama bundle laid out like the CDN |
@@ -67,6 +67,14 @@ Patterns:
 
 * `weekly`: every week on the listed `weekdays`.
 * `monthly_nth_weekday`: the `nth` occurrences of `weekday` in each calendar month. Days 1–7 hold the 1st occurrence, 8–14 the 2nd, and so on up to the 5th. For mixed weekdays (1st Monday and 3rd Thursday), use two calendars.
+
+## Bulky waste guides
+
+`bulky_guides` (optional) explains bulky waste (粗大ごみ) in the app: a `summary` of what counts, ordered `steps` (check, book, pay, label and put out), phone `contacts`, and `links` to official pages (`booking`, `fees`, `info`). Apps never book on the user's behalf; they open the `booking` link.
+
+A guide without `ward_ids` covers the whole municipality; a guide with `ward_ids` replaces it in those wards. The validator allows at most one municipality-wide guide and one guide per ward. Each guide has a `source_url` and `verified_at`, the day it was last checked against the official pages; those pages belong in `data/sources.yaml` so the rule monitor reports changes.
+
+`bulky_guides` was added without a schema version change: apps that don't know it ignore it.
 
 ## Versioning policy
 

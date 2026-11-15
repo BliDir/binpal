@@ -333,5 +333,33 @@
         "en": "Burnable collection moved here from Friday 1 January"
       }
     }
+  ],
+  "bulky_guides": [
+    {
+      "id": "yokohama",
+      "summary": {
+        "ja": "一番長い辺が30cm以上の金属製品と、それ以外で50cm以上のものは粗大ごみです。",
+        "en": "Metal items 30 cm or more on their longest side, and anything else 50 cm or more, are bulky waste."
+      },
+      "steps": [
+        { "title": { "ja": "大きさを確かめる", "en": "Check the size" }, "body": { "ja": "一番長い辺を測ります。", "en": "Measure the longest side." } },
+        { "title": { "ja": "申し込む", "en": "Book" }, "body": { "ja": "粗大ごみ受付センターに申し込みます。", "en": "Book with the Bulky Waste Reception Center." } },
+        { "title": { "ja": "手数料を納める", "en": "Pay the fee" }, "body": { "ja": "コンビニなどで収集シールを買います。", "en": "Buy collection stickers at a convenience store or similar." } },
+        { "title": { "ja": "シールを貼って出す", "en": "Label it and put it out" }, "body": { "ja": "収集日の朝8時までに出します。", "en": "Put it out by 8:00 a.m. on the collection day." } }
+      ],
+      "contacts": [
+        {
+          "label": { "ja": "粗大ごみ受付センター", "en": "Bulky Waste Reception Center" },
+          "phone": "0570-200-530",
+          "note": { "ja": "月曜日から土曜日 午前8時30分から午後5時", "en": "Monday to Saturday, 8:30 a.m. to 5:00 p.m." }
+        }
+      ],
+      "links": [
+        { "kind": "booking", "label": { "ja": "インターネットで申し込む", "en": "Book online" }, "url": "https://www.sodai.city.yokohama.lg.jp/eco/view/yokohama/top.html" },
+        { "kind": "fees", "label": { "ja": "品目ごとの手数料", "en": "Fee for each item" }, "url": "https://www.sodai.city.yokohama.lg.jp/eco/view/yokohama/dustlistSearch.html" }
+      ],
+      "source_url": "https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/sodaigomi/dashikata/shuushuu.html",
+      "verified_at": "2026-11-15"
+    }
   ]
 }

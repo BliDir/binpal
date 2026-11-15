@@ -226,6 +226,59 @@ exceptions:
     url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/nenmatsunenshi.html
     note: { ja: 年末年始のため収集はお休みです。, en: No collection over the New Year holidays. }
 
+# --- Bulky waste (粗大ごみ) -------------------------------------------------
+
+# Copied into the bundle as written. Yokohama runs one process for every ward
+# through its Bulky Waste Reception Center, so there is one guide without
+# ward_ids. The Japanese follows the city's wording; the English is BinPal's.
+# Its pages are in data/sources.yaml (yokohama-sodai*), so the rule monitor
+# reports when they change; then check the guide and bump verified_at.
+bulky_guides:
+  - id: yokohama
+    summary:
+      ja: 一番長い辺が30cm以上の金属製品と、それ以外(プラスチック製品、木製品など)で50cm以上のものは粗大ごみです。収集・持込みとも、事前の申込みと手数料が必要です。
+      en: Metal items 30 cm or more on their longest side, and anything else (plastic, wood and so on) 50 cm or more, are bulky waste. Both collection and drop-off need booking in advance and a fee.
+    steps:
+      - title: { ja: 大きさを確かめる, en: Check the size }
+        body:
+          ja: 一番長い辺を測り、金属製品なら30cm以上、それ以外なら50cm以上かを確かめます。家庭から出るものだけが対象で、事業活動で出たごみや市外からのものは受け付けていません。
+          en: Measure the longest side. It is bulky waste at 30 cm or more for metal items and 50 cm or more for anything else. Only household items are accepted, not business waste or items from outside the city.
+      - title: { ja: 申し込む, en: Book }
+        body:
+          ja: 粗大ごみ受付センターに申し込みます。インターネット・チャット・LINEは24時間、電話は月曜日から土曜日(祝日を含む)の午前8時30分から午後5時までです(日曜日と12月31日から1月3日は休み)。申込みの時に、手数料・収集日・出す場所と、6桁の受付番号が伝えられます。収集の申込みは収集日の7日前まで、受付から収集までは2週間程度かかり、1回に9個まで申し込めます。インターネットの品目一覧にない品物は電話で申し込みます。市内4か所の自己搬入ヤードに自分で持ち込むこともできます(事前申込み、20個まで)。
+          en: Book with the Bulky Waste Reception Center online, by chat or on LINE at any time, or by phone Monday to Saturday (including holidays), 8:30 a.m. to 5:00 p.m. (closed Sundays and 31 December to 3 January). When you book, you are told the fee, the collection day, where to put the item out, and a 6-digit reception number. Collection bookings close 7 days before the collection day, collection is usually about two weeks after booking, and you can book up to 9 items at a time. Items missing from the online list can only be booked by phone. You can also take items to one of four drop-off yards in the city yourself (booking needed, up to 20 items).
+      - title: { ja: 手数料を納める, en: Pay the fee }
+        body:
+          ja: 申込みの時に確認した手数料を、市指定の金融機関・郵便局・コンビニ(スリーエフ、生活彩家、セブンイレブン、デイリーヤマザキ、ファミリーマート、ポプラ、ミニストップ、ローソン)で納め、粗大ごみ収集シールと領収書を受け取ります。領収書は収集が終わるまで保管してください。インターネット・チャット・LINEで収集を申し込んだ場合は、収集日の3営業日前までにクレジットカードかPayPayでも払えます。
+          en: Pay the fee you were given at a designated bank, a post office or a convenience store (Three F, Seikatsu Saika, 7-Eleven, Daily Yamazaki, FamilyMart, Poplar, Ministop or Lawson) and get bulky waste collection stickers and a receipt. Keep the receipt until the item has been collected. If you booked collection online, by chat or on LINE, you can pay by credit card or PayPay instead, up to 3 business days before collection.
+      - title: { ja: シールを貼って出す, en: Label it and put it out }
+        body:
+          ja: 収集シールの氏名欄に受付番号6桁と収集日を書き、品物の見やすい所に貼ります。電子決済で払った場合は、縦横10cm以上の紙に受付番号と収集日を大きく書き、テープで4辺を貼ります。雨の日も収集するので、油性ペンで書いてください。収集日の朝8時までに、申込みの時に確認した場所に出します。ストーブなどは灯油や電池を抜いてから出してください。
+          en: Write the 6-digit reception number and the collection day in the name field of the sticker, and stick it where it can be seen. If you paid electronically, write them large on any paper at least 10 cm on each side and tape it on along all four edges. Use a permanent marker, as collection goes ahead in the rain. Put the item out by 8:00 a.m. on the collection day, at the place you were told when booking. Remove kerosene and batteries from heaters and similar items first.
+    contacts:
+      - label: { ja: 粗大ごみ受付センター, en: Bulky Waste Reception Center }
+        phone: "0570-200-530"
+        note:
+          ja: 月曜日から土曜日(祝日を含む)午前8時30分から午後5時。日曜日と12月31日から1月3日は休み。
+          en: Monday to Saturday including holidays, 8:30 a.m. to 5:00 p.m. Closed Sundays and 31 December to 3 January.
+      - label: { ja: 携帯電話・IP電話などから, en: From a mobile or IP phone }
+        phone: "045-330-3953"
+        note:
+          ja: 通話料割引サービスを利用している場合や、0570の番号につながらない場合。
+          en: If your plan has free or discounted calls, or the 0570 number doesn't connect.
+    links:
+      - kind: booking
+        label: { ja: インターネットで申し込む, en: Book online }
+        url: https://www.sodai.city.yokohama.lg.jp/eco/view/yokohama/top.html
+      - kind: fees
+        label: { ja: 品目ごとの手数料, en: Fee for each item }
+        url: https://www.sodai.city.yokohama.lg.jp/eco/view/yokohama/dustlistSearch.html
+      - kind: info
+        label: { ja: 粗大ごみの申込み(横浜市), en: Booking bulky waste (City of Yokohama) }
+        url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/sodaigomi/dashikata/sodaigomi.html
+    source_url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/sodaigomi/dashikata/shuushuu.html
+    verified_at: "2026-11-15"
+
 wards:
   - id: "14117"
     slug: aoba

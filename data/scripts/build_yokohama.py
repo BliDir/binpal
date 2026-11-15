@@ -373,6 +373,7 @@ def build(config: dict, areas, towns, items, notes, sources: dict, generated_at:
         "rules": rules,
         "calendars": calendars,
         "exceptions": exceptions,
+        "bulky_guides": config.get("bulky_guides", []),
     }
 
 

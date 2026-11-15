@@ -87,9 +87,81 @@
       "description": "Dates that differ from the regular pattern, such as the year-end and New Year schedule.",
       "type": "array",
       "items": { "$ref": "#/$defs/exception" }
+    },
+    "bulky_guides": {
+      "description": "How to put out bulky waste (粗大ごみ): what counts, how to book, how to pay and how to put it out. One guide for the whole municipality, and others for wards where the process differs. Added in a compatible change; apps that don't know it ignore it.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/bulkyGuide" }
     }
   },
   "$defs": {
+    "bulkyGuide": {
+      "type": "object",
+      "required": ["id", "summary", "steps", "links", "source_url", "verified_at"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "common.v1.schema.json#/$defs/slug" },
+        "ward_ids": {
+          "description": "Wards this guide is for. Omit for the municipality-wide guide, which applies wherever no ward guide does.",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "common.v1.schema.json#/$defs/municipalityId" }
+        },
+        "summary": {
+          "description": "What counts as bulky waste here, in a sentence or two.",
+          "$ref": "common.v1.schema.json#/$defs/localizedText"
+        },
+        "steps": {
+          "description": "The process in order, for example check, book, pay, label and put out.",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["title", "body"],
+            "additionalProperties": false,
+            "properties": {
+              "title": { "$ref": "common.v1.schema.json#/$defs/localizedText" },
+              "body": { "$ref": "common.v1.schema.json#/$defs/localizedText" }
+            }
+          }
+        },
+        "contacts": {
+          "description": "Phone numbers for booking and questions.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "phone"],
+            "additionalProperties": false,
+            "properties": {
+              "label": { "$ref": "common.v1.schema.json#/$defs/localizedText" },
+              "phone": { "type": "string", "pattern": "^0[0-9]{1,4}-[0-9]{1,4}-[0-9]{3,4}$" },
+              "note": { "$ref": "common.v1.schema.json#/$defs/localizedText" }
+            }
+          }
+        },
+        "links": {
+          "description": "Official pages. The app never books on the user's behalf; it opens the booking link.",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["kind", "label", "url"],
+            "additionalProperties": false,
+            "properties": {
+              "kind": { "enum": ["booking", "fees", "info"] },
+              "label": { "$ref": "common.v1.schema.json#/$defs/localizedText" },
+              "url": { "$ref": "common.v1.schema.json#/$defs/url" }
+            }
+          }
+        },
+        "source_url": { "$ref": "common.v1.schema.json#/$defs/url" },
+        "verified_at": {
+          "description": "When the guide was last checked against the official pages.",
+          "$ref": "common.v1.schema.json#/$defs/date"
+        }
+      }
+    },
     "ward": {
       "type": "object",
       "required": ["id", "names"],

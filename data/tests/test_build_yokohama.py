@@ -21,6 +21,7 @@ import sys
 from pathlib import Path
 
 import pytest
+import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 import build_yokohama as build
@@ -331,3 +332,57 @@ def test_committed_bundle_matches_the_translation_tables(bundle, real):
 
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-q", *sys.argv[1:]]))
+
+
+def test_the_bulky_guide_is_copied_from_the_config(config):
+    bundle = make(config)
+    assert bundle["bulky_guides"] == config["bulky_guides"]
+
+
+def test_committed_bundle_has_a_bulky_guide_for_every_ward(bundle):
+    guides = bundle["bulky_guides"]
+    wide = [g for g in guides if "ward_ids" not in g]
+    for ward in bundle["wards"]:
+        mine = [g for g in guides if ward["id"] in g.get("ward_ids", [])] or wide
+        assert len(mine) == 1, ward["id"]
+        guide = mine[0]
+        assert [link["kind"] for link in guide["links"]].count("booking") == 1
+        assert guide["verified_at"] and guide["steps"]
+
+
+def test_bulky_guide_pages_are_monitored(real):
+    sources = {
+        s["url"] for s in yaml.safe_load((build.DATA_DIR / "sources.yaml").read_text(encoding="utf-8"))["sources"]
+    }
+    for guide in real[0]["bulky_guides"]:
+        assert guide["source_url"] in sources
+        for link in guide["links"]:
+            if link["url"].startswith("https://www.city.yokohama.lg.jp/"):
+                assert link["url"] in sources
+
+
+def guide(**fields) -> dict:
+    return {
+        "id": "g",
+        "summary": {"ja": "粗大ごみ", "en": "Bulky"},
+        "steps": [{"title": {"ja": "申し込む", "en": "Book"}, "body": {"ja": "電話", "en": "Phone"}}],
+        "links": [{"kind": "booking", "label": {"ja": "申込み", "en": "Book"}, "url": "https://city.example/"}],
+        "source_url": "https://city.example/",
+        "verified_at": "2026-11-15",
+        **fields,
+    }
+
+
+@pytest.mark.parametrize(
+    ("guides", "message"),
+    [
+        ([guide(), guide(id="h")], "more than one municipality-wide bulky guide"),
+        ([guide(ward_ids=["14199"])], "unknown ward '14199'"),
+        ([guide(ward_ids=["14117"]), guide(id="h", ward_ids=["14117"])], "ward '14117' has more than one bulky guide"),
+        ([guide(), guide()], "duplicate bulky guide id 'g'"),
+        ([guide(contacts=[{"label": {"ja": "電話", "en": "Phone"}, "phone": "call us"}])], "does not match"),
+    ],
+)
+def test_bad_bulky_guides_are_rejected(config, guides, message):
+    bundle = make(config) | {"bulky_guides": guides}
+    assert any(message in e for e in validate.validate_bundle(bundle)), validate.validate_bundle(bundle)

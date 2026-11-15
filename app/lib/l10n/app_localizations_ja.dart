@@ -636,4 +636,38 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get searchReportFooter => '間違いや足りない品目を報告';
+
+  @override
+  String get bulkyTitle => '粗大ごみの出し方';
+
+  @override
+  String get bulkySearchTitle => '粗大ごみの出し方';
+
+  @override
+  String get bulkySearchBody => '家具や布団など、大きな品物の出し方';
+
+  @override
+  String get bulkyPhone => '電話';
+
+  @override
+  String bulkyCall(String number) {
+    return '$numberに電話';
+  }
+
+  @override
+  String get bulkyOtherLinks => '市のページ';
+
+  @override
+  String get bulkyNoBooking => 'BinPalは申込みを代行しません。申込みと支払いは市のページで行います。';
+
+  @override
+  String bulkyChecked(String date) {
+    return '$dateに公式ページと照合';
+  }
+
+  @override
+  String get bulkyNone => 'お住まいの地域の粗大ごみガイドはまだありません。市のウェブサイトをご確認ください。';
+
+  @override
+  String get itemBulkyGuide => '粗大ごみの出し方';
 }

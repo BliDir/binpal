@@ -672,4 +672,41 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get searchReportFooter => 'Something wrong or missing? Tell us';
+
+  @override
+  String get bulkyTitle => 'Bulky item guide';
+
+  @override
+  String get bulkySearchTitle => 'Bulky item guide';
+
+  @override
+  String get bulkySearchBody =>
+      'How to put out large items, such as furniture and bedding.';
+
+  @override
+  String get bulkyPhone => 'Phone';
+
+  @override
+  String bulkyCall(String number) {
+    return 'Call $number';
+  }
+
+  @override
+  String get bulkyOtherLinks => 'More from the city';
+
+  @override
+  String get bulkyNoBooking =>
+      'BinPal doesn\'t book for you: booking and payment happen on the city\'s own pages.';
+
+  @override
+  String bulkyChecked(String date) {
+    return 'Checked against the official pages on $date';
+  }
+
+  @override
+  String get bulkyNone =>
+      'There\'s no bulky item guide for your area yet. Check your city\'s website.';
+
+  @override
+  String get itemBulkyGuide => 'How to put out bulky items';
 }

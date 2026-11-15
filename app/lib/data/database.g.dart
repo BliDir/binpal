@@ -4453,6 +4453,320 @@ class CollectionExceptionsCompanion
   }
 }
 
+class $BulkyGuidesTable extends BulkyGuides
+    with TableInfo<$BulkyGuidesTable, BulkyGuideRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $BulkyGuidesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _municipalityIdMeta = const VerificationMeta(
+    'municipalityId',
+  );
+  @override
+  late final GeneratedColumn<String> municipalityId = GeneratedColumn<String>(
+    'municipality_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _wardIdsMeta = const VerificationMeta(
+    'wardIds',
+  );
+  @override
+  late final GeneratedColumn<String> wardIds = GeneratedColumn<String>(
+    'ward_ids',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _guideMeta = const VerificationMeta('guide');
+  @override
+  late final GeneratedColumn<String> guide = GeneratedColumn<String>(
+    'guide',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [municipalityId, id, wardIds, guide];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'bulky_guides';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<BulkyGuideRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('municipality_id')) {
+      context.handle(
+        _municipalityIdMeta,
+        municipalityId.isAcceptableOrUnknown(
+          data['municipality_id']!,
+          _municipalityIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_municipalityIdMeta);
+    }
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('ward_ids')) {
+      context.handle(
+        _wardIdsMeta,
+        wardIds.isAcceptableOrUnknown(data['ward_ids']!, _wardIdsMeta),
+      );
+    }
+    if (data.containsKey('guide')) {
+      context.handle(
+        _guideMeta,
+        guide.isAcceptableOrUnknown(data['guide']!, _guideMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_guideMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {municipalityId, id};
+  @override
+  BulkyGuideRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return BulkyGuideRow(
+      municipalityId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}municipality_id'],
+      )!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      wardIds: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}ward_ids'],
+      ),
+      guide: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}guide'],
+      )!,
+    );
+  }
+
+  @override
+  $BulkyGuidesTable createAlias(String alias) {
+    return $BulkyGuidesTable(attachedDatabase, alias);
+  }
+}
+
+class BulkyGuideRow extends DataClass implements Insertable<BulkyGuideRow> {
+  final String municipalityId;
+  final String id;
+  final String? wardIds;
+  final String guide;
+  const BulkyGuideRow({
+    required this.municipalityId,
+    required this.id,
+    this.wardIds,
+    required this.guide,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['municipality_id'] = Variable<String>(municipalityId);
+    map['id'] = Variable<String>(id);
+    if (!nullToAbsent || wardIds != null) {
+      map['ward_ids'] = Variable<String>(wardIds);
+    }
+    map['guide'] = Variable<String>(guide);
+    return map;
+  }
+
+  BulkyGuidesCompanion toCompanion(bool nullToAbsent) {
+    return BulkyGuidesCompanion(
+      municipalityId: Value(municipalityId),
+      id: Value(id),
+      wardIds: wardIds == null && nullToAbsent
+          ? const Value.absent()
+          : Value(wardIds),
+      guide: Value(guide),
+    );
+  }
+
+  factory BulkyGuideRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return BulkyGuideRow(
+      municipalityId: serializer.fromJson<String>(json['municipalityId']),
+      id: serializer.fromJson<String>(json['id']),
+      wardIds: serializer.fromJson<String?>(json['wardIds']),
+      guide: serializer.fromJson<String>(json['guide']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'municipalityId': serializer.toJson<String>(municipalityId),
+      'id': serializer.toJson<String>(id),
+      'wardIds': serializer.toJson<String?>(wardIds),
+      'guide': serializer.toJson<String>(guide),
+    };
+  }
+
+  BulkyGuideRow copyWith({
+    String? municipalityId,
+    String? id,
+    Value<String?> wardIds = const Value.absent(),
+    String? guide,
+  }) => BulkyGuideRow(
+    municipalityId: municipalityId ?? this.municipalityId,
+    id: id ?? this.id,
+    wardIds: wardIds.present ? wardIds.value : this.wardIds,
+    guide: guide ?? this.guide,
+  );
+  BulkyGuideRow copyWithCompanion(BulkyGuidesCompanion data) {
+    return BulkyGuideRow(
+      municipalityId: data.municipalityId.present
+          ? data.municipalityId.value
+          : this.municipalityId,
+      id: data.id.present ? data.id.value : this.id,
+      wardIds: data.wardIds.present ? data.wardIds.value : this.wardIds,
+      guide: data.guide.present ? data.guide.value : this.guide,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BulkyGuideRow(')
+          ..write('municipalityId: $municipalityId, ')
+          ..write('id: $id, ')
+          ..write('wardIds: $wardIds, ')
+          ..write('guide: $guide')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(municipalityId, id, wardIds, guide);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is BulkyGuideRow &&
+          other.municipalityId == this.municipalityId &&
+          other.id == this.id &&
+          other.wardIds == this.wardIds &&
+          other.guide == this.guide);
+}
+
+class BulkyGuidesCompanion extends UpdateCompanion<BulkyGuideRow> {
+  final Value<String> municipalityId;
+  final Value<String> id;
+  final Value<String?> wardIds;
+  final Value<String> guide;
+  final Value<int> rowid;
+  const BulkyGuidesCompanion({
+    this.municipalityId = const Value.absent(),
+    this.id = const Value.absent(),
+    this.wardIds = const Value.absent(),
+    this.guide = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  BulkyGuidesCompanion.insert({
+    required String municipalityId,
+    required String id,
+    this.wardIds = const Value.absent(),
+    required String guide,
+    this.rowid = const Value.absent(),
+  }) : municipalityId = Value(municipalityId),
+       id = Value(id),
+       guide = Value(guide);
+  static Insertable<BulkyGuideRow> custom({
+    Expression<String>? municipalityId,
+    Expression<String>? id,
+    Expression<String>? wardIds,
+    Expression<String>? guide,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (municipalityId != null) 'municipality_id': municipalityId,
+      if (id != null) 'id': id,
+      if (wardIds != null) 'ward_ids': wardIds,
+      if (guide != null) 'guide': guide,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  BulkyGuidesCompanion copyWith({
+    Value<String>? municipalityId,
+    Value<String>? id,
+    Value<String?>? wardIds,
+    Value<String>? guide,
+    Value<int>? rowid,
+  }) {
+    return BulkyGuidesCompanion(
+      municipalityId: municipalityId ?? this.municipalityId,
+      id: id ?? this.id,
+      wardIds: wardIds ?? this.wardIds,
+      guide: guide ?? this.guide,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (municipalityId.present) {
+      map['municipality_id'] = Variable<String>(municipalityId.value);
+    }
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (wardIds.present) {
+      map['ward_ids'] = Variable<String>(wardIds.value);
+    }
+    if (guide.present) {
+      map['guide'] = Variable<String>(guide.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BulkyGuidesCompanion(')
+          ..write('municipalityId: $municipalityId, ')
+          ..write('id: $id, ')
+          ..write('wardIds: $wardIds, ')
+          ..write('guide: $guide, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $MissedSearchesTable extends MissedSearches
     with TableInfo<$MissedSearchesTable, MissedSearche> {
   @override
@@ -5254,6 +5568,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $CalendarAreasTable calendarAreas = $CalendarAreasTable(this);
   late final $CollectionExceptionsTable collectionExceptions =
       $CollectionExceptionsTable(this);
+  late final $BulkyGuidesTable bulkyGuides = $BulkyGuidesTable(this);
   late final $MissedSearchesTable missedSearches = $MissedSearchesTable(this);
   late final $PhotoChoicesTable photoChoices = $PhotoChoicesTable(this);
   late final $SettingsTable settings = $SettingsTable(this);
@@ -5283,6 +5598,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     calendars,
     calendarAreas,
     collectionExceptions,
+    bulkyGuides,
     missedSearches,
     photoChoices,
     settings,
@@ -7830,6 +8146,198 @@ typedef $$CollectionExceptionsTableProcessedTableManager =
       CollectionException,
       PrefetchHooks Function()
     >;
+typedef $$BulkyGuidesTableCreateCompanionBuilder =
+    BulkyGuidesCompanion Function({
+      required String municipalityId,
+      required String id,
+      Value<String?> wardIds,
+      required String guide,
+      Value<int> rowid,
+    });
+typedef $$BulkyGuidesTableUpdateCompanionBuilder =
+    BulkyGuidesCompanion Function({
+      Value<String> municipalityId,
+      Value<String> id,
+      Value<String?> wardIds,
+      Value<String> guide,
+      Value<int> rowid,
+    });
+
+class $$BulkyGuidesTableFilterComposer
+    extends Composer<_$AppDatabase, $BulkyGuidesTable> {
+  $$BulkyGuidesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get municipalityId => $composableBuilder(
+    column: $table.municipalityId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get wardIds => $composableBuilder(
+    column: $table.wardIds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get guide => $composableBuilder(
+    column: $table.guide,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$BulkyGuidesTableOrderingComposer
+    extends Composer<_$AppDatabase, $BulkyGuidesTable> {
+  $$BulkyGuidesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get municipalityId => $composableBuilder(
+    column: $table.municipalityId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get wardIds => $composableBuilder(
+    column: $table.wardIds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get guide => $composableBuilder(
+    column: $table.guide,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$BulkyGuidesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $BulkyGuidesTable> {
+  $$BulkyGuidesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get municipalityId => $composableBuilder(
+    column: $table.municipalityId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get wardIds =>
+      $composableBuilder(column: $table.wardIds, builder: (column) => column);
+
+  GeneratedColumn<String> get guide =>
+      $composableBuilder(column: $table.guide, builder: (column) => column);
+}
+
+class $$BulkyGuidesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $BulkyGuidesTable,
+          BulkyGuideRow,
+          $$BulkyGuidesTableFilterComposer,
+          $$BulkyGuidesTableOrderingComposer,
+          $$BulkyGuidesTableAnnotationComposer,
+          $$BulkyGuidesTableCreateCompanionBuilder,
+          $$BulkyGuidesTableUpdateCompanionBuilder,
+          (
+            BulkyGuideRow,
+            BaseReferences<_$AppDatabase, $BulkyGuidesTable, BulkyGuideRow>,
+          ),
+          BulkyGuideRow,
+          PrefetchHooks Function()
+        > {
+  $$BulkyGuidesTableTableManager(_$AppDatabase db, $BulkyGuidesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$BulkyGuidesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$BulkyGuidesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$BulkyGuidesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> municipalityId = const Value.absent(),
+                Value<String> id = const Value.absent(),
+                Value<String?> wardIds = const Value.absent(),
+                Value<String> guide = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => BulkyGuidesCompanion(
+                municipalityId: municipalityId,
+                id: id,
+                wardIds: wardIds,
+                guide: guide,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String municipalityId,
+                required String id,
+                Value<String?> wardIds = const Value.absent(),
+                required String guide,
+                Value<int> rowid = const Value.absent(),
+              }) => BulkyGuidesCompanion.insert(
+                municipalityId: municipalityId,
+                id: id,
+                wardIds: wardIds,
+                guide: guide,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$BulkyGuidesTable, BulkyGuideRow>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $BulkyGuidesTable,
+                    BulkyGuideRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$BulkyGuidesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $BulkyGuidesTable,
+      BulkyGuideRow,
+      $$BulkyGuidesTableFilterComposer,
+      $$BulkyGuidesTableOrderingComposer,
+      $$BulkyGuidesTableAnnotationComposer,
+      $$BulkyGuidesTableCreateCompanionBuilder,
+      $$BulkyGuidesTableUpdateCompanionBuilder,
+      (
+        BulkyGuideRow,
+        BaseReferences<_$AppDatabase, $BulkyGuidesTable, BulkyGuideRow>,
+      ),
+      BulkyGuideRow,
+      PrefetchHooks Function()
+    >;
 typedef $$MissedSearchesTableCreateCompanionBuilder =
     MissedSearchesCompanion Function({
       required String query,
@@ -8351,6 +8859,8 @@ class $AppDatabaseManager {
       $$CalendarAreasTableTableManager(_db, _db.calendarAreas);
   $$CollectionExceptionsTableTableManager get collectionExceptions =>
       $$CollectionExceptionsTableTableManager(_db, _db.collectionExceptions);
+  $$BulkyGuidesTableTableManager get bulkyGuides =>
+      $$BulkyGuidesTableTableManager(_db, _db.bulkyGuides);
   $$MissedSearchesTableTableManager get missedSearches =>
       $$MissedSearchesTableTableManager(_db, _db.missedSearches);
   $$PhotoChoicesTableTableManager get photoChoices =>

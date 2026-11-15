@@ -1754,6 +1754,51 @@ sources:
       - "#tmp_inquiry"
       - "#tmp_section_related"
       - ".wrap_pageid"
+  # The bulky waste guide (bulky_guides in municipalities/14100/config.yaml).
+  - id: yokohama-sodai-flow
+    municipality: "14100"
+    title: 粗大ごみの手続きの流れ
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/sodaigomi/dashikata/hajimeni.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-sodai-booking
+    municipality: "14100"
+    title: 粗大ごみの申込み
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/sodaigomi/dashikata/sodaigomi.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-sodai-collection
+    municipality: "14100"
+    title: 粗大ごみの収集
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/sodaigomi/dashikata/shuushuu.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
+  - id: yokohama-sodai-notes
+    municipality: "14100"
+    title: 粗大ごみのお申込みに係る注意事項
+    type: html
+    url: https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushu/sodaigomi/chuui/chuuijikou.html
+    selector: "#tmp_contents"
+    strip:
+      - "#tmp_wrap_update"
+      - "#tmp_inquiry"
+      - "#tmp_section_related"
+      - ".wrap_pageid"
   - id: yokohama-news
     municipality: "14100"
     title: ごみ・リサイクルのお知らせ

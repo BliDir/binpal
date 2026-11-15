@@ -1213,6 +1213,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Something wrong or missing? Tell us'**
   String get searchReportFooter;
+
+  /// No description provided for @bulkyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bulky item guide'**
+  String get bulkyTitle;
+
+  /// No description provided for @bulkySearchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bulky item guide'**
+  String get bulkySearchTitle;
+
+  /// No description provided for @bulkySearchBody.
+  ///
+  /// In en, this message translates to:
+  /// **'How to put out large items, such as furniture and bedding.'**
+  String get bulkySearchBody;
+
+  /// No description provided for @bulkyPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get bulkyPhone;
+
+  /// No description provided for @bulkyCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Call {number}'**
+  String bulkyCall(String number);
+
+  /// No description provided for @bulkyOtherLinks.
+  ///
+  /// In en, this message translates to:
+  /// **'More from the city'**
+  String get bulkyOtherLinks;
+
+  /// No description provided for @bulkyNoBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'BinPal doesn\'t book for you: booking and payment happen on the city\'s own pages.'**
+  String get bulkyNoBooking;
+
+  /// No description provided for @bulkyChecked.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked against the official pages on {date}'**
+  String bulkyChecked(String date);
+
+  /// No description provided for @bulkyNone.
+  ///
+  /// In en, this message translates to:
+  /// **'There\'s no bulky item guide for your area yet. Check your city\'s website.'**
+  String get bulkyNone;
+
+  /// No description provided for @itemBulkyGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'How to put out bulky items'**
+  String get itemBulkyGuide;
 }
 
 class _AppLocalizationsDelegate
