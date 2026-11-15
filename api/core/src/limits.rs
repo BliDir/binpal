@@ -27,15 +27,24 @@ pub struct Allowance {
     pub ai_calls_per_install: u32,
     /// Reports per install per day.
     pub reports_per_install: u32,
-    /// Spend on AI per day, across all installs, in millionths of a dollar.
+    /// Spend on the Anthropic fallback per Japan day, across all installs, in
+    /// millionths of a dollar.
     pub daily_budget_micro_usd: u64,
+    /// Workers AI Neurons per UTC day. Kept under Cloudflare's free 10,000 so
+    /// an account on Workers Paid is never billed for overage.
+    pub workers_ai_daily_neurons: u64,
 }
 
 impl Allowance {
-    /// Whether today's spend so far leaves room for another AI call. Once the
-    /// budget is reached AI stays paused until the next Japan day.
-    pub fn ai_available(&self, spent_today_micro_usd: u64) -> bool {
+    /// Whether today's Anthropic spend leaves room for another call. Once the
+    /// budget is reached the fallback stays off until the next Japan day.
+    pub fn anthropic_available(&self, spent_today_micro_usd: u64) -> bool {
         spent_today_micro_usd < self.daily_budget_micro_usd
+    }
+
+    /// Whether today's free Workers AI Neurons have room for another call.
+    pub fn workers_ai_available(&self, neurons_today: u64) -> bool {
+        neurons_today < self.workers_ai_daily_neurons
     }
 }
 
@@ -50,16 +59,18 @@ mod tests {
     use super::*;
 
     #[test]
-    fn budget_pauses_ai_once_reached() {
+    fn each_model_stops_at_its_daily_limit() {
         let allowance = Allowance {
             ai_calls_per_install: 20,
             reports_per_install: 10,
             daily_budget_micro_usd: 5_000_000,
+            workers_ai_daily_neurons: 9_000,
         };
-        assert!(allowance.ai_available(0));
-        assert!(allowance.ai_available(4_999_999));
-        assert!(!allowance.ai_available(5_000_000));
-        assert!(!allowance.ai_available(9_000_000));
+        assert!(allowance.anthropic_available(0));
+        assert!(allowance.anthropic_available(4_999_999));
+        assert!(!allowance.anthropic_available(5_000_000));
+        assert!(allowance.workers_ai_available(8_999));
+        assert!(!allowance.workers_ai_available(9_000));
     }
 
     #[test]

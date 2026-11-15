@@ -4,7 +4,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::catalog::CategoryGuide;
-use crate::cost::Usage;
+use crate::cost::{Usage, WorkersAiUsage};
 use crate::request::Candidate;
 
 /// What the app gets back. Instructions come from the app's own bundle.
@@ -82,8 +82,19 @@ pub fn parse_response(
     else {
         return Ok((Outcome::NoAnswer("no_text"), usage));
     };
-    let Ok(raw) = serde_json::from_str::<RawAnswer>(text) else {
-        return Ok((Outcome::NoAnswer("unparseable"), usage));
+    Ok((check(text, candidates, guide), usage))
+}
+
+/// The checked answer in a model's text: the item must be one of the
+/// candidates and the category one the bundle has. Takes the outermost JSON
+/// object, in case a model wraps it in prose or a code fence.
+fn check(text: &str, candidates: &[Candidate], guide: &CategoryGuide) -> Outcome {
+    let json = match (text.find('{'), text.rfind('}')) {
+        (Some(start), Some(end)) if start < end => &text[start..=end],
+        _ => return Outcome::NoAnswer("unparseable"),
+    };
+    let Ok(raw) = serde_json::from_str::<RawAnswer>(json) else {
+        return Outcome::NoAnswer("unparseable");
     };
 
     let candidate = raw
@@ -96,21 +107,68 @@ pub fn parse_response(
         None => raw.category.filter(|id| guide.has(id)),
     };
     if candidate.is_none() && category.is_none() {
-        return Ok((Outcome::NoAnswer("unknown"), usage));
+        return Outcome::NoAnswer("unknown");
     }
     let confidence = if raw.confidence.is_finite() {
         raw.confidence.clamp(0.0, 1.0)
     } else {
         0.0
     };
-    Ok((
-        Outcome::Answered(Answer {
-            item_id: candidate.map(|c| c.item_id.clone()),
-            category,
-            confidence,
-        }),
-        usage,
-    ))
+    Outcome::Answered(Answer {
+        item_id: candidate.map(|c| c.item_id.clone()),
+        category,
+        confidence,
+    })
+}
+
+#[derive(Deserialize)]
+struct ChatOutput {
+    #[serde(default)]
+    choices: Vec<Choice>,
+    /// Older Workers AI text models answer in `response` instead.
+    #[serde(default)]
+    response: Option<serde_json::Value>,
+    #[serde(default)]
+    usage: WorkersAiUsage,
+}
+
+#[derive(Deserialize)]
+struct Choice {
+    message: ChatMessage,
+    finish_reason: Option<String>,
+}
+
+#[derive(Deserialize)]
+struct ChatMessage {
+    content: Option<String>,
+}
+
+/// The outcome and token usage of a Workers AI chat response.
+pub fn parse_workers_ai(
+    output: &serde_json::Value,
+    candidates: &[Candidate],
+    guide: &CategoryGuide,
+) -> Result<(Outcome, WorkersAiUsage), String> {
+    let output = ChatOutput::deserialize(output).map_err(|e| format!("Workers AI output: {e}"))?;
+    let usage = output.usage;
+    let text = match (output.choices.first(), output.response) {
+        (Some(choice), _) => {
+            match choice.finish_reason.as_deref() {
+                Some("length") => return Ok((Outcome::NoAnswer("max_tokens"), usage)),
+                Some("content_filter") => return Ok((Outcome::NoAnswer("refusal"), usage)),
+                _ => {}
+            }
+            choice.message.content.clone()
+        }
+        // JSON mode may hand back the object itself rather than its text.
+        (None, Some(serde_json::Value::String(text))) => Some(text),
+        (None, Some(object @ serde_json::Value::Object(_))) => Some(object.to_string()),
+        _ => None,
+    };
+    let Some(text) = text else {
+        return Ok((Outcome::NoAnswer("no_text"), usage));
+    };
+    Ok((check(&text, candidates, guide), usage))
 }
 
 #[cfg(test)]
@@ -220,6 +278,54 @@ mod tests {
         )
         .unwrap();
         assert_eq!(outcome, Outcome::NoAnswer("max_tokens"));
+    }
+
+    #[test]
+    fn workers_ai_chat_output_is_checked_the_same_way() {
+        let output = json!({
+            "id": "chatcmpl-1",
+            "object": "chat.completion",
+            "created": 0,
+            "model": "@cf/qwen/qwen3.8-27b",
+            "choices": [{
+                "index": 0,
+                "message": {"role": "assistant", "content":
+                    "```json\n{\"item_id\": \"yokohama-10\", \"category\": \"moyasu\", \"confidence\": 0.7}\n```"},
+                "finish_reason": "stop",
+                "logprobs": null,
+            }],
+            "usage": {"prompt_tokens": 1300, "completion_tokens": 30, "total_tokens": 1330},
+        });
+        let (outcome, usage) = parse_workers_ai(&output, &candidates(), &yokohama()).unwrap();
+        assert_eq!(
+            outcome,
+            Outcome::Answered(Answer {
+                item_id: Some("yokohama-10".into()),
+                category: Some("kinzoku".into()),
+                confidence: 0.7,
+            })
+        );
+        assert_eq!(usage.prompt_tokens, 1300);
+    }
+
+    #[test]
+    fn workers_ai_older_shapes_and_cut_off_answers() {
+        let object =
+            json!({"response": {"item_id": null, "category": "plastic", "confidence": 0.5}});
+        let (outcome, _) = parse_workers_ai(&object, &candidates(), &yokohama()).unwrap();
+        assert_eq!(outcome.label(), "category");
+
+        let cut = json!({
+            "choices": [{"message": {"content": "{\"item_id\": \"yoko"}, "finish_reason": "length"}],
+            "usage": {"prompt_tokens": 1300, "completion_tokens": 256, "total_tokens": 1556},
+        });
+        let (outcome, usage) = parse_workers_ai(&cut, &candidates(), &yokohama()).unwrap();
+        assert_eq!(outcome, Outcome::NoAnswer("max_tokens"));
+        assert_eq!(usage.completion_tokens, 256);
+
+        assert!(parse_workers_ai(&json!("not an object"), &candidates(), &yokohama()).is_err());
+        let empty = parse_workers_ai(&json!({}), &candidates(), &yokohama()).unwrap();
+        assert_eq!(empty.0, Outcome::NoAnswer("no_text"));
     }
 
     #[test]

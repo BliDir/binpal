@@ -25,7 +25,11 @@ fn retryable(status: u16) -> bool {
 /// POSTs `body` to `/v1/messages` and returns the response body. Retries
 /// once on a retryable status. Logs only the status and the API's error
 /// type, never the request, which holds the photo.
-pub async fn messages(config: &Config, body: &serde_json::Value) -> Result<Vec<u8>, ApiError> {
+pub async fn messages(
+    config: &Config,
+    api_key: &str,
+    body: &serde_json::Value,
+) -> Result<Vec<u8>, ApiError> {
     let body = body.to_string();
     let url = format!("{}/v1/messages", config.anthropic_base_url);
     for attempt in 0..2 {
@@ -35,7 +39,7 @@ pub async fn messages(config: &Config, body: &serde_json::Value) -> Result<Vec<u
         let headers = Headers::new();
         for (name, value) in [
             ("content-type", "application/json"),
-            ("x-api-key", config.anthropic_api_key.as_str()),
+            ("x-api-key", api_key),
             ("anthropic-version", ANTHROPIC_VERSION),
         ] {
             headers.set(name, value).map_err(|_| ApiError::internal())?;

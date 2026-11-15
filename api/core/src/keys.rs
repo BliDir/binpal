@@ -12,6 +12,13 @@ pub fn japan_day(unix_millis: u64) -> String {
     format!("{y:04}-{m:02}-{d:02}")
 }
 
+/// The UTC date as `YYYY-MM-DD`: Workers AI's free allowance resets at
+/// 00:00 UTC (09:00 in Japan).
+pub fn utc_day(unix_millis: u64) -> String {
+    let (y, m, d) = civil_from_days((unix_millis / 86_400_000) as i64);
+    format!("{y:04}-{m:02}-{d:02}")
+}
+
 /// Days since 1970-01-01 to a calendar date (Howard Hinnant's algorithm).
 fn civil_from_days(z: i64) -> (i64, u32, u32) {
     let z = z + 719_468;
@@ -59,6 +66,9 @@ mod tests {
         assert_eq!(japan_day(1_794_581_999_000), "2026-11-13");
         assert_eq!(japan_day(1_794_582_000_000), "2026-11-14");
         assert_eq!(japan_day(0), "1970-01-01");
+        // Workers AI's day is still the 13th until 09:00 in Japan.
+        assert_eq!(utc_day(1_794_582_000_000), "2026-11-13");
+        assert_eq!(utc_day(1_794_614_400_000), "2026-11-14");
         // Leap day.
         assert_eq!(japan_day(1_709_164_800_000), "2024-02-29");
     }

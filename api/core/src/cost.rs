@@ -59,6 +59,35 @@ fn rates(model: &str, prompt_tokens: u64) -> Rates {
     }
 }
 
+/// Token counts from a Workers AI chat response.
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Deserialize, Serialize)]
+pub struct WorkersAiUsage {
+    #[serde(default)]
+    pub prompt_tokens: u64,
+    #[serde(default)]
+    pub completion_tokens: u64,
+}
+
+/// Neurons per million input and output tokens, from Cloudflare's Workers AI
+/// pricing page (November 2026). 10,000 Neurons a day are free.
+fn neuron_rates(model: &str) -> (f64, f64) {
+    match model {
+        "@cf/qwen/qwen3.8-27b" => (40_909.0, 290_909.0),
+        "@cf/meta/llama-4-scout-17b-16e-instruct" => (24_545.0, 77_273.0),
+        "@cf/mistralai/mistral-small-3.1-24b-instruct" => (31_876.0, 50_488.0),
+        // Unknown model: count it at the highest vision rates listed, so the
+        // free allowance can't be overrun unnoticed.
+        _ => (86_364.0, 363_636.0),
+    }
+}
+
+/// The Neurons a Workers AI call used, rounded up.
+pub fn neurons(model: &str, usage: &WorkersAiUsage) -> u64 {
+    let (input, output) = neuron_rates(model);
+    ((usage.prompt_tokens as f64 * input + usage.completion_tokens as f64 * output) / 1_000_000.0)
+        .ceil() as u64
+}
+
 /// The call's cost in millionths of a dollar, rounded up.
 pub fn micro_usd(model: &str, usage: &Usage) -> u64 {
     let r = rates(model, usage.prompt_tokens());
@@ -108,6 +137,18 @@ mod tests {
         };
         assert_eq!(micro_usd("claude-haiku-5-5", &usage), 150);
         assert_eq!(micro_usd("claude-something-new", &usage), 15_000);
+    }
+
+    #[test]
+    fn workers_ai_neurons_per_photo() {
+        // ~1,300 tokens of instructions, short guide, photo and candidates.
+        let usage = WorkersAiUsage {
+            prompt_tokens: 1300,
+            completion_tokens: 40,
+        };
+        // 1300 x 0.040909 + 40 x 0.290909 = 53.2 + 11.6
+        assert_eq!(neurons("@cf/qwen/qwen3.8-27b", &usage), 65);
+        assert_eq!(neurons("@cf/someone/new-model", &usage), 127);
     }
 
     #[test]

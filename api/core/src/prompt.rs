@@ -1,8 +1,9 @@
-//! The Messages API request for one photo.
+//! The model requests for one photo: Workers AI first, the Anthropic
+//! Messages API as the fallback. Both get the same instructions, category
+//! guide and candidates, and the same answer schema.
 //!
 //! Everything before the photo is the same for every request in a
-//! municipality: the instructions, then its category guide, which ends with a
-//! cache breakpoint. Only the photo and the candidates change per request.
+//! municipality, so the Anthropic request ends it with a cache breakpoint.
 
 use serde_json::{Value, json};
 
@@ -31,14 +32,16 @@ Use only ids from the candidate list and the category guide. Don't describe how 
 
 /// The category guide as the model reads it. Built only from the bundle, so
 /// it is byte-for-byte the same for every request on the same bundle.
-pub fn guide_text(guide: &CategoryGuide) -> String {
+/// Descriptions add about 1,700 tokens for Yokohama: worth it where the
+/// prompt is cached (Anthropic), not where every token is paid (Workers AI).
+pub fn guide_text(guide: &CategoryGuide, descriptions: bool) -> String {
     let mut text = format!(
         "Category guide for {} (data version {}):\n",
         guide.name_en, guide.bundle_version
     );
     for c in &guide.categories {
         text.push_str(&format!("- {}: {} / {}", c.id, c.name_en, c.name_ja));
-        if let Some(description) = &c.description_en {
+        if let Some(description) = c.description_en.as_ref().filter(|_| descriptions) {
             text.push_str(&format!(". {description}"));
         }
         text.push('\n');
@@ -86,7 +89,7 @@ pub fn request_body(
             {"type": "text", "text": INSTRUCTIONS},
             {
                 "type": "text",
-                "text": guide_text(guide),
+                "text": guide_text(guide, true),
                 "cache_control": {"type": "ephemeral"},
             },
         ],
@@ -105,6 +108,48 @@ pub fn request_body(
             "effort": "low",
             "format": {"type": "json_schema", "schema": answer_schema()},
         },
+    })
+}
+
+/// Room for the short JSON answer, with thinking turned off.
+pub const WORKERS_AI_MAX_TOKENS: u32 = 256;
+
+/// The Workers AI chat input for one photo (base64 JPEG), in the
+/// OpenAI-style shape the vision chat models take. Thinking is off: output
+/// tokens cost about seven times input on these models, and picking from a
+/// list doesn't need it. The image is sent at low detail, which is what the
+/// app's ~512 px photo is anyway.
+pub fn workers_ai_body(
+    guide: &CategoryGuide,
+    image_base64: &str,
+    candidates: &[Candidate],
+) -> Value {
+    json!({
+        "messages": [
+            {
+                "role": "system",
+                "content": format!("{INSTRUCTIONS}\n\n{}", guide_text(guide, false)),
+            },
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": format!("data:image/jpeg;base64,{image_base64}"),
+                            "detail": "low",
+                        },
+                    },
+                    {"type": "text", "text": candidates_text(candidates)},
+                ],
+            },
+        ],
+        "response_format": {
+            "type": "json_schema",
+            "json_schema": {"name": "answer", "schema": answer_schema(), "strict": true},
+        },
+        "max_completion_tokens": WORKERS_AI_MAX_TOKENS,
+        "chat_template_kwargs": {"enable_thinking": false},
     })
 }
 
@@ -154,8 +199,26 @@ mod tests {
     }
 
     #[test]
+    fn workers_ai_gets_the_photo_candidates_and_a_short_guide() {
+        let body = workers_ai_body(&yokohama(), "AAAA", &[umbrella()]);
+        let system = body["messages"][0]["content"].as_str().unwrap();
+        assert!(system.starts_with("You identify the item in a photo"));
+        assert!(system.contains("\n- moyasu: Burnable / 燃やすごみ\n"));
+        assert!(!system.contains("Collected twice a week"));
+        let user = &body["messages"][1]["content"];
+        assert_eq!(user[0]["image_url"]["url"], "data:image/jpeg;base64,AAAA");
+        assert!(user[1]["text"].as_str().unwrap().contains("yokohama-10"));
+        assert_eq!(body["chat_template_kwargs"]["enable_thinking"], false);
+        assert_eq!(
+            body["response_format"]["json_schema"]["schema"],
+            answer_schema()
+        );
+    }
+
+    #[test]
     fn the_guide_lists_every_category() {
-        let text = guide_text(&yokohama());
+        assert!(guide_text(&yokohama(), false).len() < guide_text(&yokohama(), true).len() / 3);
+        let text = guide_text(&yokohama(), true);
         assert!(text.starts_with("Category guide for Yokohama City (data version"));
         assert!(text.contains("\n- moyasu: Burnable / 燃やすごみ. Collected twice a week."));
         assert_eq!(text.lines().count(), 13);
