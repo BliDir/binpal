@@ -10,6 +10,7 @@ import '../../data/sync_controller.dart';
 import '../../l10n/app_localizations.dart';
 import '../item/category_style.dart';
 import '../item/item_screen.dart';
+import '../photo/photo_check_screen.dart';
 import 'item_search.dart';
 
 /// Offline item search over the downloaded bundle, in English or Japanese.
@@ -192,6 +193,8 @@ class _Intro extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(AppSpacing.md),
       children: [
+        const _PhotoCheckCard(),
+        const SizedBox(height: AppSpacing.lg),
         Text(l10n.searchExamplesTitle, style: text.titleMedium),
         const SizedBox(height: AppSpacing.sm),
         Wrap(
@@ -219,6 +222,56 @@ class _Intro extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// Opens photo check: identify an item from a photo instead of its name.
+class _PhotoCheckCard extends StatelessWidget {
+  const _PhotoCheckCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final text = Theme.of(context).textTheme;
+    void open() => Navigator.of(
+      context,
+    ).push(MaterialPageRoute<void>(builder: (_) => const PhotoCheckScreen()));
+    return Card(
+      color: AppColors.peach,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(AppRadius.card),
+        onTap: open,
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.md),
+          child: Row(
+            children: [
+              Image.asset(
+                'assets/illustrations/camera.png',
+                width: 72,
+                height: 72,
+                excludeFromSemantics: true,
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.searchPhotoCheckTitle,
+                      style: text.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(l10n.searchPhotoCheckBody, style: text.bodyMedium),
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

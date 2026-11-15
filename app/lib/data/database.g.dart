@@ -4713,6 +4713,329 @@ class MissedSearchesCompanion extends UpdateCompanion<MissedSearche> {
   }
 }
 
+class $PhotoChoicesTable extends PhotoChoices
+    with TableInfo<$PhotoChoicesTable, PhotoChoice> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PhotoChoicesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _municipalityIdMeta = const VerificationMeta(
+    'municipalityId',
+  );
+  @override
+  late final GeneratedColumn<String> municipalityId = GeneratedColumn<String>(
+    'municipality_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _signalsMeta = const VerificationMeta(
+    'signals',
+  );
+  @override
+  late final GeneratedColumn<String> signals = GeneratedColumn<String>(
+    'signals',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _itemIdMeta = const VerificationMeta('itemId');
+  @override
+  late final GeneratedColumn<String> itemId = GeneratedColumn<String>(
+    'item_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _chosenAtMeta = const VerificationMeta(
+    'chosenAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> chosenAt = GeneratedColumn<DateTime>(
+    'chosen_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    municipalityId,
+    signals,
+    itemId,
+    chosenAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'photo_choices';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<PhotoChoice> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('municipality_id')) {
+      context.handle(
+        _municipalityIdMeta,
+        municipalityId.isAcceptableOrUnknown(
+          data['municipality_id']!,
+          _municipalityIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_municipalityIdMeta);
+    }
+    if (data.containsKey('signals')) {
+      context.handle(
+        _signalsMeta,
+        signals.isAcceptableOrUnknown(data['signals']!, _signalsMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_signalsMeta);
+    }
+    if (data.containsKey('item_id')) {
+      context.handle(
+        _itemIdMeta,
+        itemId.isAcceptableOrUnknown(data['item_id']!, _itemIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_itemIdMeta);
+    }
+    if (data.containsKey('chosen_at')) {
+      context.handle(
+        _chosenAtMeta,
+        chosenAt.isAcceptableOrUnknown(data['chosen_at']!, _chosenAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_chosenAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {municipalityId, signals};
+  @override
+  PhotoChoice map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PhotoChoice(
+      municipalityId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}municipality_id'],
+      )!,
+      signals: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}signals'],
+      )!,
+      itemId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}item_id'],
+      )!,
+      chosenAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}chosen_at'],
+      )!,
+    );
+  }
+
+  @override
+  $PhotoChoicesTable createAlias(String alias) {
+    return $PhotoChoicesTable(attachedDatabase, alias);
+  }
+}
+
+class PhotoChoice extends DataClass implements Insertable<PhotoChoice> {
+  final String municipalityId;
+  final String signals;
+  final String itemId;
+  final DateTime chosenAt;
+  const PhotoChoice({
+    required this.municipalityId,
+    required this.signals,
+    required this.itemId,
+    required this.chosenAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['municipality_id'] = Variable<String>(municipalityId);
+    map['signals'] = Variable<String>(signals);
+    map['item_id'] = Variable<String>(itemId);
+    map['chosen_at'] = Variable<DateTime>(chosenAt);
+    return map;
+  }
+
+  PhotoChoicesCompanion toCompanion(bool nullToAbsent) {
+    return PhotoChoicesCompanion(
+      municipalityId: Value(municipalityId),
+      signals: Value(signals),
+      itemId: Value(itemId),
+      chosenAt: Value(chosenAt),
+    );
+  }
+
+  factory PhotoChoice.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PhotoChoice(
+      municipalityId: serializer.fromJson<String>(json['municipalityId']),
+      signals: serializer.fromJson<String>(json['signals']),
+      itemId: serializer.fromJson<String>(json['itemId']),
+      chosenAt: serializer.fromJson<DateTime>(json['chosenAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'municipalityId': serializer.toJson<String>(municipalityId),
+      'signals': serializer.toJson<String>(signals),
+      'itemId': serializer.toJson<String>(itemId),
+      'chosenAt': serializer.toJson<DateTime>(chosenAt),
+    };
+  }
+
+  PhotoChoice copyWith({
+    String? municipalityId,
+    String? signals,
+    String? itemId,
+    DateTime? chosenAt,
+  }) => PhotoChoice(
+    municipalityId: municipalityId ?? this.municipalityId,
+    signals: signals ?? this.signals,
+    itemId: itemId ?? this.itemId,
+    chosenAt: chosenAt ?? this.chosenAt,
+  );
+  PhotoChoice copyWithCompanion(PhotoChoicesCompanion data) {
+    return PhotoChoice(
+      municipalityId: data.municipalityId.present
+          ? data.municipalityId.value
+          : this.municipalityId,
+      signals: data.signals.present ? data.signals.value : this.signals,
+      itemId: data.itemId.present ? data.itemId.value : this.itemId,
+      chosenAt: data.chosenAt.present ? data.chosenAt.value : this.chosenAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PhotoChoice(')
+          ..write('municipalityId: $municipalityId, ')
+          ..write('signals: $signals, ')
+          ..write('itemId: $itemId, ')
+          ..write('chosenAt: $chosenAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(municipalityId, signals, itemId, chosenAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PhotoChoice &&
+          other.municipalityId == this.municipalityId &&
+          other.signals == this.signals &&
+          other.itemId == this.itemId &&
+          other.chosenAt == this.chosenAt);
+}
+
+class PhotoChoicesCompanion extends UpdateCompanion<PhotoChoice> {
+  final Value<String> municipalityId;
+  final Value<String> signals;
+  final Value<String> itemId;
+  final Value<DateTime> chosenAt;
+  final Value<int> rowid;
+  const PhotoChoicesCompanion({
+    this.municipalityId = const Value.absent(),
+    this.signals = const Value.absent(),
+    this.itemId = const Value.absent(),
+    this.chosenAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  PhotoChoicesCompanion.insert({
+    required String municipalityId,
+    required String signals,
+    required String itemId,
+    required DateTime chosenAt,
+    this.rowid = const Value.absent(),
+  }) : municipalityId = Value(municipalityId),
+       signals = Value(signals),
+       itemId = Value(itemId),
+       chosenAt = Value(chosenAt);
+  static Insertable<PhotoChoice> custom({
+    Expression<String>? municipalityId,
+    Expression<String>? signals,
+    Expression<String>? itemId,
+    Expression<DateTime>? chosenAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (municipalityId != null) 'municipality_id': municipalityId,
+      if (signals != null) 'signals': signals,
+      if (itemId != null) 'item_id': itemId,
+      if (chosenAt != null) 'chosen_at': chosenAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  PhotoChoicesCompanion copyWith({
+    Value<String>? municipalityId,
+    Value<String>? signals,
+    Value<String>? itemId,
+    Value<DateTime>? chosenAt,
+    Value<int>? rowid,
+  }) {
+    return PhotoChoicesCompanion(
+      municipalityId: municipalityId ?? this.municipalityId,
+      signals: signals ?? this.signals,
+      itemId: itemId ?? this.itemId,
+      chosenAt: chosenAt ?? this.chosenAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (municipalityId.present) {
+      map['municipality_id'] = Variable<String>(municipalityId.value);
+    }
+    if (signals.present) {
+      map['signals'] = Variable<String>(signals.value);
+    }
+    if (itemId.present) {
+      map['item_id'] = Variable<String>(itemId.value);
+    }
+    if (chosenAt.present) {
+      map['chosen_at'] = Variable<DateTime>(chosenAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PhotoChoicesCompanion(')
+          ..write('municipalityId: $municipalityId, ')
+          ..write('signals: $signals, ')
+          ..write('itemId: $itemId, ')
+          ..write('chosenAt: $chosenAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -4932,6 +5255,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $CollectionExceptionsTable collectionExceptions =
       $CollectionExceptionsTable(this);
   late final $MissedSearchesTable missedSearches = $MissedSearchesTable(this);
+  late final $PhotoChoicesTable photoChoices = $PhotoChoicesTable(this);
   late final $SettingsTable settings = $SettingsTable(this);
   late final Index rulesMunicipality = Index(
     'rules_municipality',
@@ -4960,6 +5284,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     calendarAreas,
     collectionExceptions,
     missedSearches,
+    photoChoices,
     settings,
     rulesMunicipality,
     aliasesRule,
@@ -7678,6 +8003,198 @@ typedef $$MissedSearchesTableProcessedTableManager =
       MissedSearche,
       PrefetchHooks Function()
     >;
+typedef $$PhotoChoicesTableCreateCompanionBuilder =
+    PhotoChoicesCompanion Function({
+      required String municipalityId,
+      required String signals,
+      required String itemId,
+      required DateTime chosenAt,
+      Value<int> rowid,
+    });
+typedef $$PhotoChoicesTableUpdateCompanionBuilder =
+    PhotoChoicesCompanion Function({
+      Value<String> municipalityId,
+      Value<String> signals,
+      Value<String> itemId,
+      Value<DateTime> chosenAt,
+      Value<int> rowid,
+    });
+
+class $$PhotoChoicesTableFilterComposer
+    extends Composer<_$AppDatabase, $PhotoChoicesTable> {
+  $$PhotoChoicesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get municipalityId => $composableBuilder(
+    column: $table.municipalityId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get signals => $composableBuilder(
+    column: $table.signals,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get itemId => $composableBuilder(
+    column: $table.itemId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get chosenAt => $composableBuilder(
+    column: $table.chosenAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$PhotoChoicesTableOrderingComposer
+    extends Composer<_$AppDatabase, $PhotoChoicesTable> {
+  $$PhotoChoicesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get municipalityId => $composableBuilder(
+    column: $table.municipalityId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get signals => $composableBuilder(
+    column: $table.signals,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get itemId => $composableBuilder(
+    column: $table.itemId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get chosenAt => $composableBuilder(
+    column: $table.chosenAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$PhotoChoicesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PhotoChoicesTable> {
+  $$PhotoChoicesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get municipalityId => $composableBuilder(
+    column: $table.municipalityId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get signals =>
+      $composableBuilder(column: $table.signals, builder: (column) => column);
+
+  GeneratedColumn<String> get itemId =>
+      $composableBuilder(column: $table.itemId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get chosenAt =>
+      $composableBuilder(column: $table.chosenAt, builder: (column) => column);
+}
+
+class $$PhotoChoicesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $PhotoChoicesTable,
+          PhotoChoice,
+          $$PhotoChoicesTableFilterComposer,
+          $$PhotoChoicesTableOrderingComposer,
+          $$PhotoChoicesTableAnnotationComposer,
+          $$PhotoChoicesTableCreateCompanionBuilder,
+          $$PhotoChoicesTableUpdateCompanionBuilder,
+          (
+            PhotoChoice,
+            BaseReferences<_$AppDatabase, $PhotoChoicesTable, PhotoChoice>,
+          ),
+          PhotoChoice,
+          PrefetchHooks Function()
+        > {
+  $$PhotoChoicesTableTableManager(_$AppDatabase db, $PhotoChoicesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PhotoChoicesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$PhotoChoicesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$PhotoChoicesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> municipalityId = const Value.absent(),
+                Value<String> signals = const Value.absent(),
+                Value<String> itemId = const Value.absent(),
+                Value<DateTime> chosenAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => PhotoChoicesCompanion(
+                municipalityId: municipalityId,
+                signals: signals,
+                itemId: itemId,
+                chosenAt: chosenAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String municipalityId,
+                required String signals,
+                required String itemId,
+                required DateTime chosenAt,
+                Value<int> rowid = const Value.absent(),
+              }) => PhotoChoicesCompanion.insert(
+                municipalityId: municipalityId,
+                signals: signals,
+                itemId: itemId,
+                chosenAt: chosenAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$PhotoChoicesTable, PhotoChoice>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $PhotoChoicesTable,
+                    PhotoChoice
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$PhotoChoicesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $PhotoChoicesTable,
+      PhotoChoice,
+      $$PhotoChoicesTableFilterComposer,
+      $$PhotoChoicesTableOrderingComposer,
+      $$PhotoChoicesTableAnnotationComposer,
+      $$PhotoChoicesTableCreateCompanionBuilder,
+      $$PhotoChoicesTableUpdateCompanionBuilder,
+      (
+        PhotoChoice,
+        BaseReferences<_$AppDatabase, $PhotoChoicesTable, PhotoChoice>,
+      ),
+      PhotoChoice,
+      PrefetchHooks Function()
+    >;
 typedef $$SettingsTableCreateCompanionBuilder = SettingsCompanion Function({
   required String key,
   required String value,
@@ -7836,6 +8353,8 @@ class $AppDatabaseManager {
       $$CollectionExceptionsTableTableManager(_db, _db.collectionExceptions);
   $$MissedSearchesTableTableManager get missedSearches =>
       $$MissedSearchesTableTableManager(_db, _db.missedSearches);
+  $$PhotoChoicesTableTableManager get photoChoices =>
+      $$PhotoChoicesTableTableManager(_db, _db.photoChoices);
   $$SettingsTableTableManager get settings =>
       $$SettingsTableTableManager(_db, _db.settings);
 }

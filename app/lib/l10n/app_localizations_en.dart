@@ -473,4 +473,130 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get languageName => 'English';
+
+  @override
+  String get searchPhotoCheckTitle => 'Photo check';
+
+  @override
+  String get searchPhotoCheckBody =>
+      'Take a photo to find an item\'s rubbish category.';
+
+  @override
+  String get photoTitle => 'Photo check';
+
+  @override
+  String get photoSubtitle =>
+      'Take a photo of the item to check how to sort it.';
+
+  @override
+  String get photoGalleryHint =>
+      'You can also choose a photo from your device.';
+
+  @override
+  String get photoCancel => 'Cancel';
+
+  @override
+  String get photoTake => 'Take photo';
+
+  @override
+  String get photoGallery => 'Choose a photo';
+
+  @override
+  String get photoRetake => 'Retake';
+
+  @override
+  String get photoUse => 'Use this photo';
+
+  @override
+  String get photoPrivacy =>
+      'The photo is checked on your phone first. Only if it\'s unsure is it sent to BinPal\'s server to identify, and it isn\'t kept.';
+
+  @override
+  String get photoCameraDenied =>
+      'Camera access is off. Turn it on for BinPal in Settings, or choose a photo instead.';
+
+  @override
+  String get photoCameraUnavailable =>
+      'The camera isn\'t available. You can choose a photo instead.';
+
+  @override
+  String get photoChecking => 'Checking the photo…';
+
+  @override
+  String get photoCheckFailed => 'Couldn\'t read this photo. Try another one.';
+
+  @override
+  String get photoResultTitle => 'Match result';
+
+  @override
+  String get photoLikelyMatch => 'Likely match';
+
+  @override
+  String get photoFromMark => 'From the recycling mark';
+
+  @override
+  String get photoRemembered => 'You chose this before';
+
+  @override
+  String get photoAiMatch => 'AI suggestion';
+
+  @override
+  String get photoGuidance => 'How to put it out';
+
+  @override
+  String get photoViewRule => 'View sorting rule';
+
+  @override
+  String get photoNotRight => 'Not right? Choose another item';
+
+  @override
+  String get photoWhichTitle => 'Which item is this?';
+
+  @override
+  String get photoWhichBody =>
+      'We\'re not very sure from the photo. Please choose the item that best matches.';
+
+  @override
+  String get photoWhichInCategory => 'Which item is it?';
+
+  @override
+  String get photoAsking => 'Asking AI…';
+
+  @override
+  String get photoAiOffline =>
+      'You\'re offline, so AI can\'t check this photo. Choose below or search by name.';
+
+  @override
+  String get photoAiPaused =>
+      'AI checks are paused for today. Choose below or search by name.';
+
+  @override
+  String get photoAiFailed =>
+      'AI couldn\'t check this photo right now. Choose below or search by name.';
+
+  @override
+  String get photoAiNoAnswer =>
+      'AI couldn\'t tell either. Choose below or search by name.';
+
+  @override
+  String get photoNothingTitle => 'Couldn\'t recognise this item';
+
+  @override
+  String get photoNothingBody =>
+      'Try another photo, closer and in good light, or search by name.';
+
+  @override
+  String get photoSearchByName => 'Search by name';
+
+  @override
+  String get photoTryAgain => 'Take another photo';
+
+  @override
+  String photoCategoryOnly(String category) {
+    return 'This goes in $category.';
+  }
+
+  @override
+  String get photoModelsMissing =>
+      'Photo check is still getting ready on this phone. Try again in a minute, or search by name.';
 }

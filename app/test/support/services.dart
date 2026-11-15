@@ -9,6 +9,9 @@ import 'package:binpal/data/bundle_sync.dart';
 import 'package:binpal/data/database.dart';
 import 'package:binpal/data/language_controller.dart';
 import 'package:binpal/data/sync_controller.dart';
+import 'package:binpal/features/photo/identify_client.dart';
+import 'package:binpal/features/photo/photo_analyzer.dart';
+import 'package:binpal/features/photo/photo_matcher.dart';
 import 'package:binpal/reminders/reminder_service.dart';
 import 'package:drift/drift.dart' show driftRuntimeOptions;
 import 'package:drift/native.dart';
@@ -18,7 +21,8 @@ import 'package:http/testing.dart';
 import 'fake_notifications.dart';
 
 /// Services for widget tests: an in-memory database, a network that answers
-/// 404, notifications that are only recorded, and no sync on launch.
+/// 404, notifications that are only recorded, a photo analyzer that sees
+/// nothing, and no sync on launch.
 AppServices testServices({
   AppDatabase? db,
   http.Client? client,
@@ -26,6 +30,8 @@ AppServices testServices({
   DateTime Function()? now,
   LocationSource? location,
   BoundaryStore? boundaries,
+  PhotoAnalyzer? photoAnalyzer,
+  http.Client? apiClient,
 }) {
   // Each test makes its own in-memory database; they never share a file.
   driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
@@ -55,9 +61,28 @@ AppServices testServices({
           client: MockClient((_) async => http.Response('', 404)),
           directory: () async => Directory.systemTemp.createTemp('binpal'),
         ),
+    photoAnalyzer: photoAnalyzer ?? FakePhotoAnalyzer(PhotoSignals(labels: [])),
+    identify: IdentifyClient(
+      db: database,
+      client: apiClient ?? MockClient((_) async => http.Response('', 404)),
+    ),
     syncOnLaunch: false,
     clock: now,
   );
+}
+
+/// Sees the same [signals] in every photo.
+class FakePhotoAnalyzer implements PhotoAnalyzer {
+  FakePhotoAnalyzer(this.signals);
+
+  PhotoSignals signals;
+  final paths = <String>[];
+
+  @override
+  Future<PhotoSignals> analyze(String path) async {
+    paths.add(path);
+    return signals;
+  }
 }
 
 /// A phone at a fixed place, or one where location access is refused.

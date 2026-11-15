@@ -853,6 +853,228 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'English'**
   String get languageName;
+
+  /// No description provided for @searchPhotoCheckTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo check'**
+  String get searchPhotoCheckTitle;
+
+  /// No description provided for @searchPhotoCheckBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a photo to find an item\'s rubbish category.'**
+  String get searchPhotoCheckBody;
+
+  /// No description provided for @photoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo check'**
+  String get photoTitle;
+
+  /// No description provided for @photoSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a photo of the item to check how to sort it.'**
+  String get photoSubtitle;
+
+  /// No description provided for @photoGalleryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You can also choose a photo from your device.'**
+  String get photoGalleryHint;
+
+  /// No description provided for @photoCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get photoCancel;
+
+  /// No description provided for @photoTake.
+  ///
+  /// In en, this message translates to:
+  /// **'Take photo'**
+  String get photoTake;
+
+  /// No description provided for @photoGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a photo'**
+  String get photoGallery;
+
+  /// No description provided for @photoRetake.
+  ///
+  /// In en, this message translates to:
+  /// **'Retake'**
+  String get photoRetake;
+
+  /// No description provided for @photoUse.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this photo'**
+  String get photoUse;
+
+  /// No description provided for @photoPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'The photo is checked on your phone first. Only if it\'s unsure is it sent to BinPal\'s server to identify, and it isn\'t kept.'**
+  String get photoPrivacy;
+
+  /// No description provided for @photoCameraDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera access is off. Turn it on for BinPal in Settings, or choose a photo instead.'**
+  String get photoCameraDenied;
+
+  /// No description provided for @photoCameraUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The camera isn\'t available. You can choose a photo instead.'**
+  String get photoCameraUnavailable;
+
+  /// No description provided for @photoChecking.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking the photo…'**
+  String get photoChecking;
+
+  /// No description provided for @photoCheckFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t read this photo. Try another one.'**
+  String get photoCheckFailed;
+
+  /// No description provided for @photoResultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Match result'**
+  String get photoResultTitle;
+
+  /// No description provided for @photoLikelyMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Likely match'**
+  String get photoLikelyMatch;
+
+  /// No description provided for @photoFromMark.
+  ///
+  /// In en, this message translates to:
+  /// **'From the recycling mark'**
+  String get photoFromMark;
+
+  /// No description provided for @photoRemembered.
+  ///
+  /// In en, this message translates to:
+  /// **'You chose this before'**
+  String get photoRemembered;
+
+  /// No description provided for @photoAiMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'AI suggestion'**
+  String get photoAiMatch;
+
+  /// No description provided for @photoGuidance.
+  ///
+  /// In en, this message translates to:
+  /// **'How to put it out'**
+  String get photoGuidance;
+
+  /// No description provided for @photoViewRule.
+  ///
+  /// In en, this message translates to:
+  /// **'View sorting rule'**
+  String get photoViewRule;
+
+  /// No description provided for @photoNotRight.
+  ///
+  /// In en, this message translates to:
+  /// **'Not right? Choose another item'**
+  String get photoNotRight;
+
+  /// No description provided for @photoWhichTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Which item is this?'**
+  String get photoWhichTitle;
+
+  /// No description provided for @photoWhichBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'re not very sure from the photo. Please choose the item that best matches.'**
+  String get photoWhichBody;
+
+  /// No description provided for @photoWhichInCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Which item is it?'**
+  String get photoWhichInCategory;
+
+  /// No description provided for @photoAsking.
+  ///
+  /// In en, this message translates to:
+  /// **'Asking AI…'**
+  String get photoAsking;
+
+  /// No description provided for @photoAiOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline, so AI can\'t check this photo. Choose below or search by name.'**
+  String get photoAiOffline;
+
+  /// No description provided for @photoAiPaused.
+  ///
+  /// In en, this message translates to:
+  /// **'AI checks are paused for today. Choose below or search by name.'**
+  String get photoAiPaused;
+
+  /// No description provided for @photoAiFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'AI couldn\'t check this photo right now. Choose below or search by name.'**
+  String get photoAiFailed;
+
+  /// No description provided for @photoAiNoAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'AI couldn\'t tell either. Choose below or search by name.'**
+  String get photoAiNoAnswer;
+
+  /// No description provided for @photoNothingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t recognise this item'**
+  String get photoNothingTitle;
+
+  /// No description provided for @photoNothingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Try another photo, closer and in good light, or search by name.'**
+  String get photoNothingBody;
+
+  /// No description provided for @photoSearchByName.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by name'**
+  String get photoSearchByName;
+
+  /// No description provided for @photoTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Take another photo'**
+  String get photoTryAgain;
+
+  /// No description provided for @photoCategoryOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'This goes in {category}.'**
+  String photoCategoryOnly(String category);
+
+  /// No description provided for @photoModelsMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo check is still getting ready on this phone. Try again in a minute, or search by name.'**
+  String get photoModelsMissing;
 }
 
 class _AppLocalizationsDelegate

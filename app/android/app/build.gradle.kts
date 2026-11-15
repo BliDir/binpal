@@ -33,6 +33,10 @@ android {
             signingConfig = signingConfigs.getByName("debug")
             isMinifyEnabled = true
             isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
         }
     }
 }
@@ -49,4 +53,20 @@ flutter {
 
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
+    // Photo check: ML Kit image labeling and Japanese text recognition (プラ,
+    // アルミ, 紙) through Google Play Services, which downloads the models
+    // when the app is installed (see AndroidManifest.xml). The plugins' own
+    // bundled models and pipelines would add about 34 MB to the APK.
+    implementation("com.google.android.gms:play-services-mlkit-text-recognition:19.0.1")
+    implementation("com.google.android.gms:play-services-mlkit-text-recognition-japanese:16.0.1")
+    implementation("com.google.android.gms:play-services-mlkit-image-labeling:16.0.8")
+}
+
+// The plugins' bundled ML Kit, replaced by the Play Services versions above.
+// Custom and Firebase labeling models aren't used (see proguard-rules.pro).
+configurations.all {
+    exclude(group = "com.google.mlkit", module = "text-recognition")
+    exclude(group = "com.google.mlkit", module = "image-labeling")
+    exclude(group = "com.google.mlkit", module = "image-labeling-custom")
+    exclude(group = "com.google.mlkit", module = "linkfirebase")
 }
