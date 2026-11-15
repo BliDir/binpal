@@ -37,6 +37,7 @@ jobs:
       - run: git diff --exit-code -- data/imports/13118/bundle.json
       - run: uv run data/scripts/validate.py data/imports/13118/bundle.json
       - run: uv run data/tests/test_build_yokohama.py
+      - run: uv run data/tests/test_build_kawasaki.py
       - run: uv run data/tests/test_publish.py
       - run: uv run data/tests/test_boundaries.py
       - run: uv run data/scripts/validate.py data/municipalities/14100/bundle.json data/boundaries/14.json

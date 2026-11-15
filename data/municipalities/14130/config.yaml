@@ -1,0 +1,182 @@
+# Kawasaki City (14130). Read by data/scripts/build_kawasaki.py.
+#
+# Everything here is BinPal's own wording or a mapping of the city's labels;
+# the city's pages are read at build time and never copied into the repo.
+
+bundle_version: 1
+
+# Kawasaki's site policy reserves all rights (data/README.md, Kawasaki). The
+# build refuses to write bundle.json until the city has agreed to reuse
+# (DAI-589); set this to true and fill `attribution` with the agreed credit.
+reuse_confirmed: false
+
+municipality:
+  id: "14130"
+  prefecture_code: "14"
+  names: { ja: 川崎市, kana: かわさきし, en: Kawasaki City }
+  website_url: https://www.city.kawasaki.jp/
+
+attribution:
+  - text:
+      ja: 収集日と分別区分は、川崎市ホームページの掲載内容をもとに作成。英語と読みがなは BinPal による翻訳・追加です。
+      en: Collection days and sorting categories are based on the City of Kawasaki website. English text and kana readings were added by BinPal and are not the city's.
+    license: LicenseRef-Kawasaki-City-Permission
+    url: https://www.city.kawasaki.jp/main/site_policy/0000000027.html
+  - text:
+      ja: 町丁目の名称とコードは「政府統計の総合窓口(e-Stat)」の令和2年国勢調査 町丁・字等別境界データを加工して作成。読みがなは日本郵便の郵便番号データによる。
+      en: Town and chome names and codes are derived from the 2020 Population Census small-area boundary data on e-Stat; readings are from Japan Post's postal code data.
+    license: LicenseRef-e-Stat-Terms-of-Use
+    url: https://www.e-stat.go.jp/terms-of-use
+
+# --- Categories --------------------------------------------------------------
+
+# Descriptions are BinPal's own summaries of the city's category page.
+categories:
+  - id: futsu
+    names: { ja: 普通ごみ, kana: ふつうごみ, en: Normal waste }
+    common: burnable
+    description:
+      ja: 週2回収集。ふた付きのポリ容器か、透明または半透明の袋に入れて出します。
+      en: Collected twice a week. Use a bin with a lid, or a clear or semi-transparent bag.
+    default: { ja: 普通ごみとして出してください。, en: Put out as Normal waste. }
+    source_url: https://www.city.kawasaki.jp/kurashi/category/261-1-10-3-0-0-0-0-0-0.html
+  - id: kan-pet
+    names: { ja: 空き缶・ペットボトル, kana: あきかん・ぺっとぼとる, en: Cans and PET bottles }
+    common: cans_bottles
+    description:
+      ja: 週1回収集。缶とペットボトルは同じ透明または半透明の袋に入れます。
+      en: Collected once a week. Cans and PET bottles go in the same clear or semi-transparent bag.
+    default: { ja: 空き缶・ペットボトルとして出してください。, en: Put out as Cans and PET bottles. }
+    source_url: https://www.city.kawasaki.jp/kurashi/category/261-1-10-3-0-0-0-0-0-0.html
+  - id: bin
+    names: { ja: 空きびん, kana: あきびん, en: Glass bottles }
+    common: cans_bottles
+    description:
+      ja: 週1回、空き缶・ペットボトルと同じ日に別の車で収集。集積所の空きびん容器に入れます。
+      en: Collected once a week, on the Cans and PET bottles day by a separate truck. Put them in the bottle container at the collection point.
+    default: { ja: 空きびんとして出してください。, en: Put out as Glass bottles. }
+    source_url: https://www.city.kawasaki.jp/kurashi/category/261-1-10-3-0-0-0-0-0-0.html
+  - id: denchi
+    names: { ja: 使用済み乾電池, kana: しようずみかんでんち, en: Used dry-cell batteries }
+    common: hazardous
+    description:
+      ja: 週1回、空き缶・ペットボトルと同じ日に収集。透明な袋に入れて出します。充電式電池は小物金属です。
+      en: Collected once a week with Cans and PET bottles. Put them in a clear bag. Rechargeable batteries go out as Small metal items.
+    default: { ja: 使用済み乾電池として出してください。, en: Put out as Used dry-cell batteries. }
+    source_url: https://www.city.kawasaki.jp/kurashi/category/261-1-10-3-0-0-0-0-0-0.html
+  - id: mix-paper
+    names: { ja: ミックスペーパー, kana: みっくすぺーぱー, en: Mixed paper }
+    common: paper
+    description:
+      ja: 週1回収集。紙袋に入れるか、ひもで縛って出します。
+      en: Collected once a week. Put it in a paper bag or tie it with string.
+    default: { ja: ミックスペーパーとして出してください。, en: Put out as Mixed paper. }
+    source_url: https://www.city.kawasaki.jp/kurashi/category/261-1-10-3-0-0-0-0-0-0.html
+  - id: plastic
+    names: { ja: プラスチック資源, kana: ぷらすちっくしげん, en: Plastic resources }
+    common: plastic
+    description:
+      ja: 週1回収集。プラスチック製の容器包装と製品を、同じ透明または半透明の袋に入れます(令和8年4月から全市)。
+      en: Collected once a week. Plastic packaging and plastic products go in the same clear or semi-transparent bag (citywide since April 2026).
+    default: { ja: プラスチック資源として出してください。, en: Put out as Plastic resources. }
+    source_url: https://www.city.kawasaki.jp/300/page/0000154533.html
+  - id: komono
+    names: { ja: 小物金属, kana: こものきんぞく, en: Small metal items }
+    common: resources
+    description:
+      ja: 月2回収集。一番長い辺が30cm未満の金属を含む製品、かさ、針金ハンガー。充電式電池は絶縁して透明な袋に入れ、貼り紙をして出します(令和7年11月から)。
+      en: Collected twice a month. Products containing metal under 30 cm on the longest side, umbrellas and wire hangers. Rechargeable batteries (since November 2025) are insulated, put in a clear bag and labelled.
+    default: { ja: 小物金属として出してください。, en: Put out as Small metal items. }
+    source_url: https://www.city.kawasaki.jp/300/page/0000176397.html
+  - id: sodai
+    names: { ja: 粗大ごみ, kana: そだいごみ, en: Bulky waste }
+    common: bulky
+    description:
+      ja: 申込制・有料。金属製品は30cm以上、家具類などは50cm以上。小物金属と同じ日に収集します。
+      en: Booked in advance, for a fee. Metal items 30 cm or more, furniture and similar 50 cm or more. Collected on the Small metal items days.
+    default: { ja: 粗大ごみとして申し込んでください。, en: Book a Bulky waste collection. }
+    source_url: https://www.city.kawasaki.jp/kurashi/category/261-1-10-11-0-0-0-0-0-0.html
+  - id: shudan
+    names: { ja: 資源集団回収, kana: しげんしゅうだんかいしゅう, en: Community collection }
+    common: paper
+    description:
+      ja: 町内会などが行う資源の回収に出します。
+      en: Put out for the recycling collection run by neighbourhood associations.
+    default: { ja: 資源集団回収に出してください。, en: Put out for the community collection. }
+  - id: shushu-fuka
+    names: { ja: 市では収集しないもの, kana: しではしゅうしゅうしないもの, en: Not collected by the city }
+    common: not_collected
+    description:
+      ja: 家電リサイクル対象品、パソコン、消火器などは市では収集しません。
+      en: Home appliances under the recycling law, computers, fire extinguishers and similar are not collected by the city.
+    default: { ja: 市では収集しません。, en: The city does not collect this. }
+    source_url: https://www.city.kawasaki.jp/kurashi/category/261-1-10-8-0-0-0-0-0-0.html
+  - id: sonota
+    names: { ja: その他, kana: そのた, en: Other }
+    common: other
+    default: { ja: 下の説明に沿って出してください。, en: Follow the note below. }
+
+# --- Collection days -------------------------------------------------------
+
+# Columns of the 収集日一覧 tables (header text with spaces removed) and the
+# categories each one's days are for. 粗大ごみ shares the 小物金属 column but is
+# booked, so it has no calendar.
+schedule_columns:
+  普通ごみ: { slug: futsu, categories: [futsu] }
+  空き缶ペットボトル空きびん使用済み乾電池: { slug: kan-bin, categories: [kan-pet, bin, denchi] }
+  ミックスペーパー: { slug: mix-paper, categories: [mix-paper] }
+  プラスチック資源: { slug: plastic, categories: [plastic] }
+  粗大ごみ小物金属: { slug: komono, categories: [komono] }
+
+# Wards built so far. `table` is the heading above the ward's table on the
+# page (the 高津区・宮前区 page has one table per ward).
+wards:
+  - id: "14134"
+    slug: takatsu
+    names: { ja: 高津区, kana: たかつく, en: Takatsu Ward }
+    page: https://www.city.kawasaki.jp/300/page/0000012561.html
+    table: 高津区
+    contact:
+      name: { ja: 宮前生活環境事業所, en: Miyamae Environmental Services Office }
+      phone: "044-866-9131"
+      url: https://www.city.kawasaki.jp/300/page/0000005226.html
+
+# Public holidays are collection days. Over New Year the city collects every
+# day but Sunday up to 31 December and again from 4 January: 1–3 January
+# are closed. The sentence is checked on the calendar page's notes.
+new_year:
+  closed: ["01-01", "01-02", "01-03"]
+  years: [2027, 2028]
+  note: { ja: 年末年始のため収集はお休みです。, en: No collection over the New Year holidays. }
+
+# --- Items -----------------------------------------------------------------
+
+items:
+  page_url: https://www.city.kawasaki.jp/kurashi/category/261-1-10-2-0-0-0-0-0-0.html
+  verified_at: null
+
+# The item list's 分別区分 texts. "A or B" items go under the usual category,
+# with a lead that says when the other applies. The size limits are the
+# category page's (metal 30 cm, furniture and similar 50 cm); check each lead
+# against the items' own notes before the first build (DAI-590 review). The
+# build lists any 分別区分 text not mapped here.
+methods:
+  普通ごみ: { category: futsu }
+  プラスチック資源: { category: plastic }
+  小物金属: { category: komono }
+  ミックスペーパー: { category: mix-paper }
+  缶ペットボトル: { category: kan-pet }
+  空きびん: { category: bin }
+  使用済み乾電池: { category: denchi }
+  粗大ごみ: { category: sodai }
+  資源集団回収: { category: shudan }
+  市では収集しません: { category: shushu-fuka }
+  小物金属または粗大ごみ:
+    category: komono
+    lead: { ja: 一番長い辺が30cm未満なら小物金属、30cm以上なら粗大ごみです。, en: "Small metal items if under 30 cm on the longest side; Bulky waste if 30 cm or more." }
+  普通ごみまたは粗大ごみ:
+    category: futsu
+    lead: { ja: 一番長い辺が50cm未満なら普通ごみ、50cm以上なら粗大ごみです。, en: "Normal waste if under 50 cm on the longest side; Bulky waste if 50 cm or more." }
+  プラスチック資源または粗大ごみ:
+    category: plastic
+    lead: { ja: 一番長い辺が50cm未満ならプラスチック資源、50cm以上なら粗大ごみです。, en: "Plastic resources if under 50 cm on the longest side; Bulky waste if 50 cm or more." }
