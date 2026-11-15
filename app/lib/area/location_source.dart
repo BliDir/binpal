@@ -32,6 +32,10 @@ class LocationResult {
 abstract class LocationSource {
   Future<LocationResult> current();
 
+  /// Whether a position can be had without asking: access already granted
+  /// and location services on. Never shows a prompt.
+  Future<bool> permitted();
+
   /// Opens the system screen that fixes [problem]: the phone's location
   /// settings when services are off, otherwise BinPal's own settings.
   Future<void> openSettings(LocationProblem problem);
@@ -75,6 +79,18 @@ class GeolocatorLocationSource implements LocationSource {
       return LocationResult.position(position.latitude, position.longitude);
     } on Exception {
       return const LocationResult.problem(LocationProblem.unavailable);
+    }
+  }
+
+  @override
+  Future<bool> permitted() async {
+    try {
+      final permission = await Geolocator.checkPermission();
+      return (permission == LocationPermission.whileInUse ||
+              permission == LocationPermission.always) &&
+          await Geolocator.isLocationServiceEnabled();
+    } on Exception {
+      return false;
     }
   }
 

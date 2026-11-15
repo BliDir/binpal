@@ -31,6 +31,10 @@ class _Location implements LocationSource {
   @override
   Future<LocationResult> current() async => result;
 
+  /// Never granted beforehand, so the screen tour gets no "Did you move?".
+  @override
+  Future<bool> permitted() async => false;
+
   @override
   Future<void> openSettings(LocationProblem problem) async {}
 }

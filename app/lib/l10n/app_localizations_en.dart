@@ -709,4 +709,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get itemBulkyGuide => 'How to put out bulky items';
+
+  @override
+  String get moveTitle => 'Did you move?';
+
+  @override
+  String get moveBody =>
+      'If you\'ve moved, update your area so BinPal shows the right collection days and rules.';
+
+  @override
+  String get moveSaved => 'Currently saved area';
+
+  @override
+  String get moveUpdate => 'Update area';
+
+  @override
+  String get moveNotNow => 'Not now';
+
+  @override
+  String get movePrivacy =>
+      'BinPal checked on your phone that you seem to be away from this area. Your location isn\'t stored or sent.';
 }

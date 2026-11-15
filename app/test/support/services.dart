@@ -33,6 +33,7 @@ AppServices testServices({
   BoundaryStore? boundaries,
   PhotoAnalyzer? photoAnalyzer,
   http.Client? apiClient,
+  bool checkMove = false,
 }) {
   // Each test makes its own in-memory database; they never share a file.
   driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
@@ -73,6 +74,7 @@ AppServices testServices({
       appVersion: () async => '1.1.0',
     ),
     syncOnLaunch: false,
+    checkMoveOnLaunch: checkMove,
     clock: now,
   );
 }
@@ -108,6 +110,9 @@ class FakeLocationSource implements LocationSource {
     calls++;
     return result;
   }
+
+  @override
+  Future<bool> permitted() async => result.latitude != null;
 
   @override
   Future<void> openSettings(LocationProblem problem) async =>

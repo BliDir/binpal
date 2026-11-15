@@ -416,5 +416,11 @@
     }
   },
   "bulkyNone": "There's no bulky item guide for your area yet. Check your city's website.",
-  "itemBulkyGuide": "How to put out bulky items"
+  "itemBulkyGuide": "How to put out bulky items",
+  "moveTitle": "Did you move?",
+  "moveBody": "If you've moved, update your area so BinPal shows the right collection days and rules.",
+  "moveSaved": "Currently saved area",
+  "moveUpdate": "Update area",
+  "moveNotNow": "Not now",
+  "movePrivacy": "BinPal checked on your phone that you seem to be away from this area. Your location isn't stored or sent."
 }
