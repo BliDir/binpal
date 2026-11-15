@@ -33,6 +33,10 @@ class Wards extends Table {
   TextColumn get nameKana => text()();
   TextColumn get nameEn => text()();
 
+  /// The ward's official office for rubbish questions, as the bundle's JSON
+  /// (`name`, `phone`, `url`); null when the bundle has none.
+  TextColumn get contact => text().nullable()();
+
   @override
   Set<Column> get primaryKey => {id};
 }
@@ -214,7 +218,7 @@ class AppDatabase extends _$AppDatabase {
     : super(executor ?? driftDatabase(name: 'binpal'));
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -233,6 +237,8 @@ class AppDatabase extends _$AppDatabase {
       if (from < 3) await m.createTable(photoChoices);
       // Guides arrive with the next bundle; the stored one is reimported then.
       if (from < 4) await m.createTable(bulkyGuides);
+      // Filled by the next bundle import.
+      if (from < 5) await m.addColumn(wards, wards.contact);
     },
     beforeOpen: (details) => customStatement('PRAGMA foreign_keys = ON'),
   );
@@ -353,6 +359,7 @@ class AppDatabase extends _$AppDatabase {
               nameJa: n['ja'] as String,
               nameKana: n['kana'] as String,
               nameEn: n['en'] as String,
+              contact: Value(_jsonOrNull(w['contact'])),
             ),
           );
         }

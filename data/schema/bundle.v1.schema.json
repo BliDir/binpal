@@ -168,7 +168,21 @@
       "additionalProperties": false,
       "properties": {
         "id": { "$ref": "common.v1.schema.json#/$defs/municipalityId" },
-        "names": { "$ref": "common.v1.schema.json#/$defs/names" }
+        "names": { "$ref": "common.v1.schema.json#/$defs/names" },
+        "contact": {
+          "description": "The ward's official office for rubbish questions, shown when the app can't answer one. Added in a compatible change.",
+          "type": "object",
+          "required": ["name", "phone", "url"],
+          "additionalProperties": false,
+          "properties": {
+            "name": { "$ref": "common.v1.schema.json#/$defs/localizedText" },
+            "phone": { "type": "string", "pattern": "^0[0-9]{1,4}-[0-9]{1,4}-[0-9]{3,4}$" },
+            "url": {
+              "description": "An official page that lists this contact.",
+              "$ref": "common.v1.schema.json#/$defs/url"
+            }
+          }
+        }
       }
     },
     "area": {

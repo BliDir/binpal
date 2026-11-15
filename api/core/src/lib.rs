@@ -10,6 +10,7 @@ pub mod jpeg;
 pub mod keys;
 pub mod limits;
 pub mod prompt;
+pub mod qa;
 pub mod request;
 pub mod review;
 

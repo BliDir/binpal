@@ -20,7 +20,15 @@
     }
   ],
   "wards": [
-    { "id": "14117", "names": { "ja": "青葉区", "kana": "あおばく", "en": "Aoba Ward" } },
+    {
+      "id": "14117",
+      "names": { "ja": "青葉区", "kana": "あおばく", "en": "Aoba Ward" },
+      "contact": {
+        "name": { "ja": "資源循環局 青葉事務所", "en": "Aoba Office, Resources and Waste Recycling Bureau" },
+        "phone": "045-975-0025",
+        "url": "https://www.city.yokohama.lg.jp/kurashi/sumai-kurashi/gomi-recycle/gomi/shushuyobi/aoba/a-u.html"
+      }
+    },
     { "id": "14104", "names": { "ja": "中区", "kana": "なかく", "en": "Naka Ward" } }
   ],
   "areas": [

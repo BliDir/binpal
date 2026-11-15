@@ -9,6 +9,7 @@ import 'package:binpal/data/bundle_sync.dart';
 import 'package:binpal/data/database.dart';
 import 'package:binpal/data/language_controller.dart';
 import 'package:binpal/data/sync_controller.dart';
+import 'package:binpal/features/ask/ask_client.dart';
 import 'package:binpal/features/photo/identify_client.dart';
 import 'package:binpal/features/photo/photo_analyzer.dart';
 import 'package:binpal/features/photo/photo_matcher.dart';
@@ -69,6 +70,11 @@ AppServices testServices({
       client: apiClient ?? MockClient((_) async => http.Response('', 404)),
     ),
     reports: ReportClient(
+      db: database,
+      client: apiClient ?? MockClient((_) async => http.Response('', 404)),
+      appVersion: () async => '1.1.0',
+    ),
+    asks: AskClient(
       db: database,
       client: apiClient ?? MockClient((_) async => http.Response('', 404)),
       appVersion: () async => '1.1.0',

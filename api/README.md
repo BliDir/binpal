@@ -40,6 +40,34 @@ Called only when the phone couldn't identify a photo itself.
 
 `answer` is `null` when the models couldn't tell. `item_id` is `null` when no candidate matched but the category is clear. Disposal instructions always come from the app's bundle, never from the model.
 
+### `POST /v1/ask`
+
+A plain-language question, answered only from the area's rules.
+
+```json
+{
+  "install_id": "…", "area_id": "14117-068001",
+  "question": "Can I throw out a broken umbrella with a metal frame?",
+  "language": "en",
+  "candidates": [
+    {"item_id": "yokohama-432", "name_ja": "かさ(骨が金属製)", "name_en": "Umbrella (metal ribs)", "category": "kinzoku", "instructions_en": "…"}
+  ],
+  "app_version": "1.1.0"
+}
+```
+
+`candidates` (1–20) are the rules the app's own search found for the question's words, with their English instructions (up to 300 characters each). `question` is up to 200 characters; `language` is `en` or `ja`.
+
+```json
+{"answer": {"covered": true, "item_ids": ["yokohama-432"], "text": "Yes. An umbrella with metal ribs goes out as Small metal items."}, "cached": false}
+```
+
+* The model may only cite candidates (at most 3); an answer citing none is `covered: false`.
+* `text` is the model's one- or two-sentence summary. It is dropped (`null`, citations kept) when it names a category other than the cited rules' own, so it can't contradict them. The app shows the category and instructions from the cited rules in its bundle, and the summary under them.
+* `covered: false` means the rules don't settle the question; the app shows the ward's official contact.
+* Same models, allowance and budget as photos, with its own cap of 20 questions per install per day (`QUESTIONS_PER_INSTALL_PER_DAY`). Answers are cached in KV for 30 days by the question (case and spacing aside), language, municipality, bundle version and candidate ids.
+* The question itself is never stored: `ai_log` rows for questions (`kind = 'question'`) hold the candidate count and the cited rule.
+
 ### `POST /v1/reports`
 
 ```json
@@ -73,7 +101,7 @@ Filing needs the `GITHUB_TOKEN` secret (below). Without it, reports are stored a
 | 400 | `unknown_area` | BinPal has no bundle for the area |
 | 413 | `payload_too_large` | Body over 200 KB, image over 150 KB, or longer than 1024 px |
 | 429 | `rate_limited` | More than 10 requests a minute from one install |
-| 429 | `daily_limit` | The install's AI calls (20) or reports (10) for today are used |
+| 429 | `daily_limit` | The install's AI calls (20), questions (20) or reports (10) for today are used |
 | 503 | `ai_paused` | Neither model can take a call today |
 | 502 | `upstream_failed` | The models didn't answer (Anthropic is retried once on 429, 5xx or 529) |
 
@@ -130,7 +158,7 @@ python3 tests/e2e.py                 # the Worker under wrangler dev, with mocks
 
 If Homebrew's Rust is also installed, put `~/.cargo/bin` first in `PATH`, or the build uses a `rustc` without the Wasm target.
 
-`tests/e2e.py` starts a mock Workers AI, Anthropic API, CDN and GitHub issues API (serving the real Yokohama bundle) and runs `wrangler dev` against them with local D1 and KV, a small Neuron ceiling and a tiny budget. It checks that Workers AI answers first; that Anthropic is asked when Workers AI can't tell, fails, or is used up; the answer cache, the per-install cap, the budget switch, the burst limit, the retry, reports, what is stored, and the daily cleanup. A second run without an Anthropic key or GitHub token checks that Workers AI, status and reports still work, and that reports wait unfiled. A third files reports in a mock GitHub: grouping, comments, priority, a new issue after one is closed, and what is published. It spends nothing and needs no secrets or Cloudflare login.
+`tests/e2e.py` starts a mock Workers AI, Anthropic API, CDN and GitHub issues API (serving the real Yokohama bundle) and runs `wrangler dev` against them with local D1 and KV, a small Neuron ceiling and a tiny budget. It checks that Workers AI answers first; that Anthropic is asked when Workers AI can't tell, fails, or is used up; the answer cache, the per-install cap, the budget switch, the burst limit, the retry, reports, what is stored, and the daily cleanup. A second run without an Anthropic key or GitHub token checks that Workers AI, status and reports still work, and that reports wait unfiled. A third asks questions: grounded answers, the answer cache, a dropped summary that names another category, an invented citation, not covered, the daily cap, and that the question is never stored. A fourth files reports in a mock GitHub: grouping, comments, priority, a new issue after one is closed, and what is published. It spends nothing and needs no secrets or Cloudflare login.
 
 The `AI` binding only runs against Cloudflare, so the test uses a copy of `wrangler.toml` without it (`.wrangler-e2e.toml`, deleted afterwards) and points `WORKERS_AI_TEST_URL` at the mock. That variable is never set in production.
 

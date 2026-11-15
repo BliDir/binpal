@@ -69,17 +69,19 @@ void main() {
     await openSearch(tester);
     expect(find.text('Photo check'), findsOneWidget);
     expect(find.text('Bulky item guide'), findsOneWidget);
-    expect(find.text('Search examples'), findsOneWidget);
+    expect(find.text('Ask a question'), findsOneWidget);
+    final list = find
+        .descendant(
+          of: find.byType(SearchScreen),
+          matching: find.byType(Scrollable),
+        )
+        .last;
     await tester.scrollUntilVisible(
       find.text('Available offline'),
       100,
-      scrollable: find
-          .descendant(
-            of: find.byType(SearchScreen),
-            matching: find.byType(Scrollable),
-          )
-          .last,
+      scrollable: list,
     );
+    expect(find.text('Search examples'), findsOneWidget);
     expect(find.text('Available offline'), findsOneWidget);
 
     await tester.tap(find.widgetWithText(ActionChip, '傘'));
@@ -182,6 +184,7 @@ void main() {
     await type(tester, 'umbrella');
     await tester.tap(find.byTooltip('Clear'));
     await tester.pumpAndSettle();
-    expect(find.text('Search examples'), findsOneWidget);
+    expect(find.text('Photo check'), findsOneWidget);
+    expect(find.text('Ask a question'), findsOneWidget);
   });
 }

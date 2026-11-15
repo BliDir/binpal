@@ -7,9 +7,13 @@
 //! answers, free while the day's Neurons last; Anthropic is the fallback
 //! when Workers AI fails, can't tell, or is used up, within its daily budget.
 //!
+//! `POST /v1/ask` answers a plain-language question from the area's rules
+//! (`ask.rs`), on the same models and allowance.
+//!
 //! `POST /v1/reports` stores "this looks wrong" reports; every five minutes
 //! they are filed in the review queue (`queue.rs`).
 
+mod ask;
 mod catalog;
 mod config;
 mod github;
@@ -45,6 +49,9 @@ async fn fetch(req: Request, env: Env, _ctx: Context) -> Result<Response> {
         })
         .post_async("/v1/identify", |mut req, ctx| async move {
             respond(identify(&mut req, &ctx.env).await, 200)
+        })
+        .post_async("/v1/ask", |mut req, ctx| async move {
+            respond(ask::ask(&mut req, &ctx.env).await, 200)
         })
         .post_async("/v1/reports", |mut req, ctx| async move {
             respond(report(&mut req, &ctx.env).await, 201)
@@ -181,6 +188,7 @@ fn log_row<'a>(
         Outcome::NoAnswer(_) => None,
     };
     CallLog {
+        kind: "photo",
         day,
         area_id: &request.area_id,
         labels: &request.labels,

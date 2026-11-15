@@ -131,7 +131,7 @@ void main() {
     await start(tester);
     await tester.tap(find.text('How do I sort this item?').first);
     await settle(tester);
-    expect(find.text('Search examples'), findsOneWidget);
+    expect(find.text('Photo check'), findsOneWidget);
   });
 
   testWidgets('the calendar shows the month and a chosen day', (tester) async {

@@ -27,6 +27,8 @@ pub struct Allowance {
     pub ai_calls_per_install: u32,
     /// Reports per install per day.
     pub reports_per_install: u32,
+    /// Questions per install per day. Cached answers don't count.
+    pub questions_per_install: u32,
     /// Spend on the Anthropic fallback per Japan day, across all installs, in
     /// millionths of a dollar.
     pub daily_budget_micro_usd: u64,
@@ -63,6 +65,7 @@ mod tests {
         let allowance = Allowance {
             ai_calls_per_install: 20,
             reports_per_install: 10,
+            questions_per_install: 20,
             daily_budget_micro_usd: 5_000_000,
             workers_ai_daily_neurons: 9_000,
         };

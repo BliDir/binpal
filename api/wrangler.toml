@@ -16,6 +16,7 @@ command = "cd worker && worker-build --release"
 CDN_BASE_URL = "https://data.blidir.fun"
 AI_CALLS_PER_INSTALL_PER_DAY = "20"
 REPORTS_PER_INSTALL_PER_DAY = "10"
+QUESTIONS_PER_INSTALL_PER_DAY = "20"
 
 # Workers AI answers first, free up to Cloudflare's 10,000 Neurons a day
 # (about 150 photos on this model). The Worker stops at this many Neurons

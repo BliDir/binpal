@@ -44,6 +44,9 @@ A designated city (政令指定都市) such as Yokohama has one set of sorting r
 
 Tokyo's special wards (Setagaya and so on) are municipalities in their own right: their bundles have no `wards`, and area IDs start with the municipality code.
 
+
+A ward may have a `contact`: the official office for rubbish questions (`name`, `phone`, and the `url` of an official page that lists it). The app shows it when it can't answer a question from the rules. Added without a schema version change.
+
 ## Conventions
 
 * **Dates** are `YYYY-MM-DD` in Japan time. `valid_from` and `valid_to` are both **inclusive**; no `valid_to` means open-ended.

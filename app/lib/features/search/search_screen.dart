@@ -8,6 +8,7 @@ import '../../app/top_bar.dart';
 import '../../data/bundle_sync.dart';
 import '../../data/sync_controller.dart';
 import '../../l10n/app_localizations.dart';
+import '../ask/ask_screen.dart';
 import '../bulky/bulky_guide_screen.dart';
 import '../item/category_style.dart';
 import '../item/item_screen.dart';
@@ -198,6 +199,8 @@ class _Intro extends StatelessWidget {
         const _PhotoCheckCard(),
         const SizedBox(height: AppSpacing.sm),
         const _BulkyGuideCard(),
+        const SizedBox(height: AppSpacing.sm),
+        const _AskCard(),
         const SizedBox(height: AppSpacing.lg),
         Text(l10n.searchExamplesTitle, style: text.titleMedium),
         const SizedBox(height: AppSpacing.sm),
@@ -275,6 +278,35 @@ class _PhotoCheckCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Opens "Ask a question" for a plain-language question.
+class _AskCard extends StatelessWidget {
+  const _AskCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return Card(
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.xs,
+        ),
+        leading: Image.asset(
+          'assets/illustrations/question.png',
+          width: 48,
+          height: 48,
+          excludeFromSemantics: true,
+        ),
+        title: Text(l10n.askEntryTitle),
+        subtitle: Text(l10n.askEntryBody),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () => Navigator.of(context)
+            .push(MaterialPageRoute<void>(builder: (_) => const AskScreen())),
       ),
     );
   }
@@ -374,7 +406,20 @@ class _NoResults extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         if (AppServices.of(context).area.area != null) ...[
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: AppSpacing.lg),
+          FilledButton.icon(
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => AskScreen(initial: query),
+              ),
+            ),
+            style: FilledButton.styleFrom(
+              minimumSize: const Size.fromHeight(minimumTouchTarget),
+            ),
+            icon: const Icon(Icons.chat_bubble_outline),
+            label: Text(l10n.searchAskQuestion),
+          ),
+          const SizedBox(height: AppSpacing.sm),
           Center(
             child: OutlinedButton.icon(
               onPressed: () => showReportSheet(context, MissingTopic(query)),

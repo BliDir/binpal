@@ -93,6 +93,8 @@ pub async fn add_neurons(db: &D1Database, utc_day: &str, neurons: u64) -> Result
 /// and measuring cost: which on-device labels needed AI and what came back.
 /// No photo, no photo hash and no install id.
 pub struct CallLog<'a> {
+    /// 'photo' or 'question'.
+    pub kind: &'a str,
     pub day: &'a str,
     pub area_id: &'a str,
     pub labels: &'a [String],
@@ -122,9 +124,9 @@ pub async fn log_call(db: &D1Database, log: &CallLog<'_>) -> Result<(), ApiError
         db,
         "INSERT INTO ai_log (day, area_id, labels, candidate_count, source, model, fallback,
          outcome, item_id, category, confidence, input_tokens, cache_write_tokens,
-         cache_read_tokens, output_tokens, neurons, micro_usd, duration_ms, app_version)
+         cache_read_tokens, output_tokens, neurons, micro_usd, duration_ms, app_version, kind)
          VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17,
-         ?18, ?19)",
+         ?18, ?19, ?20)",
         log.day,
         log.area_id,
         labels,
@@ -144,6 +146,7 @@ pub async fn log_call(db: &D1Database, log: &CallLog<'_>) -> Result<(), ApiError
         log.micro_usd as f64,
         log.duration_ms as f64,
         log.app_version,
+        log.kind,
     )
     .map_err(db_error)?
     .run()

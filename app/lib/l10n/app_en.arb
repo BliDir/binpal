@@ -422,5 +422,66 @@
   "moveSaved": "Currently saved area",
   "moveUpdate": "Update area",
   "moveNotNow": "Not now",
-  "movePrivacy": "BinPal checked on your phone that you seem to be away from this area. Your location isn't stored or sent."
+  "movePrivacy": "BinPal checked on your phone that you seem to be away from this area. Your location isn't stored or sent.",
+  "askEntryTitle": "Ask a question",
+  "askEntryBody": "Can't find it? Ask in plain English.",
+  "askTitle": "Ask a question",
+  "askSubtitle": "Not sure how to put something out? Ask in plain English.",
+  "askHint": "e.g. Can I throw out a broken umbrella with a metal frame?",
+  "askExamplesTitle": "Example questions",
+  "askExample1": "Can I throw out a sofa?",
+  "askExample2": "How do I dispose of a frying pan?",
+  "askExample3": "Is plastic packaging recyclable?",
+  "askButton": "Ask",
+  "askNote": "Answers come only from your area's rules, and show the rule they rely on.",
+  "askChecking": "Checking your area's rules…",
+  "answerTitle": "Answer",
+  "answerVerdict": "Put it out as {category}.",
+  "@answerVerdict": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "answerRule": "Local disposal rule",
+  "answerRulesTitle": "Based on these rules",
+  "answerHowTo": "How to put it out",
+  "answerNext": "Next collection: {date}",
+  "@answerNext": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "answerNextBy": "Next collection: {date}, by {time}",
+  "@answerNextBy": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "answerAiNote": "The summary is written by AI. The rules above are the city's and come first.",
+  "answerNotCovered": "We can't answer this reliably from your area's rules.",
+  "answerNotCoveredBody": "Please check with the city's official contact for your ward.",
+  "answerOffline": "You're offline, so this question can't be checked right now.",
+  "answerPaused": "Questions are paused for today. Please try again tomorrow.",
+  "answerFailed": "Couldn't get an answer right now.",
+  "answerContactTitle": "Official contact",
+  "answerCall": "Call {number}",
+  "@answerCall": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "answerContactPage": "Official page",
+  "answerSearch": "Search by name",
+  "searchAskQuestion": "Ask a question"
 }

@@ -69,6 +69,7 @@ impl Config {
             allowance: Allowance {
                 ai_calls_per_install: number(env, "AI_CALLS_PER_INSTALL_PER_DAY")?,
                 reports_per_install: number(env, "REPORTS_PER_INSTALL_PER_DAY")?,
+                questions_per_install: number(env, "QUESTIONS_PER_INSTALL_PER_DAY")?,
                 daily_budget_micro_usd: parse_usd(&budget).ok_or_else(|| {
                     console_error!("DAILY_BUDGET_USD is not an amount: {budget}");
                     ApiError::internal()

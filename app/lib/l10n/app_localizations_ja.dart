@@ -689,4 +689,102 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String get movePrivacy =>
       '保存している地域から離れているようです(スマートフォンの中で確認しました)。現在地は保存や送信をしません。';
+
+  @override
+  String get askEntryTitle => '質問する';
+
+  @override
+  String get askEntryBody => '見つからないときは、言葉で質問できます。';
+
+  @override
+  String get askTitle => '質問する';
+
+  @override
+  String get askSubtitle => '出し方がわからないときは、ふだんの言葉で質問してください。';
+
+  @override
+  String get askHint => '例:骨が金属の壊れた傘は捨てられますか?';
+
+  @override
+  String get askExamplesTitle => '質問の例';
+
+  @override
+  String get askExample1 => 'ソファは捨てられますか?';
+
+  @override
+  String get askExample2 => 'フライパンの捨て方は?';
+
+  @override
+  String get askExample3 => 'プラスチックの包装は資源になりますか?';
+
+  @override
+  String get askButton => '質問する';
+
+  @override
+  String get askNote => '回答はお住まいの地域のルールだけをもとにし、根拠のルールを表示します。';
+
+  @override
+  String get askChecking => '地域のルールを確認しています…';
+
+  @override
+  String get answerTitle => '回答';
+
+  @override
+  String answerVerdict(String category) {
+    return '$categoryに出します。';
+  }
+
+  @override
+  String get answerRule => '地域の分け方';
+
+  @override
+  String get answerRulesTitle => '根拠のルール';
+
+  @override
+  String get answerHowTo => '出し方';
+
+  @override
+  String answerNext(String date) {
+    return '次の収集日:$date';
+  }
+
+  @override
+  String answerNextBy(String date, String time) {
+    return '次の収集日:$date($timeまで)';
+  }
+
+  @override
+  String get answerAiNote => '要約はAIが作成しています。上のルールは市のもので、こちらが優先です。';
+
+  @override
+  String get answerNotCovered => 'お住まいの地域のルールからは、確かな回答ができません。';
+
+  @override
+  String get answerNotCoveredBody => '区の公式の問い合わせ先にご確認ください。';
+
+  @override
+  String get answerOffline => 'オフラインのため、今は質問を確認できません。';
+
+  @override
+  String get answerPaused => '今日は質問の受付を停止しています。明日もう一度お試しください。';
+
+  @override
+  String get answerFailed => '今は回答を取得できませんでした。';
+
+  @override
+  String get answerContactTitle => '公式の問い合わせ先';
+
+  @override
+  String answerCall(String number) {
+    return '$numberに電話';
+  }
+
+  @override
+  String get answerContactPage => '公式ページ';
+
+  @override
+  String get answerSearch => '名前で検索';
+
+  @override
+  String get searchAskQuestion => '質問する';
 }
