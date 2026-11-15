@@ -305,6 +305,29 @@ def test_bad_sources_are_rejected(tmp_path, entry, message):
         monitor.load_sources(write_sources(tmp_path, f"sources:\n  - {entry}\n"))
 
 
+def test_paused_sources_are_checked_but_not_run(tmp_path):
+    path = write_sources(
+        tmp_path,
+        "sources:\n"
+        "  - {id: a, type: pdf, url: 'https://x.example', title: t}\n"
+        "  - {id: b, type: pdf, url: 'https://y.example', title: t, paused: 'reuse terms unconfirmed'}\n",
+    )
+    assert [s.id for s in monitor.load_sources(path)] == ["a"]
+    assert [s.id for s in monitor.load_sources(path, include_paused=True)] == ["a", "b"]
+    with pytest.raises(monitor.SourceError, match="paused must say why"):
+        monitor.load_sources(
+            write_sources(
+                tmp_path, "sources:\n  - {id: c, type: pdf, url: 'https://x.example', title: t, paused: ''}\n"
+            )
+        )
+    with pytest.raises(monitor.SourceError, match="need a selector"):
+        monitor.load_sources(
+            write_sources(
+                tmp_path, "sources:\n  - {id: d, type: html, url: 'https://x.example', title: t, paused: x}\n"
+            )
+        )
+
+
 def test_duplicate_ids_are_rejected(tmp_path):
     entry = "  - {id: a, type: pdf, url: 'https://x.example', title: t}\n"
     with pytest.raises(monitor.SourceError, match="duplicate id"):
@@ -316,6 +339,12 @@ def test_repo_sources_file_is_valid_and_has_a_snapshot_for_every_source():
     assert sources
     for source in sources:
         assert (monitor.DATA_DIR / "snapshots" / f"{source.id}.txt").is_file(), source.id
+    # Paused sources have no snapshot yet: nothing of theirs is stored.
+    paused = {s.id for s in monitor.load_sources(monitor.DATA_DIR / "sources.yaml", include_paused=True)} - {
+        s.id for s in sources
+    }
+    for source_id in paused:
+        assert not (monitor.DATA_DIR / "snapshots" / f"{source_id}.txt").exists(), source_id
 
 
 NEWS = monitor.Source(id="news", type="news", url=PAGE_URL, title="News", selector="#main")
