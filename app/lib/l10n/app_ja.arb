@@ -185,5 +185,15 @@
   "reportLimited": "今日はたくさん報告いただきました。また明日お試しください。",
   "reportFailed": "報告を送れませんでした。もう一度お試しください。",
   "searchReportMissing": "見つからない場合は報告",
-  "searchReportFooter": "間違いや足りない品目を報告"
+  "searchReportFooter": "間違いや足りない品目を報告",
+  "bulkyTitle": "粗大ごみの出し方",
+  "bulkySearchTitle": "粗大ごみの出し方",
+  "bulkySearchBody": "家具や布団など、大きな品物の出し方",
+  "bulkyPhone": "電話",
+  "bulkyCall": "{number}に電話",
+  "bulkyOtherLinks": "市のページ",
+  "bulkyNoBooking": "BinPalは申込みを代行しません。申込みと支払いは市のページで行います。",
+  "bulkyChecked": "{date}に公式ページと照合",
+  "bulkyNone": "お住まいの地域の粗大ごみガイドはまだありません。市のウェブサイトをご確認ください。",
+  "itemBulkyGuide": "粗大ごみの出し方"
 }

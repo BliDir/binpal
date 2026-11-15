@@ -154,6 +154,21 @@ class MissedSearches extends Table {
   Set<Column> get primaryKey => {query};
 }
 
+/// A bundle's bulky waste (粗大ごみ) guides. The guide is kept as the
+/// bundle's JSON and read by `BulkyGuide.fromJson`, so new optional fields
+/// need no migration. [wardIds] is a JSON list, or null for the guide that
+/// covers the whole municipality.
+@DataClassName('BulkyGuideRow')
+class BulkyGuides extends Table {
+  TextColumn get municipalityId => text()();
+  TextColumn get id => text()();
+  TextColumn get wardIds => text().nullable()();
+  TextColumn get guide => text()();
+
+  @override
+  Set<Column> get primaryKey => {municipalityId, id};
+}
+
 /// The item the user picked after a photo check, by what the phone saw
 /// (image labels and recycling marks, see `PhotoSignals.key`). The next photo
 /// with the same signals answers from here with no AI call. Kept on the
@@ -188,6 +203,7 @@ class Settings extends Table {
     Calendars,
     CalendarAreas,
     CollectionExceptions,
+    BulkyGuides,
     MissedSearches,
     PhotoChoices,
     Settings,
@@ -198,7 +214,7 @@ class AppDatabase extends _$AppDatabase {
     : super(executor ?? driftDatabase(name: 'binpal'));
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -215,6 +231,8 @@ class AppDatabase extends _$AppDatabase {
         }
       }
       if (from < 3) await m.createTable(photoChoices);
+      // Guides arrive with the next bundle; the stored one is reimported then.
+      if (from < 4) await m.createTable(bulkyGuides);
     },
     beforeOpen: (details) => customStatement('PRAGMA foreign_keys = ON'),
   );
@@ -401,6 +419,17 @@ class AppDatabase extends _$AppDatabase {
             );
           }
         }
+        for (final g in _maps(bundle['bulky_guides'])) {
+          b.insert(
+            bulkyGuides,
+            BulkyGuidesCompanion.insert(
+              municipalityId: mid,
+              id: g['id'] as String,
+              wardIds: Value(_jsonOrNull(g['ward_ids'])),
+              guide: jsonEncode(g),
+            ),
+          );
+        }
         for (final e in _maps(bundle['exceptions'])) {
           final note = e['note'] as Map<String, dynamic>?;
           b.insert(
@@ -473,6 +502,9 @@ class AppDatabase extends _$AppDatabase {
     )..where((t) => t.municipalityId.equals(mid))).go();
     await (delete(
       collectionExceptions,
+    )..where((t) => t.municipalityId.equals(mid))).go();
+    await (delete(
+      bulkyGuides,
     )..where((t) => t.municipalityId.equals(mid))).go();
     await (delete(bundles)..where((t) => t.municipalityId.equals(mid))).go();
   }

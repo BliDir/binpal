@@ -67,7 +67,19 @@ void main() {
   testWidgets('shows examples, and an example runs its search', (tester) async {
     await withBundle(tester);
     await openSearch(tester);
+    expect(find.text('Photo check'), findsOneWidget);
+    expect(find.text('Bulky item guide'), findsOneWidget);
     expect(find.text('Search examples'), findsOneWidget);
+    await tester.scrollUntilVisible(
+      find.text('Available offline'),
+      100,
+      scrollable: find
+          .descendant(
+            of: find.byType(SearchScreen),
+            matching: find.byType(Scrollable),
+          )
+          .last,
+    );
     expect(find.text('Available offline'), findsOneWidget);
 
     await tester.tap(find.widgetWithText(ActionChip, '傘'));

@@ -6,6 +6,7 @@ import '../../app/services.dart';
 import '../../app/theme.dart';
 import '../../data/database.dart';
 import '../../l10n/app_localizations.dart';
+import '../bulky/bulky_guide_screen.dart';
 import '../report/report_sheet.dart';
 import 'category_style.dart';
 
@@ -88,6 +89,27 @@ class ItemScreen extends StatelessWidget {
                 ja ? category.nameJa : category.nameEn,
               ),
               children: [Text(description, style: text.bodyMedium)],
+            ),
+          ],
+          if (category.common == 'bulky') ...[
+            const SizedBox(height: AppSpacing.md),
+            Card(
+              color: AppColors.lavender,
+              child: ListTile(
+                leading: Image.asset(
+                  'assets/illustrations/sofa.png',
+                  width: 40,
+                  height: 40,
+                  excludeFromSemantics: true,
+                ),
+                title: Text(l10n.itemBulkyGuide),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => const BulkyGuideScreen(),
+                  ),
+                ),
+              ),
             ),
           ],
           const SizedBox(height: AppSpacing.md),

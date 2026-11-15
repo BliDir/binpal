@@ -21,6 +21,7 @@ lib/
     reminders/    reminder preferences screen
     photo/        photo check: on-device labels and marks first, AI fallback
     report/       "this looks wrong" reports to the review queue
+    bulky/        bulky waste (粗大ごみ) guide
   l10n/           English and Japanese strings (ARB); Dart files are generated
 ```
 
@@ -130,6 +131,10 @@ Until the models are on the phone (right after a non-Play install, or on a phone
 ### ML Kit on iOS
 
 ML Kit comes through Swift Package Manager, which can't copy its model files into the app. The Runner target's "ML Kit Models" build phase runs `ios/mlkit_bundles.sh`, which downloads `MLKitImageLabelingResources.bundle` and `MLKitObjectDetectionCommonResources.bundle` once into `ios/mlkit_bundles/` (ignored by git) and copies them into the app. Runner links with `-ObjC -all_load`, as ML Kit's static frameworks need.
+
+## Bulky item guide
+
+Search → Bulky item guide, or "How to put out bulky items" on any item in the bulky waste category, opens the guide for the user's area from the stored bundle (`bulky_guides`; the ward's own guide if it has one, otherwise the municipality's): what counts as bulky, the numbered steps, the official booking page, phone numbers (tap to call), the fee list and the official source with the day it was checked. It works offline; only the links need a connection. BinPal never books on the user's behalf. The guide is stored as the bundle's JSON (`bulky_guides` table), so optional fields added later need no migration.
 
 ## Reports
 

@@ -142,6 +142,23 @@ def bundle_errors(doc: dict) -> list[str]:
             if a not in areas:
                 errors.append(f"{where}: unknown area {a!r}")
 
+    # Every area must resolve to one bulky guide at most: a ward's own, or
+    # the municipality-wide one.
+    guides = doc.get("bulky_guides", [])
+    for d in duplicates(g["id"] for g in guides):
+        errors.append(f"duplicate bulky guide id {d!r}")
+    if sum("ward_ids" not in g for g in guides) > 1:
+        errors.append("more than one municipality-wide bulky guide (without ward_ids)")
+    covered = defaultdict(list)
+    for g in guides:
+        for w in g.get("ward_ids", []):
+            if w not in wards:
+                errors.append(f"bulky guide {g['id']!r}: unknown ward {w!r}")
+            covered[w].append(g["id"])
+    for w, ids in covered.items():
+        if len(ids) > 1:
+            errors.append(f"ward {w!r} has more than one bulky guide: {', '.join(ids)}")
+
     return errors
 
 

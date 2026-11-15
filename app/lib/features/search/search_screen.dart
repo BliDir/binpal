@@ -8,6 +8,7 @@ import '../../app/top_bar.dart';
 import '../../data/bundle_sync.dart';
 import '../../data/sync_controller.dart';
 import '../../l10n/app_localizations.dart';
+import '../bulky/bulky_guide_screen.dart';
 import '../item/category_style.dart';
 import '../item/item_screen.dart';
 import '../photo/photo_check_screen.dart';
@@ -195,6 +196,8 @@ class _Intro extends StatelessWidget {
       padding: const EdgeInsets.all(AppSpacing.md),
       children: [
         const _PhotoCheckCard(),
+        const SizedBox(height: AppSpacing.sm),
+        const _BulkyGuideCard(),
         const SizedBox(height: AppSpacing.lg),
         Text(l10n.searchExamplesTitle, style: text.titleMedium),
         const SizedBox(height: AppSpacing.sm),
@@ -271,6 +274,36 @@ class _PhotoCheckCard extends StatelessWidget {
               const Icon(Icons.chevron_right),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Opens the bulky item (粗大ごみ) guide for the user's area.
+class _BulkyGuideCard extends StatelessWidget {
+  const _BulkyGuideCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return Card(
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.xs,
+        ),
+        leading: Image.asset(
+          'assets/illustrations/sofa.png',
+          width: 48,
+          height: 48,
+          excludeFromSemantics: true,
+        ),
+        title: Text(l10n.bulkySearchTitle),
+        subtitle: Text(l10n.bulkySearchBody),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute<void>(builder: (_) => const BulkyGuideScreen()),
         ),
       ),
     );
