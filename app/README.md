@@ -132,6 +132,16 @@ Until the models are on the phone (right after a non-Play install, or on a phone
 
 ML Kit comes through Swift Package Manager, which can't copy its model files into the app. The Runner target's "ML Kit Models" build phase runs `ios/mlkit_bundles.sh`, which downloads `MLKitImageLabelingResources.bundle` and `MLKitObjectDetectionCommonResources.bundle` once into `ios/mlkit_bundles/` (ignored by git) and copies them into the app. Runner links with `-ObjC -all_load`, as ML Kit's static frameworks need.
 
+## Did you move?
+
+When the app opens or comes back to the foreground, `MoveCheck` (`lib/area/move_check.dart`) may ask "Did you move?" with the saved area, **Update area** (opens area setup) and **Not now**. It never changes the area itself.
+
+* **Only with access already granted**: it checks the permission without prompting, and does nothing if location access or services are off.
+* **At most one look a day**: one position, matched on the phone against the saved area's boundary in the package already downloaded (no network; no package, no check). The position is dropped straight away.
+* **Not for travel or commuting**: it asks only after the phone was more than 3 km from the saved area on 3 different days within 14, with no day near home in between; a day near home starts the count again.
+* **"Not now"** (or backing out of area setup) mutes it for 30 days. Choosing an area starts the count again.
+* **Stored**: only dates (`move.far` with the area id and the days away, `move.last_check`, `move.snoozed_until` in settings); never a position.
+
 ## Bulky item guide
 
 Search → Bulky item guide, or "How to put out bulky items" on any item in the bulky waste category, opens the guide for the user's area from the stored bundle (`bulky_guides`; the ward's own guide if it has one, otherwise the municipality's): what counts as bulky, the numbered steps, the official booking page, phone numbers (tap to call), the fee list and the official source with the day it was checked. It works offline; only the links need a connection. BinPal never books on the user's behalf. The guide is stored as the bundle's JSON (`bulky_guides` table), so optional fields added later need no migration.

@@ -670,4 +670,23 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get itemBulkyGuide => '粗大ごみの出し方';
+
+  @override
+  String get moveTitle => '引っ越しましたか?';
+
+  @override
+  String get moveBody => '引っ越した場合は、正しい収集日と分け方が表示されるよう地域を更新してください。';
+
+  @override
+  String get moveSaved => '保存している地域';
+
+  @override
+  String get moveUpdate => '地域を更新する';
+
+  @override
+  String get moveNotNow => '今はしない';
+
+  @override
+  String get movePrivacy =>
+      '保存している地域から離れているようです(スマートフォンの中で確認しました)。現在地は保存や送信をしません。';
 }

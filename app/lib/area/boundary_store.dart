@@ -162,6 +162,33 @@ class BoundaryStore {
     return file;
   }
 
+  /// Metres from ([lat], [lon]) to the saved area [areaId] (0 inside it),
+  /// using its prefecture's package only if already on the device: this
+  /// runs in the background and touches no network. Null when the package or
+  /// the area isn't there.
+  Future<double?> distanceToArea(String areaId, double lat, double lon) async {
+    final prefecture = areaId.substring(0, 2);
+    final index = await _indexFile();
+    if (!index.existsSync()) return null;
+    final refs = [
+      for (final r in (jsonDecode(
+        await index.readAsString(),
+      ) as List<dynamic>).cast<Map<String, dynamic>>())
+        if (supportedBoundarySchemas.contains(r['schema_version']))
+          BoundaryRef.fromJson(r),
+    ];
+    final ref = refs.where((r) => r.prefectureCode == prefecture).firstOrNull;
+    if (ref == null) return null;
+    final file = await _packageFile(ref);
+    if (!file.existsSync()) return null;
+    final path = file.path;
+    return Isolate.run(
+      () => BoundaryPackage.fromJson(
+        jsonDecode(File(path).readAsStringSync()) as Map<String, dynamic>,
+      ).distanceTo(areaId, lat, lon),
+    );
+  }
+
   /// Looks ([lat], [lon]) up: the package covering it is downloaded if
   /// needed, then decoded and searched off the UI thread. Returns null when
   /// no published package covers the position. [onDownload] is called

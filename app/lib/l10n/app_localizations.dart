@@ -1273,6 +1273,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'How to put out bulky items'**
   String get itemBulkyGuide;
+
+  /// No description provided for @moveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Did you move?'**
+  String get moveTitle;
+
+  /// No description provided for @moveBody.
+  ///
+  /// In en, this message translates to:
+  /// **'If you\'ve moved, update your area so BinPal shows the right collection days and rules.'**
+  String get moveBody;
+
+  /// No description provided for @moveSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Currently saved area'**
+  String get moveSaved;
+
+  /// No description provided for @moveUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Update area'**
+  String get moveUpdate;
+
+  /// No description provided for @moveNotNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get moveNotNow;
+
+  /// No description provided for @movePrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'BinPal checked on your phone that you seem to be away from this area. Your location isn\'t stored or sent.'**
+  String get movePrivacy;
 }
 
 class _AppLocalizationsDelegate

@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../area/boundary_store.dart';
 import '../area/location_source.dart';
+import '../area/move_check.dart';
 
 import '../data/area_controller.dart';
 import '../data/bundle_sync.dart';
@@ -33,6 +34,7 @@ class AppServices {
     IdentifyClient? identify,
     ReportClient? reports,
     this.syncOnLaunch = true,
+    this.checkMoveOnLaunch = true,
     DateTime Function()? clock,
   }) : clock = clock ?? DateTime.now,
        location = location ?? const GeolocatorLocationSource(),
@@ -87,6 +89,18 @@ class AppServices {
   /// Off in widget tests, which must not touch the database or the network.
   final bool syncOnLaunch;
 
+  /// Whether the home screen looks for a move when it opens (see
+  /// [MoveCheck]). Off in widget tests unless a test turns it on.
+  final bool checkMoveOnLaunch;
+
+  late final moveCheck = MoveCheck(
+    db: db,
+    location: location,
+    boundaries: boundaries,
+    area: area,
+    clock: clock,
+  );
+
   /// The current time. Tests set it to a fixed day.
   final DateTime Function() clock;
 
@@ -94,6 +108,7 @@ class AppServices {
   /// the area's id is stored, never where the phone was.
   Future<void> chooseArea(Area chosen) async {
     await area.select(chosen);
+    await moveCheck.updated();
     await reminders.reschedule();
   }
 

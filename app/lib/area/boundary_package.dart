@@ -214,6 +214,18 @@ class BoundaryPackage {
   }
 }
 
+extension AreaDistance on BoundaryPackage {
+  /// Metres from ([lat], [lon]) to the area [areaId]: 0 inside it, otherwise
+  /// to its nearest edge. Null when the package has no such area.
+  double? distanceTo(String areaId, double lat, double lon) {
+    final area = _areas.where((a) => a.id == areaId).firstOrNull;
+    if (area == null) return null;
+    if (_contains(area.rings, lon, lat)) return 0;
+    final kx = _metresPerDegree * math.cos(lat * math.pi / 180);
+    return _borderDistance(area.rings, lon, lat, kx);
+  }
+}
+
 /// Even-odd rule over every ring, so holes and multi-part areas need no
 /// special case.
 bool _contains(List<Float64List> rings, double x, double y) {
