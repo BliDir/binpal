@@ -62,7 +62,7 @@ For each source in `sources.yaml` it:
 | No snapshot yet (rule sources) | The snapshot is committed as the baseline, with no issue |
 | Fetch or parse failure | Counted in `snapshots/state.json`. On the 3rd run in a row an issue **Rule source unreachable: `<id>`** is opened, once. A selector that no longer matches anything counts as a failure, so a redesigned page is not mistaken for a rule change |
 
-Issues carry the `rule-monitor` label. If the API key is missing, both models fail, or a response is invalid, the monitor keeps the alert with an explicit unavailable summary instead of suppressing it.
+Issues carry the `rule-monitor` label. Reports from the app ("this looks wrong") land in the same queue with the `user-report` label, and `priority` once several people report the same thing or area; see `api/README.md`. If the API key is missing, both models fail, or a response is invalid, the monitor keeps the alert with an explicit unavailable summary instead of suppressing it.
 
 ### Gemini setup
 

@@ -6,9 +6,14 @@
 //! answer cache (free), and the per-install daily cap. Then Workers AI
 //! answers, free while the day's Neurons last; Anthropic is the fallback
 //! when Workers AI fails, can't tell, or is used up, within its daily budget.
+//!
+//! `POST /v1/reports` stores "this looks wrong" reports; every five minutes
+//! they are filed in the review queue (`queue.rs`).
 
 mod catalog;
 mod config;
+mod github;
+mod queue;
 mod store;
 mod upstream;
 mod workers_ai;
@@ -48,10 +53,22 @@ async fn fetch(req: Request, env: Env, _ctx: Context) -> Result<Response> {
         .await
 }
 
+/// The daily cleanup cron in `wrangler.toml`; every other trigger files
+/// reports.
+const CLEANUP_CRON: &str = "0 18 * * *";
+
+#[event(scheduled)]
+async fn scheduled(event: ScheduledEvent, env: Env, _ctx: ScheduleContext) {
+    if event.cron() == CLEANUP_CRON {
+        clean_up(&env).await;
+    } else if let Err(e) = queue::file_reports(&env).await {
+        console_error!("filing reports failed: {}", e.message);
+    }
+}
+
 /// Daily: drop install counters after two days, and log rows and Neuron
 /// totals after 90.
-#[event(scheduled)]
-async fn scheduled(_event: ScheduledEvent, env: Env, _ctx: ScheduleContext) {
+async fn clean_up(env: &Env) {
     let now = Date::now().as_millis();
     let result = async {
         let db = env.d1("DB").map_err(|_| ApiError::internal())?;
@@ -399,6 +416,7 @@ async fn report(req: &mut Request, env: &Env) -> std::result::Result<Reported, A
             day: &day,
             area_id: &report.area_id,
             item_id: report.item_id.as_deref(),
+            date: report.date.as_deref(),
             kind: report.kind.as_str(),
             note: report.note.as_deref(),
             app_version: report.app_version.as_deref(),

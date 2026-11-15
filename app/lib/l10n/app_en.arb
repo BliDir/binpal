@@ -369,5 +369,28 @@
       }
     }
   },
-  "photoModelsMissing": "Photo check is still getting ready on this phone. Try again in a minute, or search by name."
+  "photoModelsMissing": "Photo check is still getting ready on this phone. Try again in a minute, or search by name.",
+  "reportLink": "This looks wrong",
+  "reportTitle": "This looks wrong",
+  "reportSubtitle": "Report a problem with the collection day, category or rules.",
+  "reportClose": "Close",
+  "reportArea": "Area",
+  "reportItem": "Item",
+  "reportDate": "Collection date",
+  "reportWhatsWrong": "What's wrong?",
+  "reportKindCategory": "Category",
+  "reportKindInstructions": "How to put it out",
+  "reportKindOther": "Something else",
+  "reportComment": "Comment (optional)",
+  "reportCommentHint": "e.g. The category seems incorrect.",
+  "reportMissingLabel": "What were you looking for?",
+  "reportMissingHint": "e.g. Clothes hanger",
+  "reportPublic": "Reports are checked in BinPal's public review queue, where comments are shown. Please don't include personal details.",
+  "reportSend": "Send report",
+  "reportSent": "Thanks. We'll check it against the city's information.",
+  "reportOffline": "You're offline. Connect and try again.",
+  "reportLimited": "You've sent a lot of reports today. Please try again tomorrow.",
+  "reportFailed": "Couldn't send the report. Please try again.",
+  "searchReportMissing": "Can't find it? Tell us",
+  "searchReportFooter": "Something wrong or missing? Tell us"
 }

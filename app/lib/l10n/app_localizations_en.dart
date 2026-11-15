@@ -599,4 +599,77 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get photoModelsMissing =>
       'Photo check is still getting ready on this phone. Try again in a minute, or search by name.';
+
+  @override
+  String get reportLink => 'This looks wrong';
+
+  @override
+  String get reportTitle => 'This looks wrong';
+
+  @override
+  String get reportSubtitle =>
+      'Report a problem with the collection day, category or rules.';
+
+  @override
+  String get reportClose => 'Close';
+
+  @override
+  String get reportArea => 'Area';
+
+  @override
+  String get reportItem => 'Item';
+
+  @override
+  String get reportDate => 'Collection date';
+
+  @override
+  String get reportWhatsWrong => 'What\'s wrong?';
+
+  @override
+  String get reportKindCategory => 'Category';
+
+  @override
+  String get reportKindInstructions => 'How to put it out';
+
+  @override
+  String get reportKindOther => 'Something else';
+
+  @override
+  String get reportComment => 'Comment (optional)';
+
+  @override
+  String get reportCommentHint => 'e.g. The category seems incorrect.';
+
+  @override
+  String get reportMissingLabel => 'What were you looking for?';
+
+  @override
+  String get reportMissingHint => 'e.g. Clothes hanger';
+
+  @override
+  String get reportPublic =>
+      'Reports are checked in BinPal\'s public review queue, where comments are shown. Please don\'t include personal details.';
+
+  @override
+  String get reportSend => 'Send report';
+
+  @override
+  String get reportSent =>
+      'Thanks. We\'ll check it against the city\'s information.';
+
+  @override
+  String get reportOffline => 'You\'re offline. Connect and try again.';
+
+  @override
+  String get reportLimited =>
+      'You\'ve sent a lot of reports today. Please try again tomorrow.';
+
+  @override
+  String get reportFailed => 'Couldn\'t send the report. Please try again.';
+
+  @override
+  String get searchReportMissing => 'Can\'t find it? Tell us';
+
+  @override
+  String get searchReportFooter => 'Something wrong or missing? Tell us';
 }

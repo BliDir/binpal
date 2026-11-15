@@ -11,5 +11,6 @@ pub mod keys;
 pub mod limits;
 pub mod prompt;
 pub mod request;
+pub mod review;
 
 pub use error::ApiError;

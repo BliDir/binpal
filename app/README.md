@@ -20,6 +20,7 @@ lib/
     area/         choosing the collection area by ward, town and chōme
     reminders/    reminder preferences screen
     photo/        photo check: on-device labels and marks first, AI fallback
+    report/       "this looks wrong" reports to the review queue
   l10n/           English and Japanese strings (ARB); Dart files are generated
 ```
 
@@ -129,6 +130,16 @@ Until the models are on the phone (right after a non-Play install, or on a phone
 ### ML Kit on iOS
 
 ML Kit comes through Swift Package Manager, which can't copy its model files into the app. The Runner target's "ML Kit Models" build phase runs `ios/mlkit_bundles.sh`, which downloads `MLKitImageLabelingResources.bundle` and `MLKitObjectDetectionCommonResources.bundle` once into `ios/mlkit_bundles/` (ignored by git) and copies them into the app. Runner links with `-ObjC -all_load`, as ML Kit's static frameworks need.
+
+## Reports
+
+"This looks wrong" opens a sheet to report a mistake to BinPal's review queue (`lib/features/report/`), from:
+
+* **an item**: the category, how to put it out, or something else;
+* **Today**: the collection day, with the date (today by default; any day from 30 days ago to 60 ahead);
+* **search**: "Can't find it? Tell us" when nothing matches, and a link under the results, as a missing item with the search words as the comment.
+
+A report sends the area id, the item or date, the kind, the optional comment (up to 500 characters) and the app version to `/v1/reports`, with the random install id that only counts the daily limit; no location. The API files it as a GitHub issue within five minutes (see `../api/README.md`). The repository is public, so the sheet says comments are shown and asks for no personal details. Offline or over the daily limit, the sheet says so and stays open.
 
 ## Run
 

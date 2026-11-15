@@ -566,4 +566,74 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String get photoModelsMissing =>
       'この端末で写真で調べるの準備をしています。少し待ってからもう一度試すか、名前で検索してください。';
+
+  @override
+  String get reportLink => '内容がおかしい';
+
+  @override
+  String get reportTitle => '内容がおかしい';
+
+  @override
+  String get reportSubtitle => '収集日・分別区分・出し方の間違いを報告します。';
+
+  @override
+  String get reportClose => '閉じる';
+
+  @override
+  String get reportArea => '地域';
+
+  @override
+  String get reportItem => '品目';
+
+  @override
+  String get reportDate => '収集日';
+
+  @override
+  String get reportWhatsWrong => 'どこが違いますか?';
+
+  @override
+  String get reportKindCategory => '分別区分';
+
+  @override
+  String get reportKindInstructions => '出し方';
+
+  @override
+  String get reportKindOther => 'その他';
+
+  @override
+  String get reportComment => 'コメント(任意)';
+
+  @override
+  String get reportCommentHint => '例:分別区分が違うようです。';
+
+  @override
+  String get reportMissingLabel => '何を探していましたか?';
+
+  @override
+  String get reportMissingHint => '例:ハンガー';
+
+  @override
+  String get reportPublic =>
+      '報告はBinPalの公開の確認リストで確認され、コメントも公開されます。個人情報は書かないでください。';
+
+  @override
+  String get reportSend => '報告する';
+
+  @override
+  String get reportSent => 'ありがとうございます。市の情報と照らし合わせて確認します。';
+
+  @override
+  String get reportOffline => 'オフラインです。接続してからもう一度お試しください。';
+
+  @override
+  String get reportLimited => '今日はたくさん報告いただきました。また明日お試しください。';
+
+  @override
+  String get reportFailed => '報告を送れませんでした。もう一度お試しください。';
+
+  @override
+  String get searchReportMissing => '見つからない場合は報告';
+
+  @override
+  String get searchReportFooter => '間違いや足りない品目を報告';
 }

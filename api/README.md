@@ -9,7 +9,7 @@ Photos the phone couldn't identify go to **Workers AI first**, free up to Cloudf
 | `core/` | Request checks, the prompt, answer checks, cost and limits. Plain Rust, tested natively |
 | `worker/` | Routes, D1 and KV storage, the CDN, Workers AI and Anthropic calls (workers-rs) |
 | `migrations/` | D1 schema |
-| `tests/e2e.py` | The Worker under `wrangler dev`, against a mock Workers AI, Anthropic API and CDN |
+| `tests/e2e.py` | The Worker under `wrangler dev`, against a mock Workers AI, Anthropic API, CDN and GitHub |
 
 ## Endpoints
 
@@ -46,7 +46,18 @@ Called only when the phone couldn't identify a photo itself.
 {"install_id": "…", "area_id": "14117-123002", "item_id": "yokohama-10", "kind": "wrong_category", "note": "…", "app_version": "1.1.0"}
 ```
 
-`kind` is `wrong_category`, `wrong_instructions`, `wrong_day`, `missing_item` or `other`. Returns `201 {"ok": true}`.
+`kind` is `wrong_category`, `wrong_instructions`, `wrong_day`, `missing_item` or `other`. The first two need an `item_id`, and `wrong_day` needs a `date` (`YYYY-MM-DD` in Japan). Returns `201 {"ok": true}` once the report is stored; it reaches the review queue within five minutes (below).
+
+## Review queue
+
+Reports are filed as issues in `BliDir/binpal` (`GITHUB_REPO`), the same GitHub Issues the rule monitor opens, by a cron every five minutes (`src/queue.rs`; the wording is in `core/src/review.rs`). Storing and filing are separate, so the app never waits for GitHub, and a run that fails (GitHub or the CDN down) is retried on the next one.
+
+* **One issue per thing**: an item in its municipality (whatever area or kind the reports come from), a collection date in an area, or a kind of report in an area. The first report opens the issue, later ones add a comment while it is open, and after a reviewer closes it the next report opens a new one.
+* **Labels**: `user-report` on every issue. `priority` once the issue has 3 reports, or its area has had 3 reports in 30 days.
+* **Contents**: the item's names and current category with its official source, or the area and date, the municipality and bundle version, and a table of the reports (day received, kind, area, date, app version, comment). Never an install id.
+* **Comments are public**: the repository is public, and the app says so next to the comment field. Comments are shown as sent on one line, with mentions, links, images and HTML turned off.
+
+Filing needs the `GITHUB_TOKEN` secret (below). Without it, reports are stored and wait.
 
 ### `GET /v1/status`
 
@@ -101,7 +112,7 @@ On Anthropic, a call is about **$0.0002 with a warm prompt cache** and $0.0005 c
 * Photos are sent to Workers AI, and to the Anthropic API only as the fallback, for identification. The API never stores them; the response cache stores only the photo's hash, with the answer.
 * Cloudflare says Workers AI keeps inputs and outputs only as long as needed to answer, and doesn't train on them (Workers AI data usage page; the Qwen model page lists zero data retention). Anthropic's commercial terms don't use API inputs for training by default.
 * Install ids are kept only in the per-day counters, which a daily cron (03:00 in Japan) deletes after two days.
-* `ai_log` rows are deleted after 90 days. Reports keep no install id.
+* `ai_log` rows are deleted after 90 days. Reports keep no install id; their comments are published in the public review queue.
 * Logs on failure contain the HTTP status and the error type, never the request.
 
 ## Local development
@@ -119,7 +130,7 @@ python3 tests/e2e.py                 # the Worker under wrangler dev, with mocks
 
 If Homebrew's Rust is also installed, put `~/.cargo/bin` first in `PATH`, or the build uses a `rustc` without the Wasm target.
 
-`tests/e2e.py` starts a mock Workers AI, Anthropic API and CDN (serving the real Yokohama bundle) and runs `wrangler dev` against them with local D1 and KV, a small Neuron ceiling and a tiny budget. It checks that Workers AI answers first; that Anthropic is asked when Workers AI can't tell, fails, or is used up; the answer cache, the per-install cap, the budget switch, the burst limit, the retry, reports, what is stored, and the daily cleanup. A second run without an Anthropic key checks that Workers AI, status and reports still work. It spends nothing and needs no secrets or Cloudflare login.
+`tests/e2e.py` starts a mock Workers AI, Anthropic API, CDN and GitHub issues API (serving the real Yokohama bundle) and runs `wrangler dev` against them with local D1 and KV, a small Neuron ceiling and a tiny budget. It checks that Workers AI answers first; that Anthropic is asked when Workers AI can't tell, fails, or is used up; the answer cache, the per-install cap, the budget switch, the burst limit, the retry, reports, what is stored, and the daily cleanup. A second run without an Anthropic key or GitHub token checks that Workers AI, status and reports still work, and that reports wait unfiled. A third files reports in a mock GitHub: grouping, comments, priority, a new issue after one is closed, and what is published. It spends nothing and needs no secrets or Cloudflare login.
 
 The `AI` binding only runs against Cloudflare, so the test uses a copy of `wrangler.toml` without it (`.wrangler-e2e.toml`, deleted afterwards) and points `WORKERS_AI_TEST_URL` at the mock. That variable is never set in production.
 
@@ -136,10 +147,13 @@ npx wrangler d1 create binpal-api              # put the database_id in wrangler
 npx wrangler kv namespace create CACHE         # put the id in wrangler.toml
 npx wrangler d1 migrations apply binpal-api --remote
 npx wrangler secret put ANTHROPIC_API_KEY      # optional: turns on the Anthropic fallback
+npx wrangler secret put GITHUB_TOKEN           # files reports in the review queue
 npm run deploy
 ```
 
 Workers AI needs no setup: the `AI` binding in `wrangler.toml` connects it.
+
+`GITHUB_TOKEN` is a fine-grained personal access token (GitHub → Settings → Developer settings → Fine-grained tokens) with access to `BliDir/binpal` only and the **Issues: Read and write** permission. Paste it when `wrangler secret put` asks, never into a file.
 
 ### Continuous deploy
 

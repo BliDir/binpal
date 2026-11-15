@@ -6,18 +6,8 @@ import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 
 import '../../data/database.dart';
+import '../../data/thin_api.dart';
 import '../search/item_search.dart';
-
-/// Where the thin API is served. Override at build time with
-/// `--dart-define=API_BASE_URL=…`.
-const apiBaseUrl = String.fromEnvironment(
-  'API_BASE_URL',
-  defaultValue: 'https://api.blidir.fun',
-);
-
-/// A random id made on first use, so the API can count per-install limits.
-/// It identifies nothing else: no account, device or location.
-const installIdSettingKey = 'install_id';
 
 /// What the AI said about a photo.
 sealed class AiResult {
@@ -97,7 +87,7 @@ class IdentifyClient {
   }) async {
     if (candidates.isEmpty) return const AiUnavailable(AiProblem.noAnswer);
     final body = jsonEncode({
-      'install_id': await installId(),
+      'install_id': await installId(db, random: _random),
       'area_id': areaId,
       'image': base64Encode(jpeg),
       'candidates': [
@@ -151,24 +141,5 @@ class IdentifyClient {
     } on Object {
       return const AiUnavailable(AiProblem.failed);
     }
-  }
-
-  /// This install's random id, made and stored the first time.
-  Future<String> installId() async {
-    final stored = await db.setting(installIdSettingKey);
-    if (stored != null) return stored;
-    final id = _uuidV4();
-    await db.setSetting(installIdSettingKey, id);
-    return id;
-  }
-
-  String _uuidV4() {
-    final b = List<int>.generate(16, (_) => _random.nextInt(256));
-    b[6] = (b[6] & 0x0f) | 0x40;
-    b[8] = (b[8] & 0x3f) | 0x80;
-    final hex = [for (final x in b) x.toRadixString(16).padLeft(2, '0')];
-    return '${hex.sublist(0, 4).join()}-${hex.sublist(4, 6).join()}-'
-        '${hex.sublist(6, 8).join()}-${hex.sublist(8, 10).join()}-'
-        '${hex.sublist(10).join()}';
   }
 }

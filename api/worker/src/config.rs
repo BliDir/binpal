@@ -14,6 +14,12 @@ pub struct Config {
     pub anthropic_api_key: Option<String>,
     pub cdn_base_url: String,
     pub allowance: Allowance,
+    /// The review queue: `owner/name` of the repository whose issues the
+    /// rule monitor and reports share.
+    pub github_repo: String,
+    pub github_api_url: String,
+    /// None leaves reports stored but unfiled until a token is set.
+    pub github_token: Option<String>,
 }
 
 fn var(env: &Env, name: &str) -> Result<String, ApiError> {
@@ -50,6 +56,16 @@ impl Config {
                 .map(|s| s.to_string())
                 .filter(|key| !key.is_empty()),
             cdn_base_url: var(env, "CDN_BASE_URL")?.trim_end_matches('/').to_string(),
+            github_repo: var(env, "GITHUB_REPO")?,
+            github_api_url: env
+                .var("GITHUB_API_URL")
+                .map(|v| v.to_string().trim_end_matches('/').to_string())
+                .unwrap_or_else(|_| "https://api.github.com".to_string()),
+            github_token: env
+                .secret("GITHUB_TOKEN")
+                .ok()
+                .map(|s| s.to_string())
+                .filter(|token| !token.is_empty()),
             allowance: Allowance {
                 ai_calls_per_install: number(env, "AI_CALLS_PER_INSTALL_PER_DAY")?,
                 reports_per_install: number(env, "REPORTS_PER_INSTALL_PER_DAY")?,

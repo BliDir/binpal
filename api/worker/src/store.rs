@@ -3,6 +3,8 @@
 //! counters, which the daily cleanup removes after two days.
 
 use binpal_api_core::ApiError;
+use binpal_api_core::review::Queued;
+use serde::Deserialize;
 use worker::{D1Database, console_error, query};
 
 fn db_error(e: worker::Error) -> ApiError {
@@ -154,6 +156,7 @@ pub struct ReportRow<'a> {
     pub day: &'a str,
     pub area_id: &'a str,
     pub item_id: Option<&'a str>,
+    pub date: Option<&'a str>,
     pub kind: &'a str,
     pub note: Option<&'a str>,
     pub app_version: Option<&'a str>,
@@ -162,11 +165,12 @@ pub struct ReportRow<'a> {
 pub async fn add_report(db: &D1Database, report: &ReportRow<'_>) -> Result<(), ApiError> {
     query!(
         db,
-        "INSERT INTO reports (day, area_id, item_id, kind, note, app_version)
-         VALUES (?1, ?2, ?3, ?4, ?5, ?6)",
+        "INSERT INTO reports (day, area_id, item_id, date, kind, note, app_version)
+         VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)",
         report.day,
         report.area_id,
         report.item_id,
+        report.date,
         report.kind,
         report.note,
         report.app_version,
@@ -176,6 +180,124 @@ pub async fn add_report(db: &D1Database, report: &ReportRow<'_>) -> Result<(), A
     .await
     .map_err(db_error)?;
     Ok(())
+}
+
+#[derive(Deserialize)]
+struct ReportRecord {
+    id: f64,
+    day: String,
+    area_id: String,
+    item_id: Option<String>,
+    date: Option<String>,
+    kind: String,
+    note: Option<String>,
+    app_version: Option<String>,
+}
+
+/// Reports not yet filed in the review queue, oldest first.
+pub async fn unfiled_reports(db: &D1Database, limit: u32) -> Result<Vec<Queued>, ApiError> {
+    let rows: Vec<ReportRecord> = query!(
+        db,
+        "SELECT id, day, area_id, item_id, date, kind, note, app_version FROM reports
+         WHERE issue_number IS NULL ORDER BY id LIMIT ?1",
+        limit,
+    )
+    .map_err(db_error)?
+    .all()
+    .await
+    .map_err(db_error)?
+    .results()
+    .map_err(db_error)?;
+    Ok(rows
+        .into_iter()
+        .map(|r| Queued {
+            id: r.id as i64,
+            day: r.day,
+            area_id: r.area_id,
+            item_id: r.item_id,
+            date: r.date,
+            kind: r.kind,
+            note: r.note,
+            app_version: r.app_version,
+        })
+        .collect())
+}
+
+/// The issue a group of reports was filed on.
+#[derive(Deserialize)]
+pub struct ReportIssue {
+    pub issue_number: f64,
+    pub reports: f64,
+    pub priority: f64,
+}
+
+pub async fn report_issue(db: &D1Database, key: &str) -> Result<Option<ReportIssue>, ApiError> {
+    query!(
+        db,
+        "SELECT issue_number, reports, priority FROM report_issues WHERE group_key = ?1",
+        key,
+    )
+    .map_err(db_error)?
+    .first(None)
+    .await
+    .map_err(db_error)
+}
+
+/// Records that `ids` were filed on `issue_number`, and the group's totals.
+pub async fn file_reports(
+    db: &D1Database,
+    key: &str,
+    issue_number: u64,
+    reports: u64,
+    priority: bool,
+    ids: &[i64],
+) -> Result<(), ApiError> {
+    let mut statements = vec![
+        query!(
+            db,
+            "INSERT INTO report_issues (group_key, issue_number, reports, priority)
+             VALUES (?1, ?2, ?3, ?4)
+             ON CONFLICT (group_key) DO UPDATE SET issue_number = excluded.issue_number,
+               reports = excluded.reports, priority = excluded.priority",
+            key,
+            issue_number as f64,
+            reports as f64,
+            if priority { 1 } else { 0 },
+        )
+        .map_err(db_error)?,
+    ];
+    for id in ids {
+        statements.push(
+            query!(
+                db,
+                "UPDATE reports SET issue_number = ?1 WHERE id = ?2",
+                issue_number as f64,
+                *id as f64,
+            )
+            .map_err(db_error)?,
+        );
+    }
+    db.batch(statements).await.map_err(db_error)?;
+    Ok(())
+}
+
+/// Reports from an area received on or after `since` (`YYYY-MM-DD`).
+pub async fn area_reports_since(
+    db: &D1Database,
+    area_id: &str,
+    since: &str,
+) -> Result<u64, ApiError> {
+    let count: Option<f64> = query!(
+        db,
+        "SELECT count(*) AS n FROM reports WHERE area_id = ?1 AND day >= ?2",
+        area_id,
+        since,
+    )
+    .map_err(db_error)?
+    .first(Some("n"))
+    .await
+    .map_err(db_error)?;
+    Ok(count.unwrap_or(0.0) as u64)
 }
 
 /// Drops counters older than `keep_usage_from` and log rows and Neuron

@@ -12,12 +12,14 @@ import '../data/language_controller.dart';
 import '../data/sync_controller.dart';
 import '../features/photo/identify_client.dart';
 import '../features/photo/photo_analyzer.dart';
+import '../features/report/report_client.dart';
 import '../reminders/reminder_notifications.dart';
 import '../reminders/reminder_service.dart';
 
 /// The app's long-lived objects: the local database, the bundle sync, the
 /// chosen area and language, the reminders, what finds the area from the
-/// phone's location, and photo check's on-device analysis and AI fallback.
+/// phone's location, photo check's on-device analysis and AI fallback, and
+/// "this looks wrong" reports.
 class AppServices {
   AppServices({
     required this.db,
@@ -29,6 +31,7 @@ class AppServices {
     BoundaryStore? boundaries,
     PhotoAnalyzer? photoAnalyzer,
     IdentifyClient? identify,
+    ReportClient? reports,
     this.syncOnLaunch = true,
     DateTime Function()? clock,
   }) : clock = clock ?? DateTime.now,
@@ -40,7 +43,8 @@ class AppServices {
              directory: getApplicationSupportDirectory,
            ),
        photoAnalyzer = photoAnalyzer ?? DevicePhotoAnalyzer(),
-       identify = identify ?? IdentifyClient(db: db, client: http.Client()) {
+       identify = identify ?? IdentifyClient(db: db, client: http.Client()),
+       reports = reports ?? ReportClient(db: db, client: http.Client()) {
     // After every refresh (launch, foreground, bundle update): re-read the
     // area, which a new bundle can change, and top up reminders.
     sync.afterRefresh ??= () async {
@@ -78,6 +82,7 @@ class AppServices {
   final BoundaryStore boundaries;
   final PhotoAnalyzer photoAnalyzer;
   final IdentifyClient identify;
+  final ReportClient reports;
 
   /// Off in widget tests, which must not touch the database or the network.
   final bool syncOnLaunch;
